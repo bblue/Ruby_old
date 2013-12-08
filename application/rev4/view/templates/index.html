@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+  <head>
+    <meta charset="utf-8">
+    <title>
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/css/bootstrap-glyphicons.css" rel="stylesheet">
+    <style>
+		.media {
+			padding: 2px;
+			height: 70px;
+		}
+		.media:hover { 
+			background: #FFFFCC;
+		}
+		.ruby.div {
+			height: 25px;
+		}
+		.t {
+			margin: 2px 10px 0 10px;
+		}
+    </style>
+  </head>
+  
+  <body>
+    <div class="container">
+      <small>
+        <div class="breadcrumb">
+          <input class="pull-right" placeholder="Search" role="search" style="margin-left: 10px;" type="text">
+          <a class="pull-right t" href="#">admin</a>
+          <a class="pull-right t" href="#">about</a>
+          <a class="pull-right t" href="#">help</a>
+          <li class="dropdown pull-right t">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b> {USER_USERNAME}</a>
+            <ul class="dropdown-menu">
+              <li>
+                <a href="#">Main usergroup is #{USER_MAIN_USERGROUP}</a>
+              </li>
+              <li>
+                <a href="#">Memberships: <!-- BEGIN user_usergroups -->{user_usergroups.ID} <!-- END user_usergroups --></a>
+              </li>
+              <li>
+                <a href="#">link</a>
+              </li>
+              <li>
+                <a href="#">Separated link</a>
+              </li>
+              <li>
+                <a href="#">One more separated link</a>
+              </li>
+            </ul>
+          </li>
+          <span class="breadcrumb">
+          <li>
+            <a href="#">Home</a>
+          </li>
+          <li>
+            <a href="#">Products</a>
+          </li>
+          <li class="active">
+            Specials
+          </li>
+        </span>
+        </div>
+      </small>
+      <div class="navbar" style="background: none; border: none;">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">ruby.intensjon.no</a>
+        </div>
+        <div class="pull-right">
+          <a class="btn navbar-btn btn-xs btn-success">Add new recipe</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+          <a class="btn navbar-btn btn-xs btn-primary">Recipes</a>
+          <a class="btn navbar-btn btn-xs btn-primary">Ingredients</a>
+          <a class="btn navbar-btn btn-xs btn-primary">Tags</a>
+          <a class="btn navbar-btn btn-xs btn-primary">Users</a>
+        </div>
+      </div>
+      <div class="alert alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+          ×
+        </button>
+        <strong>Warning!</strong>
+        Best check yo self, you're not looking too good.
+        <a class="alert-link" href="#">alert link</a>
+        .
+      </div>
+      <div class="row">
+        <div class="col-md-9">
+          <table class="table">
+            <tbody>
+              <tr>
+              </tr>
+            </tbody>
+          </table>
+          <ul class="nav nav-tabs">
+            <li class="pull-left">
+              <h4>
+                This week's featured recipes
+              </h4>
+            </li>
+            <li class="pull-right">
+              <a class="pull-right" href="#">month</a>
+            </li>
+            <li class="pull-right">
+              <a class="pull-right" href="#">week</a>
+            </li>
+            <li class="pull-right">
+              <a class="pull-right" href="#">own</a>
+            </li>
+            <li class="pull-right">
+              <a class="pull-right" href="#">new <span class="label label-info">5</span></a>
+            </li>
+            <li class="active pull-right">
+              <a class="pull-right" href="#">featured</a>
+            </li>
+          </ul>
+          <br>
+          <a class="container" href="#">
+            </a>
+          <div class="media">
+            <a class="container" href="#">
+              </a>
+            <a class="pull-left" href="#">    <img class="media-object" src="https://app.divshot.com/img/placeholder-64x64.gif">  </a>
+            <div class="media-body">
+              <h4 class="media-heading">
+                <a href="#">Recipe title</a>
+              </h4>
+              <div>
+                Recipe abstract
+              </div>
+              <a href="#"><span class="label label-default">Salmon</span></a>
+              <a href="#"><span class="label label-default">Dinner</span></a>
+              <a href="#"><span class="label label-default">Quick</span></a>
+              <div class="pull-right text-muted">
+                <small>
+                  4 min ago by
+                  <a href="#">Username</a>
+                </small>
+              </div>
+              <p>
+              </p>
+            </div>
+          </div>
+          <div class="media">
+            <a class="container" href="#">
+              </a>
+            <a class="pull-left" href="#">    <img class="media-object" src="https://app.divshot.com/img/placeholder-64x64.gif">  </a>
+            <div class="media-body">
+              <h4 class="media-heading">
+                <a href="#">Recipe title</a>
+              </h4>
+              <div>
+                Recipe abstract
+              </div>
+              <a href="#"><span class="label label-default">Salmon</span></a>
+              <a href="#"><span class="label label-default">Dinner</span></a>
+              <a href="#"><span class="label label-default">Quick</span></a>
+              <div class="pull-right text-muted">
+                <small>
+                  4 min ago by
+                  <a href="#">Username</a>
+                </small>
+              </div>
+              <p>
+              </p>
+            </div>
+          </div>
+          <div class="media">
+            <a class="container" href="#">
+              </a>
+            <a class="pull-left" href="#">    <img class="media-object" src="https://app.divshot.com/img/placeholder-64x64.gif">  </a>
+            <div class="media-body">
+              <h4 class="media-heading">
+                <a href="#">Recipe title</a>
+              </h4>
+              <div>
+                Recipe abstract
+              </div>
+              <a href="#"><span class="label label-default">Salmon</span></a>
+              <a href="#"><span class="label label-default">Dinner</span></a>
+              <a href="#"><span class="label label-default">Quick</span></a>
+              <div class="pull-right text-muted">
+                <small>
+                  4 min ago by
+                  <a href="#">Username</a>
+                </small>
+              </div>
+              <p>
+              </p>
+            </div>
+          </div>
+          <div class="media">
+            <a class="container" href="#">
+              </a>
+            <a class="pull-left" href="#">    <img class="media-object" src="https://app.divshot.com/img/placeholder-64x64.gif">  </a>
+            <div class="media-body">
+              <h4 class="media-heading">
+                <a href="#">Recipe title</a>
+              </h4>
+              <div>
+                Recipe abstract
+              </div>
+              <a href="#"><span class="label label-default">Salmon</span></a>
+              <a href="#"><span class="label label-default">Dinner</span></a>
+              <a href="#"><span class="label label-default">Quick</span></a>
+              <div class="pull-right text-muted">
+                <small>
+                  4 min ago by
+                  <a href="#">Username</a>
+                </small>
+              </div>
+              <p>
+              </p>
+            </div>
+          </div>
+          <div class="media">
+            <a class="container" href="#">
+              </a>
+            <a class="pull-left" href="#">    <img class="media-object" src="https://app.divshot.com/img/placeholder-64x64.gif">  </a>
+            <div class="media-body">
+              <h4 class="media-heading">
+                <a href="#">Recipe title</a>
+              </h4>
+              <div>
+                Recipe abstract
+              </div>
+              <a href="#"><span class="label label-default">Salmon</span></a>
+              <a href="#"><span class="label label-default">Dinner</span></a>
+              <a href="#"><span class="label label-default">Quick</span></a>
+              <div class="pull-right text-muted">
+                <small>
+                  4 min ago by
+                  <a href="#">Username</a>
+                </small>
+              </div>
+              <p>
+              </p>
+            </div>
+          </div>
+          <div class="media">
+            <a class="container" href="#">
+              </a>
+            <a class="pull-left" href="#">    <img class="media-object" src="https://app.divshot.com/img/placeholder-64x64.gif">  </a>
+            <div class="media-body">
+              <h4 class="media-heading">
+                <a href="#">Recipe title</a>
+              </h4>
+              <div>
+                Recipe abstract
+              </div>
+              <a href="#"><span class="label label-default">Salmon</span></a>
+              <a href="#"><span class="label label-default">Dinner</span></a>
+              <a href="#"><span class="label label-default">Quick</span></a>
+              <div class="pull-right text-muted">
+                <small>
+                  4 min ago by
+                  <a href="#">Username</a>
+                </small>
+              </div>
+              <p>
+              </p>
+            </div>
+          </div>
+          <div class="container">
+			<form role="form" class="form-inline">
+			  <div class="form-group">
+			    <label for="exampleInputEmail1">Email address</label>
+			    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+			    <p class="help-block"></p>
+			  </div>
+			  <div class="form-group">
+			    <label for="exampleInputPassword1">Password</label>
+			    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+			    <p class="help-block"></p>
+			  </div>
+			  <button type="submit" class="btn btn-default">Submit</button>
+			</form>
+          </div>
+          <hr>
+          <ul class="pagination">
+            <li>
+              <a href="#">«</a>
+            </li>
+            <li>
+              <a href="#">1</a>
+            </li>
+            <li>
+              <a href="#">2</a>
+            </li>
+            <li>
+              <a href="#">3</a>
+            </li>
+            <li>
+              <a href="#">4</a>
+            </li>
+            <li>
+              <a href="#">5</a>
+            </li>
+            <li>
+              <a href="#">»</a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-3">
+          <h4>
+            Favorite tags
+            <small>
+              <a href="#">edit</a>
+            </small>
+            <br>
+          </h4>
+          <div class="text-muted">
+            <span class="label label-default">Salmon</span>
+            <small>
+              x23
+            </small>
+          </div>
+          <hr>
+          <h4>
+            Recent tags
+            <br>
+          </h4>
+          <div class="text-muted">
+            <div>
+              <span class="label label-default">Salmon</span>
+              <small>
+                x23
+              </small>
+            </div>
+            <div>
+              <span class="label label-default">Breakfast</span>
+              <small>
+                x8
+              </small>
+            </div>
+            <div>
+              <span class="label label-default">Quick</span>
+              <small>
+                x2
+              </small>
+            </div>
+          </div>
+          <hr>
+          <h4>
+            Online users
+            <br>
+          </h4>
+          <div class="text-muted">
+          	<!-- BEGIN activevisitors_visitor -->
+              <div>
+              	<span class="label label-default" title="Browser: {activevisitors_visitor.HTTP_USER_AGENT}">{activevisitors_visitor.USERNAME}</span>
+              	<small>Connected from: {activevisitors_visitor.IP}</small>
+              </div>
+            <!-- END activevisitors_visitor -->
+          </div>
+          <hr>
+          <blockquote>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere
+              erat a ante.
+            </p>
+          </blockquote>
+        </div>
+      </div>
+    </div>
+        <!-- FOOTER -->
+
+    <div id="footer">
+      <div class="container footer-internal-wrap">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>&copy; 2013 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+        <div id="footer-internal-push"></div>
+      </div><!-- /.container -->
+  <div id="footer-border-bottom"></div>
+    </div><!-- /#footer -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" /></script>
+    <script src="http://beta.intensjon.no/jqBootstrapValidation.js" ></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/js/bootstrap.min.js"></script>
+    <script>
+  		$(function () { $("input,select,textarea").not("[type=submit]").jqBootstrapValidation(); } );
+	</script>
+  </body>
+
+</html>

@@ -1,0 +1,94 @@
+<!-- Begin fixed navbar -->
+<div class="navbar navbar-default navbar-fixed-top">
+	<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+		</div><!--/.navbar-header -->
+		<div class="collapse navbar-collapse">
+			<ol class="breadcrumb navbar-breadcrumb navbar-left">
+			  <li><a href="#">Home</a></li>
+			  <li><a href="#">Recipes</a></li>
+			  <li class="active">Data</li>
+			</ol>
+			<form class="navbar-form navbar-right" role="search">
+				<input type="text" class="form-control" placeholder="Search">
+			</form>
+			<ul class="nav navbar-nav navbar-right">
+			<!-- IF VISITOR_IS_GUEST --><li><a href="#">Register</a></li><!-- ENDIF -->
+			<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						<!-- IF VISITOR_IS_LOGGED_IN --><b class="caret"></b> {VISITOR_USERNAME}
+						<!-- ELSEIF VISITOR_IS_GUEST -->Sign In <b class="caret"></b><!-- ENDIF -->
+					</a>
+					<ul class="dropdown-menu">
+						<li style="padding: 15px; padding-bottom: 0px;">
+						<!-- IF VISITOR_IS_LOGGED_IN -->
+							<div class="container" style="width: 300px">
+								<small>
+									<div style="border-bottom: 1px solid grey; padding-bottom: 5px; margin-bottom: 10px;">
+										<img src="..." alt="..." class="img-thumbnail">
+										<a href="#" style="padding: 10px 5px 0 5px" class="pull-right">Log out</a>
+										<!-- IF VISITOR_IS_ADMIN --><a href="#" style="padding: 10px 5px 0 5px" class="pull-right">Admin</a><!-- ENDIF -->
+										<a href="#" style="padding: 10px 5px 0 5px"class="pull-right">Privileges</a>
+									</div>
+									<table class="table">
+										<thead>
+											<tr>
+												<th></th>
+												<th><em>Week</em></th>
+												<th><em>Month</em></th>
+												<th><em>Total</em></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td><em>Recipes</em></td>
+												<td>1</td>
+												<td>2</td>
+												<td>3</td>
+											</tr>
+											<tr>
+												<td><em>Ingredients</em></td>
+												<td>4</td>
+												<td>5</td>
+												<td>6</td>
+											</tr>
+											<tr>
+												<td><em>Votes</em></td>
+												<td>7</td>
+												<td>8</td>
+												<td>9</td>
+											</tr>
+											<tr>
+												<td><em>Comments</em></td>
+												<td>10</td>
+												<td>11</td>
+												<td>12</td>
+											</tr>
+										</tbody>
+									</table>
+								</small>
+							</div>
+						<!-- ELSEIF VISITOR_IS_GUEST -->
+							<form role="form" action="/recipes/login" method="post" accept-charset="UTF-8">
+								<div style="width: 250px;" class="form-group">
+									<input class="form-control" placeholder="E-mail address" id="user_username" style="margin-bottom: 15px;" type="email" name="username" data-validation-email-message="Ikke gyldig e-post"/>
+									<input class="form-control" placeholder="Password" id="user_password" style="margin-bottom: 15px;" type="password" name="password" />
+									<p class="help-block"></p>
+									<input class="btn btn-primary" style="clear: left; width: 100%; height: 32px; font-size: 13px;" type="submit" name="commit" value="Sign In" />
+								</div>
+							</form>
+						<!-- ENDIF -->
+				  			</li>
+					</ul>
+				</li>
+				<li><a href="#">Help</a></li>
+				<li><a href="#">About</a></li>
+			</ul>
+		</div><!--/.nav-collapse -->
+	</div><!--/.container (navbar) -->
+</div><!--/.navbar -->

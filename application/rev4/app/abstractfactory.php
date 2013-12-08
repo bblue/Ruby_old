@@ -1,5 +1,5 @@
 <?php
-namespace Lib;
+namespace app;
 
 abstract class AbstractFactory
 {

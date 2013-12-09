@@ -1,9 +1,9 @@
 <?php
 namespace Model\Mappers;
 use 
-	Model\DatabaseDataMapper,
-	Model\AbstractEntity,
-	Model\CollectionProxy;
+	App\DatabaseDataMapper,
+	App\AbstractEntity,
+	App\CollectionProxy;
 
 final class LogMapper extends DatabaseDataMapper
 {

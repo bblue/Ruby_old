@@ -2,10 +2,10 @@
 namespace Model\Mappers;
 
 use
-	Model\AbstractEntity,
-	Model\DatabaseDataMapper,
+	App\AbstractEntity,
+	App\DatabaseDataMapper,
 	Model\Domain\Visitor\Visitor,
-	Model\CollectionProxy;
+	App\CollectionProxy;
 
 final class VisitorMapper extends DatabaseDataMapper
 {

@@ -1,5 +1,5 @@
 <?php
-namespace Lib\Boot;
+namespace App\Boot;
 use Lib\Functions;
 if(IN_CONTROLLER !== true){ die((IS_DEVELOPMENT_AREA === true) ? ('Not in controller. Error at ' . __FILE__ . '.') : ''); }
 

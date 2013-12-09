@@ -2,11 +2,11 @@
 namespace Model\Mappers;
 
 use 
-Lib\Boot\SessionHandler,
-Model\AbstractDataMapper,
-Model\AbstractEntity,
-Model\CollectionFactory,
-Model\EntityFactory,
+App\Boot\SessionHandler,
+App\AbstractDataMapper,
+App\AbstractEntity,
+App\CollectionFactory,
+App\EntityFactory,
 Model\Domain\Visitor\Visitor,
 Model\Domain\Model\Model;
 

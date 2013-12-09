@@ -1,5 +1,5 @@
 <?php
-namespace Model;
+namespace App;
 
 interface CollectionInterface extends \Countable, \IteratorAggregate, \ArrayAccess
 {

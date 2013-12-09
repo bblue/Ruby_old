@@ -2,7 +2,7 @@
 namespace Model\Services;
 
 use
-	Model\ServiceAbstract
+	App\ServiceAbstract
 ;
 
 final class Model extends ServiceAbstract

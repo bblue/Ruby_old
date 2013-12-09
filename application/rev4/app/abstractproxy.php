@@ -1,5 +1,5 @@
 <?php
-namespace Model;
+namespace App;
 
 abstract class AbstractProxy
 {

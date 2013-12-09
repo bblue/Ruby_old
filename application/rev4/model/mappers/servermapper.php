@@ -2,8 +2,8 @@
 namespace Model\Mappers;
 
 use 
-	Model\AbstractDataMapper,
-	Model\AbstractEntity,
+	App\AbstractDataMapper,
+	App\AbstractEntity,
 	Model\Domain\Visitor\Visitor;
 
 final class ServerMapper extends AbstractDataMapper

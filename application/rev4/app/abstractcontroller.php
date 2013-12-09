@@ -1,9 +1,7 @@
 <?php
-namespace Controllers;
+namespace App;
 
-use Lib\Boot\Request;
-
-use Model\ServiceFactory;
+use App\Boot\Request;
 
 abstract class AbstractController
 {

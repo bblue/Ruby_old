@@ -1,3 +1,3 @@
 <?php
-namespace Lib\Exceptions;
+namespace Lib\Db;
 class MysqlAdapterException extends \Exception{}

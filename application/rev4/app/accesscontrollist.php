@@ -1,7 +1,7 @@
 <?php
 
-namespace Lib;
-use Controllers\AbstractController, Model\Domain\Visitor\Visitor;
+namespace App;
+use Model\Domain\Visitor\Visitor;
 
 abstract class AccessControlList
 {

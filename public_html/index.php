@@ -8,5 +8,7 @@
  	/** Load the root website */
 	if(is_readable($filename = 'websites/self/index.php')){
 		require $filename;
+	} else {
+		die('Unable to load root website');
 	}
 	

@@ -1,5 +1,5 @@
 <?php
-namespace Model;
+namespace App;
 
 abstract class EntityCollection implements CollectionInterface
 {
@@ -90,7 +90,7 @@ abstract class EntityCollection implements CollectionInterface
      */
     public function offsetSet($key, $entity)
     {
-        if (!$entity instanceof \Model\AbstractEntity) {
+        if (!$entity instanceof AbstractEntity) {
             throw new \InvalidArgumentException('To add an entity to the collection, it must be an instance of AbstractEntity.');
         }
         if (!isset($key)) {

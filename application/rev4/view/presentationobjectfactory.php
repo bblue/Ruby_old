@@ -1,7 +1,7 @@
 <?php
 namespace View;
 
-use Lib\AbstractFactory;
+use App\AbstractFactory;
 
 final class PresentationObjectFactory extends AbstractFactory
 {

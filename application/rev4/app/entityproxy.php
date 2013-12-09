@@ -1,5 +1,5 @@
 <?php
-namespace Model;
+namespace App;
 
 class EntityProxy extends AbstractProxy implements LoadableInterface
 {

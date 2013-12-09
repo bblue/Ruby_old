@@ -1,8 +1,7 @@
 <?php
-namespace Controllers;
-use Lib\Boot\Request;
+namespace App;
 
-use Lib\AbstractFactory, Model\ServiceFactory;
+use App\Boot\Request;
 
 final class ControllerFactory extends AbstractFactory
 {

@@ -2,9 +2,8 @@
 namespace Model\Domain\Visitor;
 use Model\Domain\User\User;
 use Lib\Mobile_Detect;
-
-use Model\AbstractEntity;
-use Model\CollectionProxy;
+use App\AbstractEntity;
+use App\CollectionProxy;
 
 final class Visitor extends AbstractEntity
 {  

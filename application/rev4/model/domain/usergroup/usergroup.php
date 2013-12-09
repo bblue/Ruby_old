@@ -1,6 +1,6 @@
 <?php
 namespace Model\Domain\Usergroup;
-use Model\AbstractEntity;
+use App\AbstractEntity;
 
 final class Usergroup extends AbstractEntity
 {  

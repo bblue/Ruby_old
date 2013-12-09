@@ -1,8 +1,7 @@
 <?php
-namespace Lib;
+namespace App;
 final class SecureContainer
 {
-
     protected $target = null;
     protected $acl = null;
 

@@ -1,7 +1,7 @@
 <?php
 namespace Model\Mappers;
 
-use Model\DatabaseDataMapper;
+use App\DatabaseDataMapper;
 
 final class UsergroupMapper extends DatabaseDataMapper
 {

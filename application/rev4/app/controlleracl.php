@@ -1,5 +1,5 @@
 <?php
-namespace Lib;
+namespace App;
 
 final class ControllerACL extends AccessControlList
 {

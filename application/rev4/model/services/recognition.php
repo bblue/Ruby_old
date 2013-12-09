@@ -3,7 +3,7 @@ namespace Model\Services;
 
 use
 	Model\DomainObjects\UserGroup,
-	Model\ServiceAbstract,
+	App\ServiceAbstract,
 	Model\Domain\Visitor\Visitor,
 	Model\Domain\User\User
 ;

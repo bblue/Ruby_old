@@ -1,11 +1,7 @@
 <?php
-namespace View;
+namespace App;
 
-use Lib\Boot\Request;
-
-use
-	Lib\AbstractFactory,
-	Model\ServiceFactory;
+use App\Boot\Request;
 
 final class ViewFactory extends AbstractFactory
 {

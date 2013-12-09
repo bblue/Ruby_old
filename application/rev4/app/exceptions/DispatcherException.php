@@ -1,3 +1,3 @@
 <?php
-namespace Lib\Exceptions;
+namespace App\Exceptions;
 class DispatcherException extends \Exception{}

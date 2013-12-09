@@ -1,7 +1,7 @@
 <?php
 namespace Model\Domain\User;
-use Model\AbstractEntity;
-use Model\CollectionProxy;
+use App\AbstractEntity;
+use App\CollectionProxy;
 
 final class User extends AbstractEntity
 {  

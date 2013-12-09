@@ -1,6 +1,6 @@
 <?php
 namespace Model\Domain\Log;
-use Model\AbstractEntity;
+use App\AbstractEntity;
 
 final class Log extends AbstractEntity
 {  

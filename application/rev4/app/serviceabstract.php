@@ -1,11 +1,8 @@
 <?php
-namespace Model;
+namespace App;
 
 use Model\Domain\Visitor\Visitor;
-
 use Model\Domain\Log\Log;
-
-use Lib\AbstractFactory;
 
 abstract class ServiceAbstract
 {

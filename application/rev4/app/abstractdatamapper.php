@@ -1,7 +1,7 @@
 <?php
-namespace Model;
+namespace App;
 
-use Lib\Boot\Db\DatabaseAdapterInterface;
+use Lib\Db\DatabaseAdapterInterface;
 
 abstract class AbstractDataMapper
 {

@@ -1,7 +1,7 @@
 <?php
 namespace View;
 
-use Model\ServiceFactory;
+use App\ServiceFactory;
 
 abstract class AbstractPresentationObject
 {

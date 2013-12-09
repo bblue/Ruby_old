@@ -1,6 +1,5 @@
 <?php
-namespace Model;
-use Lib\AbstractFactory;
+namespace App;
 
 final class EntityFactory extends AbstractFactory
 {

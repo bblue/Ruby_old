@@ -1,17 +1,16 @@
 <?php
-namespace Lib\Boot;
-use Lib\Exceptions\DispatcherException;
-
-use Lib\ControllerACL;
-use Lib\ViewACL;
-use View\ViewFactory;
-use Controllers\ControllerFactory;
-use Model\ServiceFactory;
+namespace App\Boot;
+use App\Exceptions\DispatcherException;
+use App\ControllerACL;
+use App\ViewACL;
+use App\ViewFactory;
+use App\ControllerFactory;
+use App\ServiceFactory;
 use View\AbstractView;
-use Lib\AbstractFactory;
-use Controllers\AbstractController;
-use Lib\AccessControlList;
-use Lib\SecureContainer;
+use App\AbstractFactory;
+use App\AbstractController;
+use App\AccessControlList;
+use App\SecureContainer;
 
 final class Dispatcher
 {

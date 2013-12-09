@@ -1,5 +1,5 @@
 <?php
-namespace Model;
+namespace App;
 
 class CollectionProxy extends AbstractProxy implements LoadableInterface, \Countable, \IteratorAggregate
 {

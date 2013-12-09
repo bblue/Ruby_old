@@ -1,6 +1,5 @@
 <?php
-namespace Lib\Boot\Db;
-use Lib\Exceptions\MysqlAdapterException;
+namespace Lib\Db;
 
 class MysqlAdapter implements DatabaseAdapterInterface
 {
@@ -14,7 +13,7 @@ class MysqlAdapter implements DatabaseAdapterInterface
     public function __construct(array $config)
     {
         if (count($config) !== 4) {
-            throw new MySQLAdapterException('Invalid number of connection parameters.');  
+            throw new MysqlAdapterException('Invalid number of connection parameters.');  
         }
         $this->_config = $config;
     }

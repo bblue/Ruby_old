@@ -1,7 +1,5 @@
 <?php
-namespace Model;
-
-use Lib\AbstractFactory;
+namespace App;
 
 final class ServiceFactory extends AbstractFactory
 {

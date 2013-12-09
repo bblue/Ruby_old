@@ -1,8 +1,8 @@
 <?php
 namespace Model\Domain\Model;
-use Model\EntityCollection;
+use App\EntityCollection;
 
-use Model\AbstractEntity;
+use App\AbstractEntity;
 
 final class Model extends AbstractEntity
 {  

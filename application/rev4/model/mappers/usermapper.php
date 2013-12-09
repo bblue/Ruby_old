@@ -2,9 +2,9 @@
 namespace Model\Mappers;
 use 
 	Model\Domain\User\User,
-	Model\DatabaseDataMapper,
-	Model\AbstractEntity,
-	Model\CollectionProxy;
+	App\DatabaseDataMapper,
+	App\AbstractEntity,
+	App\CollectionProxy;
 
 final class UserMapper extends DatabaseDataMapper
 {

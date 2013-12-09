@@ -1,8 +1,7 @@
 <?php
-namespace Model;
-use Lib\AbstractFactory;
-use Lib\Boot\SessionHandler;
-use Lib\Boot\Db\DatabaseAdapterInterface;
+namespace App;
+use App\Boot\SessionHandler;
+use Lib\Db\DatabaseAdapterInterface;
 
 final class DataMapperFactory extends AbstractFactory
 {

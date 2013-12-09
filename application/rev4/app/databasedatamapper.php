@@ -1,8 +1,8 @@
 <?php
-namespace Model;
+namespace App;
 
 use 
-	Lib\Boot\Db\DatabaseAdapterInterface;
+	Lib\Db\DatabaseAdapterInterface;
 
 abstract class DatabaseDataMapper extends AbstractDataMapper implements DataMapperInterface
 {

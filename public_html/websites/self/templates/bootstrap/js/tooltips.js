@@ -1,0 +1,1 @@
+$('#inputPassword-control-group').tooltip();

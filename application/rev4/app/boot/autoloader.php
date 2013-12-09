@@ -1,5 +1,5 @@
 <?php
-    namespace Lib\Boot;
+    namespace App\Boot;
 
     final class Autoloader
     {

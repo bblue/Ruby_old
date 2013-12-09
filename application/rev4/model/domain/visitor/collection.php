@@ -1,6 +1,6 @@
 <?php
 namespace Model\Domain\Visitor;
-use Model\EntityCollection;
+use App\EntityCollection;
 
 final class Collection extends EntityCollection
 {

@@ -1,5 +1,5 @@
 <?php
-namespace Lib\Boot;
+namespace App\Boot;
 use Lib\Validation;
 
 final class Request

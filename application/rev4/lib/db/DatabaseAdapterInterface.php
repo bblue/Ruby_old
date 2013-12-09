@@ -1,5 +1,5 @@
 <?php
-namespace Lib\Boot\Db;
+namespace Lib\Db;
 interface DatabaseAdapterInterface
 {
     function connect();

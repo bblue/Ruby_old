@@ -1,7 +1,7 @@
 <?php
 namespace App;
 
-abstract class AbstractFactory
+abstract class Factory
 {
 	private $_cache = array();
 	

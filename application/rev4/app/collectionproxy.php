@@ -1,7 +1,8 @@
 <?php
 namespace App;
+use App\Entity\Collection as EntityCollection;
 
-class CollectionProxy extends AbstractProxy implements LoadableInterface, \Countable, \IteratorAggregate
+class CollectionProxy extends Proxy implements LoadableInterface, \Countable, \IteratorAggregate
 {
     protected $_collection;
    

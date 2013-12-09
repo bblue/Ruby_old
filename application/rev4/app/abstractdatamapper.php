@@ -1,6 +1,8 @@
 <?php
 namespace App;
 
+use App\Entity\Collection;
+
 use Lib\Db\DatabaseAdapterInterface;
 
 abstract class AbstractDataMapper

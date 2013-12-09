@@ -3,6 +3,11 @@ namespace App;
 
 use 
 	Lib\Db\DatabaseAdapterInterface;
+use 
+	App\Factories\Collection,
+	App\Factories\Entity, 
+	App\Factories\DataMapper
+;
 
 abstract class DatabaseDataMapper extends AbstractDataMapper implements DataMapperInterface
 {
@@ -11,7 +16,7 @@ abstract class DatabaseDataMapper extends AbstractDataMapper implements DataMapp
 	private $sDefaultNamespace = '';
 	
     /** Constructor */
-    public function  __construct(DatabaseAdapterInterface $db, CollectionFactory $collectionFactory, EntityFactory $entityFactory, DataMapperFactory $dataMapperFactory)
+    public function  __construct(DatabaseAdapterInterface $db, Collection $collectionFactory, Entity $entityFactory, DataMapper $dataMapperFactory)
     {
         $this->_adapter = $db;
         $this->_entityFactory = $entityFactory;

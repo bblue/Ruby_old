@@ -1,7 +1,8 @@
 <?php
-namespace App;
+namespace App\Factories;
+use App\Factory;
 
-final class CollectionFactory extends AbstractFactory
+final class Collection extends Factory
 {
 	protected function construct($sEntityName)
 	{

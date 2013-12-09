@@ -3,13 +3,14 @@ namespace App;
 
 use Model\Domain\Visitor\Visitor;
 use Model\Domain\Log\Log;
+use App\Factory;
 
 abstract class ServiceAbstract
 {
 	protected $dataMapperFactory;
 	protected $entityFactory;
 	
-	public function __construct(DataMapperFactory $dataMapperFactory, EntityFactory $entityFactory)
+	public function __construct(Factory $dataMapperFactory, Factory $entityFactory)
 	{
 		$this->dataMapperFactory = $dataMapperFactory;
 		$this->entityFactory = $entityFactory;

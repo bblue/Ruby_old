@@ -2,6 +2,7 @@
 namespace App;
 
 use App\Boot\Request;
+use App\Factory;
 
 abstract class AbstractController
 {
@@ -10,7 +11,7 @@ abstract class AbstractController
 
 	public $DEFAULT_ACTION = 'indexAction';
 	
-	public function __construct(ServiceFactory $serviceFactory, Request $request)
+	public function __construct(Factory $serviceFactory, Request $request)
 	{
 		$this->serviceFactory = $serviceFactory;
 		$this->request = $request;

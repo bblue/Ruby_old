@@ -1,7 +1,7 @@
 <?php
 namespace App;
 
-abstract class AbstractProxy
+abstract class Proxy
 {
     protected $_mapper;
     protected $_aCriterias;

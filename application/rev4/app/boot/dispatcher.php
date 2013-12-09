@@ -11,6 +11,7 @@ use App\AbstractFactory;
 use App\AbstractController;
 use App\AccessControlList;
 use App\SecureContainer;
+use App\Factory;
 
 final class Dispatcher
 {
@@ -23,7 +24,7 @@ final class Dispatcher
 	private $iMaxCount = 3;
 	private $_count;
 	
-	public function __construct(ServiceFactory $serviceFactory, ControllerFactory $controllerFactory, ViewFactory $viewFactory)
+	public function __construct(Factory $serviceFactory, Factory $controllerFactory, Factory $viewFactory)
 	{
 		$this->serviceFactory = $serviceFactory;
 		$this->controllerFactory = $controllerFactory;

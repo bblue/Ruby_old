@@ -1,12 +1,14 @@
 <?php
-namespace App;
+namespace App\Factories;
 
-final class ServiceFactory extends AbstractFactory
+use App\Factory;
+
+final class Service extends Factory
 {
 	private $dataMapperFactory;
 	private $entityFactory;
 	
-	public function __construct(AbstractFactory $dataMapperFactory, AbstractFactory $entityFactory)
+	public function __construct(Factory $dataMapperFactory, Factory $entityFactory)
 	{
 		$this->entityFactory = $entityFactory;
 		$this->dataMapperFactory = $dataMapperFactory;

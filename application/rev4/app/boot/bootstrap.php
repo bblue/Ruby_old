@@ -11,19 +11,21 @@ use
 	App\ViewFactory,
 	App\ControllerFactory;
 
-define('IS_DEVELOPMENT_AREA', true);
-
-/* Confirm that we have initiated the script as intended for security */
+if (version_compare(PHP_VERSION, '5.3.1', '<'))
+{
+	die('Your host needs to use PHP 5.3.1 or higher to run this version of Ruby!');
+}
+	
+/** Confirm that we have initiated the script as intended for security */
 define('IN_CONTROLLER', true);
 
-/* Define the paths */
+/** Define the paths */
 define('ROOT_PATH', '../application/rev4/');
-define('SITE_TEMPLATE', 'fluency');
 
 /** Load the configuration file  */
-include(ROOT_PATH . 'app/boot/config.php');
+require (ROOT_PATH . 'app/boot/config.php'); //@todo: Load this into a class 
 
-/* Configure error reporting */
+/** Configure error reporting */
 if(IS_DEVELOPMENT_AREA === true) {
 	ini_set('display_errors', 1);
 	ini_set('html_errors', 1);
@@ -37,14 +39,14 @@ require ROOT_PATH . 'app/boot/autoloader.php';
 new Autoloader(ROOT_PATH);
 
 /* Creates basic structures, which will be used for interaction with model layer */
-$serviceFactory = new ServiceFactory
+$serviceFactory = new \App\Factories\Service
 (
-	$dataMapperFactory = new DataMapperFactory
+	$dataMapperFactory = new \App\Factories\DataMapper
 	(
 		new MysqlAdapter(array(MYSQL_SERVER, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB_TABLE)),
 		new SessionHandler,
-		new CollectionFactory,
-		$entityFactory = new EntityFactory
+		new \App\Factories\Collection,
+		$entityFactory = new \App\Factories\Entity
 	),
 	$entityFactory
 );
@@ -55,8 +57,8 @@ $request = new Request();
 $dispatcher = new Dispatcher
 (
 	$serviceFactory,
-	new ControllerFactory($serviceFactory, $request),
-	new ViewFactory($serviceFactory, $request),
+	new \App\Factories\Controller($serviceFactory, $request),
+	new \App\Factories\View($serviceFactory, $request),
 	$request
 );
 //$request->setCommand('login');

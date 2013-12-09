@@ -1,7 +1,8 @@
 <?php
-namespace App;
+namespace App\Entity;
+use App\Proxy;
 
-class EntityProxy extends AbstractProxy implements LoadableInterface
+class Entity extends Proxy implements LoadableInterface
 {
     protected $_entity;
    

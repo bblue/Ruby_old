@@ -1,16 +1,18 @@
 <?php
-namespace App;
+namespace App\Factories;
+
+use App\Factory;
 use App\Boot\SessionHandler;
 use Lib\Db\DatabaseAdapterInterface;
 
-final class DataMapperFactory extends AbstractFactory
+final class DataMapper extends Factory
 {
 	private $db;
 	private $sessionHandler;
 	private $collectionFactory;
 	private $entityFactory;
 	
-	public function __construct(DatabaseAdapterInterface $db, SessionHandler $sessionHandler, CollectionFactory $collectionFactory, EntityFactory $entityFactory)
+	public function __construct(DatabaseAdapterInterface $db, SessionHandler $sessionHandler, Collection $collectionFactory, Entity $entityFactory)
 	{
 		$this->db = $db;
 		$this->sessionHandler = $sessionHandler;

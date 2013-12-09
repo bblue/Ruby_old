@@ -1,9 +1,10 @@
 <?php
-namespace View;
+namespace App\Factories;
 
-use App\AbstractFactory;
+use App\Factory;
 
-final class PresentationObjectFactory extends AbstractFactory
+
+final class PresentationObject extends Factory
 {
 	protected function construct($sPresentationObject)
 	{

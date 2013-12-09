@@ -1,7 +1,9 @@
 <?php
-namespace App;
+namespace App\Entity;
+use App\CollectionInterface;
+use App\AbstractEntity;
 
-abstract class EntityCollection implements CollectionInterface
+abstract class Collection implements CollectionInterface
 {
     protected $_entities = array();
 

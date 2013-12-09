@@ -1,8 +1,8 @@
 <?php
 namespace View;
+use App\Factories\Service as ServiceFactory;;
+use App\Factories\PresentationObject as PresentationObjectFactory;
 use App\Boot\Request;
-
-use App\ServiceFactory;
 
 abstract class AbstractView
 {

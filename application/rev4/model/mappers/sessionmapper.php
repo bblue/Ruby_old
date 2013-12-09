@@ -1,6 +1,10 @@
 <?php
 namespace Model\Mappers;
 
+use App\Factories\Entity;
+
+use App\Factories\Collection;
+
 use 
 App\Boot\SessionHandler,
 App\AbstractDataMapper,
@@ -12,7 +16,7 @@ Model\Domain\Model\Model;
 
 final class SessionMapper extends AbstractDataMapper
 {
-    public function  __construct(SessionHandler $session, CollectionFactory $collectionFactory, EntityFactory $entityFactory)
+    public function  __construct(SessionHandler $session, Collection $collectionFactory, Entity $entityFactory)
     {
         $this->_adapter = $session;
         $this->_entityFactory = $entityFactory;

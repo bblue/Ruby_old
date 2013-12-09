@@ -1,14 +1,14 @@
 <?php
-namespace App;
-
+namespace App\Factories;
+use App\Factory;
 use App\Boot\Request;
 
-final class ViewFactory extends AbstractFactory
+final class View extends Factory
 {
 	private $serviceFactory;
 	private $request;
 	
-	public function __construct(ServiceFactory $serviceFactory, Request $request)
+	public function __construct(Factory $serviceFactory, Request $request)
 	{
 		$this->serviceFactory = $serviceFactory;
 		$this->request = $request;

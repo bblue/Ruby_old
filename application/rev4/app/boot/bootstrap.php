@@ -26,9 +26,12 @@ require (ROOT_PATH . 'app/boot/config.php'); //@todo: Load this into a class
 
 /** Configure error reporting */
 if(IS_DEVELOPMENT_AREA === true) {
-	ini_set('display_errors', 1);
-	ini_set('html_errors', 1);
-	error_reporting(E_ALL ^ E_NOTICE);
+	$whitelist = array('127.0.0.1');
+	if(in_array($_SERVER['REMOTE_ADDR'], $whitelist)){
+    	ini_set('display_errors', 1);
+		ini_set('html_errors', 1);
+		error_reporting(E_ALL ^ E_NOTICE);
+	}
 } else {
 	error_reporting(0);
 }

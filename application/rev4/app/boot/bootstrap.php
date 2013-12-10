@@ -1,16 +1,15 @@
 <?php
 namespace App\Boot;
-use
-	App\SecureContainer,
-	App\AccessControlList,
-	Lib\Db\MysqlAdapter,
-	App\ServiceFactory,
-	App\CollectionFactory,
-	App\EntityFactory,
-	App\DataMapperFactory,
-	App\ViewFactory,
-	App\ControllerFactory;
 
+use App\Factories\DataMapper 	as DataMapperFactory,
+	App\Factories\Entity 		as EntityFactory,
+	App\Factories\Controller 	as ControllerFactory,
+	App\Factories\View 			as ViewFactory,
+	App\Factories\Collection 	as CollectionFactory,
+	App\Factories\Service 		as ServiceFactory;
+
+use Lib\Db\MysqlAdapter;
+	
 if (version_compare(PHP_VERSION, '5.3.1', '<'))
 {
 	die('Your host needs to use PHP 5.3.1 or higher to run this version of Ruby!');
@@ -38,33 +37,24 @@ if(IS_DEVELOPMENT_AREA === true) {
 require ROOT_PATH . 'app/boot/autoloader.php';
 new Autoloader(ROOT_PATH);
 
-/* Creates basic structures, which will be used for interaction with model layer */
-$serviceFactory = new \App\Factories\Service
-(
-	$dataMapperFactory = new \App\Factories\DataMapper
-	(
-		new MysqlAdapter(array(MYSQL_SERVER, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB_TABLE)),
-		new SessionHandler,
-		new \App\Factories\Collection,
-		$entityFactory = new \App\Factories\Entity
-	),
-	$entityFactory
-);
+/** Create basic structures, which will be used for interaction with model layer */
+$db 		= new MysqlAdapter(array(MYSQL_SERVER, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB_TABLE));
+$session 	= new SessionHandler();
+$request	= new Request($_SERVER['PHP_SELF']);
 
-/* Dispatch */
-$request = new Request();
+/** Create factories */
+$entityFactory 		= new EntityFactory();
+$collectionFactory 	= new CollectionFactory();
+$dataMapperFactory 	= new DataMapperFactory($db, $session, $collectionFactory, $entityFactory);
+$serviceFactory		= new ServiceFactory($dataMapperFactory, $entityFactory);
+$viewFactory		= new ViewFactory();
+$controllerFactory	= new ControllerFactory();
 
-$dispatcher = new Dispatcher
-(
-	$serviceFactory,
-	new \App\Factories\Controller($serviceFactory, $request),
-	new \App\Factories\View($serviceFactory, $request),
-	$request
-);
-//$request->setCommand('login');
-$dispatcher->dispatch($request->getResourceName(), $request->getCommand());
+/** Dispatch */
+$dispatcher = new Dispatcher();
+$dispatcher->setServiceFactory($serviceFactory);
+$dispatcher->setControllerFactory($controllerFactory);
+$dispatcher->setViewFactory($viewFactory);
 
-/* Do some cleanup exercises before next request */
-$serviceFactory
-	->build('model')
-	->clearModelResponse();
+$frontController = new FrontController($dispatcher, $serviceFactory);
+$frontController->run($request);

@@ -10,12 +10,12 @@ final class Request
 	
 	private $sResourceName;
 	
-	private $DEFAULT_RETURN_DATA_TYPE = 'template'; //@todo: flytte denne til et bedre egnet sted (view f.eks)
-	private $DEFAULT_RESROUCE_NAME = 'recipes';
+	const DEFAULT_RETURN_DATA_TYPE = 'template'; //@todo: flytte denne til et bedre egnet sted (view f.eks)
+	const DEFAULT_RESOURCE_NAME = 'recipes';
 	
 	public function getResourceName()
 	{
-		return $this->sResourceName = $this->sResourceName ? : $this->getGetValue('a') ? : $this->DEFAULT_RESROUCE_NAME;
+		return $this->sResourceName = $this->sResourceName ? : $this->getGetValue('a') ? : $this->DEFAULT_RESOURCE_NAME;
 	}
 	
 	public function setCommand($sCommandName)

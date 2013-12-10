@@ -7,7 +7,7 @@ use App\Factories\Service as ServiceFactory,
 
 use Model\Domain\Route\Route;
 
-final class Dispatcher implements DispatcherInterface
+final class Dispatcher
 {
 	private $serviceFactory;
 	private $controllerFactory;
@@ -40,11 +40,9 @@ final class Dispatcher implements DispatcherInterface
 	
 	public function dispatch(Route $route, Request $request)
 	{
-		$controller = $this->createController($route->getResourceName());
-
-		$view = $this->createView($route->getResourceName());
-
-		$sCommand = $route->getCommand();
+		$controller	= $this->createController($route->getResourceName());
+		$view 		= $this->createView($route->getResourceName());
+		$sCommand 	= $route->getCommand();
 
 		try 
 		{

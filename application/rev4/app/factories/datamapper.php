@@ -30,7 +30,7 @@ final class DataMapper extends Factory
 		
 		if(!class_exists($sDataMapperName))
 		{
-			throw new \Exception('Datamapper does not exist');
+			throw new \Exception('Datamapper (' . $sDataMapperName . ') does not exist');
 		}
 
 		switch (strtolower($sMapperName))

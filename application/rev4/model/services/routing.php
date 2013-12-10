@@ -2,10 +2,9 @@
 namespace Model\Services;
 
 use Model\Domain\Visitor\Visitor;
-
 use App\ServiceAbstract;
 
-final class Routing extends AbstractService
+final class Routing extends ServiceAbstract
 {
 	private $sOriginalUrl;
 	private $route;
@@ -16,6 +15,7 @@ final class Routing extends AbstractService
 	const ERROR_404_URL		= 'controller/404';
 	const ERROR_403_URL		= 'controller/403';
 	const ERROR_500_URL		= 'controller/500';
+	const LOGIN_URL			= 'controller/login';
 
 	public function route($sUrl, Visitor $visitor, ACL $acl)
 	{
@@ -25,7 +25,7 @@ final class Routing extends AbstractService
 
 		$this->route = $this->buildRoute($this->sOriginalUrl);
 
-		if($this->visitorIsBlocked()) {
+		if($this->acl->visitorIsBlocked($this->visitor)) {
 			return $this->redirect(self::ERROR_403_URL);
 		}
 
@@ -119,7 +119,12 @@ final class Routing extends AbstractService
 		// Check if the route exists in db
 		// Check if the route can be split into controller and action, then test this against db
 	}
-
+	
+	private function redirect_to_403()
+	{
+		//return $this->route->isEnabled();
+	}
+	
 	private function redirect_to_maintenance_page()
 	{
 		if($this->route->url == self::MAINTENANCE_URL)
@@ -148,19 +153,19 @@ final class Routing extends AbstractService
 
 	private function redirect_to_login_page()
 	{
-		if($route->url == self::LOGIN_URL )
+		if($this->route->url == self::LOGIN_URL )
 		{
 			return false;
 		}
 		
-		if($visitor->isLoggedIn())
+		if($this->visitor->isLoggedIn())
 		{
 			return false;
 		}
 
 		if($this->is_forced_login())
 		{
-			if($route->canBypassForcedLogin())
+			if($this->route->canBypassForcedLogin())
 			{
 				return false;
 			}
@@ -169,5 +174,14 @@ final class Routing extends AbstractService
 			return true;
 		}
 	}
+	
+	private function website_is_online()
+	{
+		return true;
+	}
 
+	private function is_forced_login()
+	{
+		return false;
+	}
 }

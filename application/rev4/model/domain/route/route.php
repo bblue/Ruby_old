@@ -3,7 +3,6 @@ namespace Model\Domain\Route;
 
 use App\CollectionProxy,
 	App\AbstractEntity;
-	App\CollectionProxy;
 
 final class Route extends AbstractEntity
 {  
@@ -12,7 +11,8 @@ final class Route extends AbstractEntity
     	'aUserAccessList',
     	'aUsergroupAccessList',
     	'users',
-    	'usergroups'
+    	'usergroups',
+    	'url'
     );
     
     public function userHasAccess($userID)

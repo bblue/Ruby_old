@@ -27,7 +27,7 @@ final class FrontController
 		$acl 		= $this->serviceFactory->build('acl');
 		
 		// Run the requested route via the routing mechanism, and check it towards the ACL
-		$route = $routing->route($request->getUrl(), $visitor, $acl);
+		$route = $routing->route($request->getUri(), $visitor, $acl);
 
 		// Dispatch to whatever route we ended up with
 		$this->dispatcher->dispatch($route, $request);

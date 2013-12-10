@@ -13,6 +13,16 @@ final class Request
 	const DEFAULT_RETURN_DATA_TYPE = 'template'; //@todo: flytte denne til et bedre egnet sted (view f.eks)
 	const DEFAULT_RESOURCE_NAME = 'recipes';
 	
+	public function __construct($sUri)
+	{
+		$this->sUri = $sUri;
+	}
+	
+	public function getUri()
+	{
+		return $this->sUri;
+	}
+	
 	public function getResourceName()
 	{
 		return $this->sResourceName = $this->sResourceName ? : $this->getGetValue('a') ? : $this->DEFAULT_RESOURCE_NAME;

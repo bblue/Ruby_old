@@ -47,8 +47,8 @@ $entityFactory 		= new EntityFactory();
 $collectionFactory 	= new CollectionFactory();
 $dataMapperFactory 	= new DataMapperFactory($db, $session, $collectionFactory, $entityFactory);
 $serviceFactory		= new ServiceFactory($dataMapperFactory, $entityFactory);
-$viewFactory		= new ViewFactory();
-$controllerFactory	= new ControllerFactory();
+$viewFactory		= new ViewFactory($serviceFactory, $request);
+$controllerFactory	= new ControllerFactory($serviceFactory, $request);
 
 /** Dispatch */
 $dispatcher = new Dispatcher();

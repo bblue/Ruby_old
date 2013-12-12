@@ -3,8 +3,6 @@ namespace App;
 
 use App\Entity\Collection;
 
-use Lib\Db\DatabaseAdapterInterface;
-
 abstract class AbstractDataMapper
 {
     protected $_adapter;
@@ -55,7 +53,7 @@ abstract class AbstractDataMapper
 			$entity->$key = $value;
 		}
 	
-		if(!isset($data['id']))
+		if(!isset($data['id']) && !isset($entity->id))
 		{	
 			throw new \Exception('Failed to set id for entity ' . $this->_entityClass);
 		}

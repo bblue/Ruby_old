@@ -32,7 +32,8 @@ final class VisitorMapper extends DatabaseDataMapper
     	// Check if ID has been set
     	if(isset($visitor->id))
     	{
-    		return $this->findById($visitor->id, $visitor);
+    		$this->findById($visitor->id, $visitor);
+    		return $visitor;
     	}
     	throw new \Exception('Visitor entity requires ID to be fetched');
     }

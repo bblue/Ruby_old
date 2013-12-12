@@ -78,7 +78,7 @@ final class Visitor extends AbstractEntity
     	{
     		return $this->_values['user']->getEntity();
     	}
-    	throw new \Exception('User is not set');
+    	throw new \Exception('User is not set for userID=' . $this->user_id);
     }
     
     public function getDevice($recalc = false)

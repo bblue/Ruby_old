@@ -4,7 +4,7 @@ namespace Model\Mappers;
 use 
 	App\AbstractDataMapper,
 	App\AbstractEntity,
-	Model\Domain\Visitor\Visitor;
+	Model\Domain\Visitor\Visitor as Visitor;
 
 final class ServerMapper extends AbstractDataMapper
 {  
@@ -12,8 +12,9 @@ final class ServerMapper extends AbstractDataMapper
 	{
 		if($entity instanceof Visitor)
 		{
-			$this->fetchVisitor($entity);
+			return $this->fetchVisitor($entity);
 		}
+		throw new \Exception('Entity (' . (is_object($entity) ? get_class($entity) : $entity) . ') cannot be mapped by this datamapper (' . __CLASS__ . ')');
 	}
 	
 	private function fetchVisitor(Visitor $visitor)

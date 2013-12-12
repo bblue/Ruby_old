@@ -16,19 +16,19 @@ Model\Domain\Model\Model;
 
 final class SessionMapper extends AbstractDataMapper
 {
-    public function  __construct(SessionHandler $session, Collection $collectionFactory, Entity $entityFactory)
-    {
-        $this->_adapter = $session;
-        $this->_entityFactory = $entityFactory;
-        $this->_collectionFactory = $collectionFactory;
-    }
-    
+	public function  __construct(SessionHandler $session, Collection $collectionFactory, Entity $entityFactory)
+	{
+		$this->_adapter = $session;
+		$this->_entityFactory = $entityFactory;
+		$this->_collectionFactory = $collectionFactory;
+	}
+	
 	public function fetch(AbstractEntity $entity)
 	{
 	   if($entity instanceof Visitor)
 	   {
 	   		$entity->id = $this->_adapter->getSessionID();
-	    	return $entity;
+			return $entity;
 	   }
 	   
 	   if($entity instanceof Model)
@@ -42,8 +42,7 @@ final class SessionMapper extends AbstractDataMapper
 	   		
 			return $entity;
 	   }
-	   
-	   throw new \Exception(get_class($entity) . ' can not be mapped by ' . __CLASS__);
+		throw new \Exception('Entity (' . (is_object($entity) ? get_class($entity) : $entity) . ') cannot be mapped by this datamapper (' . __CLASS__ . ')');
 	}
 	
 	public function store(AbstractEntity $entity)

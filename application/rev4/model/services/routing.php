@@ -22,7 +22,7 @@ final class Routing extends ServiceAbstract
 		$this->sOriginalUrl = $sUrl;
 		$this->visitor = $visitor;
 		$this->acl = $acl;
-
+		
 		$this->route = $this->buildRoute($this->sOriginalUrl);
 
 		if($this->acl->visitorIsBlocked($this->visitor)) {
@@ -75,7 +75,7 @@ final class Routing extends ServiceAbstract
 		{
 			return $sRedirectUrl;
 		}
-		
+
 		// Check for site specific permanent redirection
 		if($sRedirectUrl = $this->redirect_to_301())
 		{
@@ -107,10 +107,17 @@ final class Routing extends ServiceAbstract
 
 	private function redirect_to_user_specific_rule()
 	{
+		/*
 		if($this->visitor->user->redirect_url)
 		{
 			return $this->redirect($this->visitor->user->redirect_url);
 		}
+		*/
+	}
+	
+	private function redirect_to_301()
+	{
+		
 	}
 	
 	private function redirect_to_404()

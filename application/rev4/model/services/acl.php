@@ -18,12 +18,12 @@ final class ACL extends ServiceAbstract
 		{
 			return false;
 		}
-		
+
 		if($this->testUserAccess($visitor->user, $route))
 		{
 			return true;
 		}
-		
+
 		if($this->testUsergroupAccess($visitor->user->usergroups, $route))
 		{
 			return true;

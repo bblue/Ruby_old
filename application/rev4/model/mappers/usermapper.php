@@ -37,19 +37,17 @@ final class UserMapper extends DatabaseDataMapper
     	// Check if ID has been set
     	if(isset($user->id))
     	{
-    		return $this->findById($user->id, $user);
+    		$this->findById($user->id, $user);
     	}
-
-    	// Find by other search options
-    	$aCriterias = ($user->Username) ? array('Username' => array(array('operator' => '=', 'value' => $user->Username))) : array();
-
-    	$this->find($aCriterias, $user); //@todo: denne burde akseptere array
-    	
-    	//@todo: findAll, findbyID og rsten av metodene lager en ny user uansett. Det må kun lages ny user dersom en annen metode enn fetch brukes.
-    	//@todo: Det må ikke returneres en collection dersom det kun er ett treff (tror jeg...)
-    	
-    	//@todo: Registrere visitor burde jeg faktisk gjøre ETTER at action er tatt, slik at jeg slipper styret med login/logout
-    	
+    	else 
+    	{
+	    	// Find by other search options
+	    	$aCriterias = ($user->Username) ? array('Username' => array(array('operator' => '=', 'value' => $user->Username))) : array();
+	
+	    	$this->find($aCriterias, $user);
+	    	
+    	}
+    	return $user;
     }
     
     protected function setEntitySpecificData(AbstractEntity $user)

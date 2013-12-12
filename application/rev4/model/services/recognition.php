@@ -33,11 +33,11 @@ final class Recognition extends ServiceAbstract
 		$this->dataMapperFactory
 			->build('session') //@todo: session_status() == PHP_SESSION_ACTIVE
 			->fetch($visitor);
-			
+
 		$this->dataMapperFactory
 			->build('server')
 			->fetch($visitor);
-			
+
 		$this->dataMapperFactory
 			->build('visitor')
 			->fetch($visitor);

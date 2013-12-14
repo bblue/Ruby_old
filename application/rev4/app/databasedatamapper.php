@@ -173,13 +173,15 @@ abstract class DatabaseDataMapper extends AbstractDataMapper implements DataMapp
 		if($this->update($entity)){
 			return $entity;
 		}
-		
+
 		// Make sure we cannot find this specific entity before inserting
 		if($this->findById($entity->id, $entity))
 		{
-			return $entity;
+			if($this->_adapter->getAffectedRows())
+			{
+				return $entity;
+			}
 		}
 		return $this->insert($entity);
-
 	}
 }

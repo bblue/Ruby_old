@@ -8,8 +8,6 @@ abstract class AbstractController
 {
 	protected $serviceFactory;
 	protected $request;
-
-	public $DEFAULT_ACTION = 'indexAction';
 	
 	public function __construct(Factory $serviceFactory, Request $request)
 	{
@@ -20,6 +18,12 @@ abstract class AbstractController
 	public function indexAction()
 	{
 		throw new \Exception('Unable to identify index action called by ' . get_called_class());
+	}
+	
+	public function registerCurrentVisitor()
+	{
+		$recognition = $this->serviceFactory->build('recognition');
+		$recognition->registerVisitor($recognition->getCurrentVisitor());
 	}
 	
 	public function login()

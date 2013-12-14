@@ -46,11 +46,16 @@ final class Dispatcher
 
 		try 
 		{
+			// Execute command on controller
 			if(!$controller->$sCommand($request))
 			{
 				throw new \Exception('Command on controller did not execute as expected');
 			}
 
+			// Register visitor
+			$controller->registerCurrentVisitor();
+			
+			// Execute command on view
 			if(!$view->$sCommand())
 			{
 				throw new \Exception('Command on view did not execute as expected');

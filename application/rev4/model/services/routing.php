@@ -12,9 +12,9 @@ final class Routing extends ServiceAbstract
 	private $acl;
 
 	const MAINTENANCE_URL 	= 'controller/action';
-	const ERROR_404_URL		= 'controller/404';
-	const ERROR_403_URL		= 'controller/403';
-	const ERROR_500_URL		= 'controller/500';
+	const ERROR_403_URL		= 'error/403';
+	const ERROR_404_URL		= 'error/404';
+	const ERROR_500_URL		= 'error/500';
 	const LOGIN_URL			= 'controller/login';
 	const DEFAULT_URL		= 'recipes';
 

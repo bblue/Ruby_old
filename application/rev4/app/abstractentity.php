@@ -31,7 +31,7 @@ abstract class AbstractEntity
 	 * otherwise, assign the value directly to the '$_values' protected array
 	 */
 	public function __set($name, $value)
-	{echo $name;
+	{
 		if (!in_array($name, $this->_allowedFields)) {
 			throw new \Exception('The field ' . $name . ' is not allowed for this entity ('.get_called_class().').'); 
 		}

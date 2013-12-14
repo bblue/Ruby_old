@@ -30,17 +30,17 @@ final class Dispatcher
 	
 	private function createController($sControllerName)
 	{
-		return $this->controllerFactory->construct($sControllerName);
+		return $this->controllerFactory->build($sControllerName);
 	}
 	
 	private function createView($sViewName)
 	{
-		return $this->viewFactory->construct($sViewName);
+		return $this->viewFactory->build($sViewName);
 	}
 	
 	public function dispatch(Route $route, Request $request)
 	{
-		$controller	= $this->createController($route->getResourceName());
+		$controller	= $this->createController($route->sResourceName);
 		$view 		= $this->createView($route->getResourceName());
 		$sCommand 	= $route->getCommand();
 
@@ -48,12 +48,12 @@ final class Dispatcher
 		{
 			if(!$controller->$sCommand($request))
 			{
-				throw new Exception('Command on controller did not execute as expected');
+				throw new \Exception('Command on controller did not execute as expected');
 			}
 
 			if(!$view->$sCommand())
 			{
-				throw new Exception('Command on view did not execute as expected');
+				throw new \Exception('Command on view did not execute as expected');
 			}
 		}
 		catch (Exception $e)

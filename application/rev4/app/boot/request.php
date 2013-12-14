@@ -4,7 +4,7 @@ use Lib\Validation;
 
 final class Request
 {
-	private $sUri;
+	private $sUrl;
 	
 	private $sCommand;
 	
@@ -13,14 +13,14 @@ final class Request
 	const DEFAULT_RETURN_DATA_TYPE = 'template'; //@todo: flytte denne til et bedre egnet sted (view f.eks)
 	const DEFAULT_RESOURCE_NAME = 'recipes';
 	
-	public function __construct($sUri)
+	public function __construct($sUrl)
 	{
-		$this->sUri = $sUri;
+		$this->sUrl = $sUrl;
 	}
 	
-	public function getUri()
+	public function getUrl()
 	{
-		return $this->sUri;
+		return $this->sUrl;
 	}
 	
 	public function getResourceName()

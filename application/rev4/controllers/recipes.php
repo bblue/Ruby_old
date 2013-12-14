@@ -7,5 +7,6 @@ final class Recipes extends AbstractController
 {
 	public function indexAction()
 	{
+		return true;
 	}
 }

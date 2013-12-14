@@ -5,7 +5,8 @@ use Model\Domain\Usergroup\Collection as Usergroups,
 	Model\Domain\Usergroup\Usergroup,
 	Model\Domain\User\User;
 
-use App\ServiceAbstract;
+use App\ServiceAbstract,
+	App\CollectionProxy;
 
 use Model\Domain\Visitor\Visitor,
 	Model\Domain\Route\Route;
@@ -24,7 +25,7 @@ final class ACL extends ServiceAbstract
 			return true;
 		}
 
-		if($this->testUsergroupAccess($visitor->user->usergroups, $route))
+		if($this->testUsergroupsAccess($visitor->user->usergroups, $route))
 		{
 			return true;
 		}
@@ -35,8 +36,9 @@ final class ACL extends ServiceAbstract
 		return $this->testVisitorBlock($visitor);
 	}
 	
-	private function testUsergroupAccess(Usergroups $usergroups, Route $route)
+	private function testUsergroupsAccess($usergroups, Route $route)
 	{
+		if($usergroups instanceof Usergroups || $usergroups instanceof CollectionProxy)
 		foreach($usergroups as $usergroup)
 		{
 			if($route->usergroupHasAccess($usergroup->id))
@@ -45,7 +47,7 @@ final class ACL extends ServiceAbstract
 			}
 		}
 	}
-	
+
 	private function testUserAccess(User $user, Route $route)
 	{
 		$route->userHasAccess($user->id);

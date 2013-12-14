@@ -33,7 +33,7 @@ final class Routing extends ServiceAbstract
 			$this->redirect($sRedirectUrl);
 		}
 
-		if(!$this->acl->visitorHasAccess($this->route)) {
+		if(!$this->acl->visitorHasAccess($this->visitor, $this->route)) {
 			if($sRedirectUrl) {
 				$this->redirect(self::ERROR_500_URL);
 			} else {
@@ -86,17 +86,20 @@ final class Routing extends ServiceAbstract
 
 	private function redirect($sRedirectUrl)
 	{
-		$this->createLogEntry('Redirect to ' . $sRedirectUrl . ' detected');
+		$this->createLogEntry('Redirect to ' . $sRedirectUrl . ' detected', $this->visitor);
 		
 		return $this->route = $this->buildRoute($sRedirectUrl);
 	}
 	
-	private function buildRoute($sUrl)
+	private function buildRoute($url)
 	{
+		// Create the initial route entity
 		$route = $this->entityFactory->build('route');
 		
-		$route->url = $sUrl;
+		// Pre-fill the route with the url
+		$route->url = $url;
 		
+		// Load the route specific items from the database.
 		$this->dataMapperFactory
 			->build('route')
 			->fetch($route);
@@ -122,9 +125,14 @@ final class Routing extends ServiceAbstract
 	
 	private function redirect_to_404()
 	{
-		// Get all routes from db
-		// Check if the route exists in db
-		// Check if the route can be split into controller and action, then test this against db
+		if($this->route->id)
+		{
+			if($this->route->isEnabled())
+			{
+				return false;  
+			}
+		}
+		return true;
 	}
 	
 	private function redirect_to_403()

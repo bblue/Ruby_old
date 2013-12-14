@@ -6,30 +6,73 @@ use App\CollectionProxy,
 
 final class Route extends AbstractEntity
 {  
-    protected $_allowedFields = array(
-	    'id',
-    	'aUserAccessList',
-    	'aUsergroupAccessList',
-    	'users',
-    	'usergroups',
-    	'url'
-    );
-    
-    public function userHasAccess($userID)
-    {	
-    	return in_array($userID, $this->_values['aUserAccessList']);
-    }
-    
+	protected $_allowedFields = array(
+		'id',
+		'aUserAccessList',
+		'aUsergroupAccessList',
+		'users',
+		'usergroups',
+		'url',
+		'sResourceName',
+		'bIsEnabled',
+		'sCommand'
+	);
+	
+	const DEFAULT_COMMAND = 'indexAction';
+	
+	public function getUrl()
+	{
+		if(isset($this->_values['url']))
+		{
+			return $this->_values['url'];
+		}
+	}
+	
+	public function getCommand()
+	{
+		return (!empty($this->_values['sCommand'])) ? : self::DEFAULT_COMMAND;
+	}
+	
+	public function setUrl($url)
+	{
+		// save the url
+		$this->_values['url'] = $url;
+	}
+	
+	public function isEnabled()
+	{
+		return $this->_values['bIsEnabled'];
+	}
+	
+	public function getResourceName()
+	{
+		if(isset($this->_values['sResourceName']))
+		{
+			return $this->_values['sResourceName'];
+		}
+		throw new \Exception('Resource name is unset');
+	}
+	
+	public function setResourceName($sResourceName)
+	{
+		$this->_values['sResourceName'] = $sResourceName;
+	}
+	
+	public function userHasAccess($userID)
+	{	
+		return in_array($userID, $this->getUserAccessList());
+	}
+
    	public function usergroupHasAccess($usergroupID)
    	{
-   		return in_array($usergroupID, $this->getUsergroupAccessList());
+		return in_array($usergroupID, $this->getUsergroupAccessList());
    	}
    	
    	private function getUserAccessList()
    	{
    		if(!isset($this->_values['aUserAccessList']))
    		{
-			$this->buildUserAccessList();
+			$this->_values['aUserAccessList'] = $this->buildUserAccessList();
    		}
    		return $this->_values['aUserAccessList'];
    	}
@@ -38,27 +81,31 @@ final class Route extends AbstractEntity
    	{
    		if(!isset($this->_values['aUsergroupAccessList']))
    		{
-			$this->buildUsergroupAccessList();
+			$this->_values['aUsergroupAccessList'] = $this->buildUsergroupAccessList();
    		}
    		return $this->_values['aUsergroupAccessList'];
    	}
    	
    	private function buildUserAccessList()
    	{
-   	   	foreach($this->_values['users'] as $user)
+		$users = $this->getUsers();
+		$array = array();
+   	   	foreach($users as $user)
 	   	{
-	   		$this->_values['aUserAccessList'][] = $user->id;
+	   		$array[] = $user->id;
 	   	}
-	   	return (!empty($this->_values['aUserAccessList'])) ? $this->_values['aUserAccessList'] : array();
+	   	return $array;
    	}
    	
    	private function buildUsergroupAccessList()
    	{
-   	   	foreach($this->_values['usergroups'] as $usergroup)
+		$usergroups = $this->getUsergroups();
+		$array = array();
+   	   	foreach($usergroups as $usergroup)
 	   	{
-	   		$this->_values['aUsergroupAccessList'][] = $usergroup->id;
+	   		$array[] = $usergroup->id;
 	   	}
-	   	return (!empty($this->_values['aUsergroupAccessList'])) ? $this->_values['aUsergroupAccessList'] : array();
+	   	return $array;
    	}
    	  	
    	private function getUsergroups()
@@ -70,14 +117,14 @@ final class Route extends AbstractEntity
    	{
    		return ($this->_values['users']) ? : array();
    	}
-   	
-    public function setUsergroups(CollectionProxy $usergroups)
-    {
-        $this->_values['usergroups'] = $usergroups;
-    }
-    
-    public function setUsers(CollectionProxy $users)
-    {
-        $this->_values['users'] = $users;
-    }
+
+   	public function setUsergroups(CollectionProxy $usergroups)	
+	{
+		$this->_values['usergroups'] = $usergroups;
+	}
+	
+	public function setUsers(CollectionProxy $users)	
+	{
+		$this->_values['users'] = $users;
+	}
 }

@@ -30,10 +30,10 @@ abstract class AbstractView
 		switch($this->request->getReturnDataType())
 		{
 			default: case 'template':
-				$this->displayTemplate($sTemplateFile);
+				return $this->displayTemplate($sTemplateFile);
 				break;
 			case 'json':
-				$this->displayJSON();
+				return $this->displayJSON();
 				break;
 		}
 	}
@@ -43,6 +43,7 @@ abstract class AbstractView
 		foreach($this->presentationObjectFactory->getCache() as $presentationObject)
 		{
 			echo json_encode($presentationObject->getAllVars());
+			return true;
 		}		
 	}
 	
@@ -69,7 +70,7 @@ abstract class AbstractView
 
 		$this->template->set_filenames(array($sTemplateFile => $sTemplateFile));
 
-		$this->template->display($sTemplateFile);
+		return $this->template->display($sTemplateFile);
 	}
 	
 	public function indexAction()

@@ -30,7 +30,7 @@ final class Route extends AbstractEntity
 	
 	public function getCommand()
 	{
-		return (!empty($this->_values['sCommand'])) ? : self::DEFAULT_COMMAND;
+		return (!empty($this->_values['sCommand'])) ? $this->_values['sCommand'] : self::DEFAULT_COMMAND;
 	}
 	
 	public function setUrl($url)

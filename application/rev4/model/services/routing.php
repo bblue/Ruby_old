@@ -16,6 +16,7 @@ final class Routing extends ServiceAbstract
 	const ERROR_403_URL		= 'controller/403';
 	const ERROR_500_URL		= 'controller/500';
 	const LOGIN_URL			= 'controller/login';
+	const DEFAULT_URL		= 'recipes';
 
 	public function route($sUrl, Visitor $visitor, ACL $acl)
 	{
@@ -23,7 +24,7 @@ final class Routing extends ServiceAbstract
 		$this->visitor = $visitor;
 		$this->acl = $acl;
 		
-		$this->route = $this->buildRoute($this->sOriginalUrl);
+		$this->route = $this->buildRoute(!empty($this->sOriginalUrl) ? $this->sOriginalUrl : self::DEFAULT_URL);
 
 		if($this->acl->visitorIsBlocked($this->visitor)) {
 			return $this->redirect(self::ERROR_403_URL);
@@ -86,7 +87,7 @@ final class Routing extends ServiceAbstract
 
 	private function redirect($sRedirectUrl)
 	{
-		$this->createLogEntry('Redirect to ' . $sRedirectUrl . ' detected', $this->visitor);
+		$this->setModelState('error', $this->createLogEntry('Redirect to ' . $sRedirectUrl . ' detected', $this->visitor));
 		
 		return $this->route = $this->buildRoute($sRedirectUrl);
 	}

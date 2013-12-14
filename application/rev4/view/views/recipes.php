@@ -6,6 +6,12 @@ final class Recipes extends AbstractView
 {
 	public function indexAction()
 	{
+		/** Prepare for possible error output */
+		$this->presentationObjectFactory
+			->build('serverresponse', true)
+			->setPresentationName('error')
+			->assignData($this->serviceFactory->build('model')->getModelResponse('error'));
+
 		/** Get current visitor information */
 		$this->presentationObjectFactory
 			->build('visitor', true)

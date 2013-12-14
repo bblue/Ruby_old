@@ -11,7 +11,6 @@ final class Request
 	private $sResourceName;
 	
 	const DEFAULT_RETURN_DATA_TYPE = 'template'; //@todo: flytte denne til et bedre egnet sted (view f.eks)
-	const DEFAULT_RESOURCE_NAME = 'recipes';
 	
 	public function __construct($sUrl)
 	{
@@ -25,7 +24,7 @@ final class Request
 	
 	public function getResourceName()
 	{
-		return $this->sResourceName = $this->sResourceName ? : $this->getGetValue('a') ? : $this->DEFAULT_RESOURCE_NAME;
+		return $this->sResourceName = $this->sResourceName ? : $this->getGetValue('a') . (($command = $this->getGetValue('sa'))? '/' . $command : '' ) ? : '';
 	}
 	
 	public function setCommand($sCommandName)

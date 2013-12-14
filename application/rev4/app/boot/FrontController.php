@@ -27,9 +27,12 @@ final class FrontController
 		$acl 		= $this->serviceFactory->build('acl');
 		
 		// Run the requested route via the routing mechanism, and check it towards the ACL
-		$route = $routing->route($request->getResourceName(), $visitor, $acl);
+		$route = $routing->route($request->getResourceName(), $visitor, $acl); 
 
 		// Dispatch to whatever route we ended up with
 		$this->dispatcher->dispatch($route, $request);
+		
+		// Clear the response log before next 
+		$this->serviceFactory->build('model')->clearModelResponse();
 	}
 }

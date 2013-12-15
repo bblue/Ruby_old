@@ -15,7 +15,7 @@ final class Routing extends ServiceAbstract
 	const ERROR_403_URL		= 'error/403';
 	const ERROR_404_URL		= 'error/404';
 	const ERROR_500_URL		= 'error/500';
-	const LOGIN_URL			= 'controller/login';
+	const LOGIN_URL			= 'recipes/login';
 	const DEFAULT_URL		= 'recipes';
 
 	public function route($sUrl, Visitor $visitor, ACL $acl)
@@ -38,7 +38,12 @@ final class Routing extends ServiceAbstract
 			if($sRedirectUrl) {
 				$this->redirect(self::ERROR_500_URL);
 			} else {
-				$this->redirect(self::ERROR_403_URL);
+				if($this->visitor->isLoggedIn())
+				{
+					$this->redirect(self::ERROR_403_URL);
+				} else {
+					$this->redirect(self::LOGIN_URL);
+				}
 			}
 		}
 

@@ -21,7 +21,7 @@ final class Recipes extends AbstractView
 		$this->presentationObjectFactory
 			->build('activeVisitors', true)
 			->assignData($this->serviceFactory->build('recognition')->getActiveVisitors());
-		
+			
 		return $this->display('sticky_footer.html');
 	}
 	

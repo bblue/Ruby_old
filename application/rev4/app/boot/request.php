@@ -24,7 +24,7 @@ final class Request
 	
 	public function getResourceName()
 	{
-		return $this->sResourceName = $this->sResourceName ? : $this->getGetValue('a') . (($command = $this->getGetValue('sa'))? '/' . $command : '' ) ? : '';
+		return $this->sResourceName = (($this->sResourceName) ? : ($this->getGetValue('a') . (($command = $this->getGetValue('sa'))? '/' . $command : '' ) ? : ''));
 	}
 	
 	public function setCommand($sCommandName)

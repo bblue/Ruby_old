@@ -40,7 +40,11 @@ class MysqlAdapter implements DatabaseAdapterInterface
      */
     public function query($query)
     {
-    	//echo '<pre>'; print_r($query); echo '</pre>';
+    	if(PRINT_SQL_QUERY === true)
+    	{
+    		echo '<pre>'; print_r($query); echo '</pre>';
+    	}
+    	
     	if($_GET['sql']) { echo '<pre>'; print_r($query); echo '</pre>'; }
     	
         if (!is_string($query) || empty($query)) {

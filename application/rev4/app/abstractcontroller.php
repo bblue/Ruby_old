@@ -31,11 +31,13 @@ abstract class AbstractController
 		$this->serviceFactory
 			->build('recognition')
 			->authenticate($this->request->username, $this->request->password);
+		return true;
 	}
 	
 	public function logout()
 	{
 		$recognition = $this->serviceFactory->build('recognition');
 		$recognition->logoutVisitor($recognition->getCurrentVisitor());
+		return true;
 	}
 }

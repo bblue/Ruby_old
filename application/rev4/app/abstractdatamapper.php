@@ -11,7 +11,6 @@ abstract class AbstractDataMapper
     protected $_entityFactory;
     protected $_collectionFactory;
     protected $_dataMapperFactory;
-    protected $_acceptedFields = array();
 
     /** Get the collection */
     protected function buildCollection()
@@ -21,16 +20,18 @@ abstract class AbstractDataMapper
 
     protected function isValidEntity($entity)
     {
-    	if($entity instanceof AbstractEntity)
+    	if(!$entity instanceof AbstractEntity)
     	{
-	 		$class = explode('\\', get_class($entity));
-	 		$name = strtolower(end($class));
-	    	if($name == strtolower($this->_entityClass))
-	    	{
-	    		return true;
-	    	}		
+    		return false;
     	}
-		return false;
+ 		
+    	$class = explode('\\', get_class($entity));
+ 		$name = strtolower(end($class));
+    	
+ 		if($name == strtolower($this->_entityClass))
+    	{
+    		return true;
+    	}
     }
     
     protected function buildEntity(array $data, $entity = null)
@@ -63,7 +64,7 @@ abstract class AbstractDataMapper
 		return $entity;
     }
     
-    protected function filterData($data)
+    protected function filterOnlyAcceptedFields($data)
     {
 		foreach($data as $key => $value)
 		{

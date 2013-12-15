@@ -14,7 +14,7 @@ final class LogMapper extends DatabaseDataMapper
 		'text'						=> 'logs.text',
 		'timestamp'					=> 'logs.timestamp'
 	);
-	protected $_cascadeField = '';
+	protected $_cascadeFields = array();
     
     public function fetch(AbstractEntity $logEntry)
     {

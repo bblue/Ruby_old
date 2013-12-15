@@ -25,7 +25,7 @@ final class VisitorMapper extends DatabaseDataMapper
 		'browswer'				=> 'visitors.browser'
 		
 	);
-	protected $_cascadeField = '';
+	protected $_cascadeFields = array();
     
     public function fetch(AbstractEntity $visitor)
     {

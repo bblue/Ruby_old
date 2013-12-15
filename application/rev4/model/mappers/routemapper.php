@@ -15,9 +15,12 @@ final class RouteMapper extends DatabaseDataMapper
 		'url'			=> 'routes.url',
 		'sResourceName'	=> 'routes.sResourceName',
 		'bIsEnabled'	=> 'routes.bIsEnabled',
-		'sCommand'		=> 'routes.sCommand'
-	);	
-	protected $_cascadeField = '';
+		'sCommand'		=> 'routes.sCommand',
+		'a_id'			=> 'areas.a_id'
+	);
+	protected $_cascadeFields = array(
+		'routes.sResourceName = areas.name'
+	);
     
     public function fetch(AbstractEntity $route)
     {
@@ -43,8 +46,13 @@ final class RouteMapper extends DatabaseDataMapper
     
     protected function setEntitySpecificData(AbstractEntity $route)
     {
-    	//@todo: Denne er halvferdig og kun basert på en copy-paste fra userentity
-		//$user->users = new CollectionProxy($this->_dataMapperFactory->build('user'), array('route_id' => array(array('operator' => '=', 'value' => $route->id))));
-		//$user->usergroups = new CollectionProxy($this->_dataMapperFactory->build('usergroup'), array('route_id' => array(array('operator' => '=', 'value' => $route->id))));
+		// Find the users that have access to the area in this route
+		//$route->users = new CollectionProxy($this->_dataMapperFactory->build('user'), array('a_id' => array(array('operator' => '=', 'value' => $route->a_id))));
+		
+    	// Find the usergroups that have access to the area in this route
+		$route->usergroups = new CollectionProxy(
+			$this->_dataMapperFactory->build('usergroup'),
+			array('id' => array(array('operator' => '=','value' => '1')))
+		);
     }
 }

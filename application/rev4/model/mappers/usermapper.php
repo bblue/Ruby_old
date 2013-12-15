@@ -30,7 +30,7 @@ final class UserMapper extends DatabaseDataMapper
 		'RevalidationDate'			=> 'users.RevalidationDate',
 		'IsLocked'					=> 'users.IsLocked',
 	);
-	protected $_cascadeField = '';
+	protected $_cascadeFields = array();
     
     public function fetch(AbstractEntity $user)
     {
@@ -52,7 +52,13 @@ final class UserMapper extends DatabaseDataMapper
     
     protected function setEntitySpecificData(AbstractEntity $user)
     {
-		$user->recipes = new CollectionProxy($this->_dataMapperFactory->build('recipe'), array('author_id' => array(array('operator' => '=', 'value' => $user->id))));
-		$user->usergroups = new CollectionProxy($this->_dataMapperFactory->build('usergroup'), array('u_id' => array(array('operator' => '=', 'value' => $user->id))));
+		$user->recipes = new CollectionProxy(
+			$this->_dataMapperFactory->build('recipe'),
+			array('author_id' => array(array('operator' => '=', 'value' => $user->id)
+		)));
+		$user->usergroups = new CollectionProxy(
+			$this->_dataMapperFactory->build('usergroup'),
+			array('u_id' => array(array('operator' => '=','value' => $user->id)
+		)));
     }
 }

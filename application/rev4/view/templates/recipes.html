@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="description" content="Development page" />
+		<meta name="author" content="Aleksander Lanes" />
+		<meta name="generator" content="Ruby Systems" />
+		<meta name="copyright" content="Aleksander Lanes" />
+		
+		<!-- Robots config -->
+		<meta name="robots" content="noindex" />
+
+		<title>Ruby Systems | Development </title>
+
+		<!-- Favicon -->
+		<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="../websites/self/templates/fluency/img/favicon/favicon.ico" >
+		<link rel="apple-touch-icon" href="websites/self/templates/fluency/img/favicon/favicon-mobile.png" />
+		
+		<!-- Bootstrap core CSS -->
+    <link href="../rev4/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../rev4/css/bootstrap-glyphicons.css" rel="stylesheet">
+    <link href="../rev4/css/bootstrap-theme.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+	<style type="text/css">
+		/* Sticky footer styles
+		-------------------------------------------------- */
+		
+		html,
+		body {
+		  height: 100%;
+		  /* The html and body elements cannot have any padding or margin. */
+		}
+		
+		/* Wrapper for page content to push down footer */
+		#wrap {
+		  min-height: 100%;
+		  height: auto !important;
+		  height: 100%;
+		  /* Negative indent footer by its height */
+		  margin: 0 auto -67px;
+		  /* Pad bottom by footer height */
+		  padding: 0 0 67px;
+		}
+		
+		/* Set the fixed height of the footer here */
+		#footer {
+		  height: 67px;
+		  background-color: #f5f5f5;
+		}
+
+
+	
+		/* Custom page CSS
+		-------------------------------------------------- */
+		.navbar { font-size: 10pt; }
+		.navbar ul li a { padding-top: 5px; padding-bottom: 4px;}
+		.navbar-form { margin-top:0; margin-bottom: 0; }
+		.navbar-form input {height: 24px; padding: 5px; margin-top: 3px;}
+		.navbar-fixed-top { min-height: 30px;}
+		.navbar .container { padding-top: 0; }
+		.navbar .container a{color: #428BCA;}
+		
+		/* Navbar breadcrumb addition */
+		.navbar-breadcrumb {
+			background-color: transparent;
+			margin-bottom: 0px;
+			padding-bottom: 4px;
+			padding-top: 5px;
+		}
+		
+		#wrap > .container {
+		  padding: 60px 15px 0;
+		}
+		.container .credit {
+		  margin: 20px 0;
+		}
+		
+		#footer > .container {
+		  padding-left: 15px;
+		  padding-right: 15px;
+		}
+		
+		/* Footer bottom borderline */
+		#footer-border-bottom {
+			background: url(/websites/self/templates/bootstrap/img/footer/footer-border-bottom.png) repeat-x;
+			height: 7px;
+			position: relative;
+		}
+				
+		code {
+		  font-size: 80%;
+		}
+
+		/* Recipe list */
+		.media {
+			padding: 5px;
+			height: 75px;
+			background: #FFFFCC;
+			margin-top: 10px;
+		}
+		.media:hover { 
+			background: #FFFFBB;
+		}
+	</style>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="../rev4/../assets/js/html5shiv.js"></script>
+      <script src="../rev4/../assets/js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <!-- Wrap all page content here -->
+    <div id="wrap">
+
+      <!-- Fixed navbar -->
+      <div class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div class="collapse navbar-collapse">
+			<ol class="breadcrumb navbar-breadcrumb navbar-left">
+			  <li><a href="#">Home</a></li>
+			  <li><a href="#">Recipes</a></li>
+			  <li class="active">Data</li>
+			</ol>
+			<form class="navbar-form navbar-right" role="search">
+				<input type="text" class="form-control" placeholder="Search">
+			</form>
+			<ul class="nav navbar-nav navbar-right">
+				<!-- IF VISITOR_IS_GUEST --><li><a href="#">Register</a></li><!-- ENDIF -->
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						<!-- IF VISITOR_IS_LOGGED_IN --><b class="caret"></b> {VISITOR_USERNAME}
+						<!-- ELSEIF VISITOR_IS_GUEST -->Sign In <b class="caret"></b><!-- ENDIF -->
+					</a>
+					<ul class="dropdown-menu">
+						<li style="padding: 15px; padding-bottom: 0px;">
+						<!-- IF VISITOR_IS_LOGGED_IN -->
+							<div class="container" style="width: 300px">
+								<small>
+									<div style="border-bottom: 1px solid grey; padding-bottom: 5px; margin-bottom: 10px;">
+										<img src="..." alt="..." class="img-thumbnail">
+										<a href="/recipes/logout" style="padding: 10px 5px 0 5px" class="pull-right">Log out</a>
+										<!-- IF VISITOR_IS_ADMIN --><a href="#" style="padding: 10px 5px 0 5px" class="pull-right">Admin</a><!-- ENDIF -->
+										<a href="#" style="padding: 10px 5px 0 5px"class="pull-right">Privileges</a>
+									</div>
+									<table class="table">
+										<thead>
+											<tr>
+												<th></th>
+												<th><em>Week</em></th>
+												<th><em>Month</em></th>
+												<th><em>Total</em></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td><em>Recipes</em></td>
+												<td>1</td>
+												<td>2</td>
+												<td>3</td>
+											</tr>
+											<tr>
+												<td><em>Ingredients</em></td>
+												<td>4</td>
+												<td>5</td>
+												<td>6</td>
+											</tr>
+											<tr>
+												<td><em>Votes</em></td>
+												<td>7</td>
+												<td>8</td>
+												<td>9</td>
+											</tr>
+											<tr>
+												<td><em>Comments</em></td>
+												<td>10</td>
+												<td>11</td>
+												<td>12</td>
+											</tr>
+										</tbody>
+									</table>
+								</small>
+							</div>
+						<!-- ELSEIF VISITOR_IS_GUEST -->
+							<form role="form" action="/recipes/login" method="post" accept-charset="UTF-8">
+								<div style="width: 250px;" class="form-group">
+									<input autocomplete="on" class="form-control" placeholder="E-mail address" id="user_username" style="margin-bottom: 15px;" type="email" name="username" data-validation-email-message="Ikke gyldig e-post"/>
+									<input class="form-control" placeholder="Password" id="user_password" style="margin-bottom: 15px;" type="password" name="password" />
+									<p class="help-block"></p>
+									<input class="btn btn-primary" style="clear: left; width: 100%; height: 32px; font-size: 13px;" type="submit" name="commit" value="Sign In" />
+								</div>
+							</form>
+						<!-- ENDIF -->
+            			</li>
+					</ul>
+				</li>
+				<li><a href="#">Help</a></li>
+				<li><a href="#">About</a></li>
+			</ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+
+      <!-- Begin page content -->
+      <div class="container">
+      
+	      <div class="navbar" style="background: none; border: none; box-shadow: none;">
+	        <div class="navbar-header">
+	          <a class="navbar-brand" href="#">ruby.intensjon.no</a>
+	        </div>
+	        <div class="pull-right">
+	          <a class="btn navbar-btn btn-xs btn-success">Add new recipe</a>
+	        </div>
+	        <div class="collapse navbar-collapse navbar-ex1-collapse">
+	          <a class="btn navbar-btn btn-xs btn-primary">Recipes</a>
+	          <a class="btn navbar-btn btn-xs btn-primary">Ingredients</a>
+	          <a class="btn navbar-btn btn-xs btn-primary">Tags</a>
+	          <a class="btn navbar-btn btn-xs btn-primary">Users</a>
+	        </div>
+	      </div>
+	      
+	    <!-- BEGIN serverresponse_error_response -->
+	    <div class="alert alert-danger">
+	        {serverresponse_error_response.TEXT}.
+	    </div>
+	    <!-- END serverresponse_error_response -->
+	    <!-- BEGIN serverresponse_success_response -->
+	    <div class="alert alert-success">
+	        {serverresponse_success_response.TEXT}.
+	    </div>
+	    <!-- END serverresponse_success_response -->
+	      
+	      <div class="row">
+	        <div class="col-md-9">
+	          <ul class="nav nav-tabs">
+	            <li class="pull-left">
+	              <h4>This week's featured recipes</h4>
+	            </li>
+	            <li class="pull-right">
+	              <a class="pull-right" href="#">month</a>
+	            </li>
+	            <li class="pull-right">
+	              <a class="pull-right" href="#">week</a>
+	            </li>
+	            <li class="pull-right">
+	              <a class="pull-right" href="#">own</a>
+	            </li>
+	            <li class="pull-right">
+	              <a class="pull-right" href="#">new <span class="label label-info">5</span></a>
+	            </li>
+	            <li class="active pull-right">
+	              <a class="pull-right" href="#">featured</a>
+	            </li>
+	          </ul>
+	          
+	          <a class="container" href="#"></a>
+	          <div class="media">
+	            <a class="container" href="#"></a>
+	            <a class="pull-left" href="#">    <img class="media-object" src="../rev4/img/placeholder-64x64.gif">  </a>
+	            <div class="media-body">
+	              <h4 class="media-heading">
+	                <a href="#">Recipe title</a>
+	              </h4>
+	              <div>
+	                Recipe abstract
+	              </div>
+	              <a href="#"><span class="label label-default">Salmon</span></a>
+	              <a href="#"><span class="label label-default">Dinner</span></a>
+	              <a href="#"><span class="label label-default">Quick</span></a>
+	              <div class="pull-right text-muted">
+	                <small>
+	                  4 min ago by
+	                  <a href="#">Username</a>
+	                </small>
+	              </div>
+	              <p>
+	              </p>
+	            </div>
+	          </div>
+	          <div class="media">
+	            <a class="container" href="#">
+	              </a>
+	            <a class="pull-left" href="#">    <img class="media-object" src="../rev4/img/placeholder-64x64.gif">  </a>
+	            <div class="media-body">
+	              <h4 class="media-heading">
+	                <a href="#">Recipe title</a>
+	              </h4>
+	              <div>
+	                Recipe abstract
+	              </div>
+	              <a href="#"><span class="label label-default">Salmon</span></a>
+	              <a href="#"><span class="label label-default">Dinner</span></a>
+	              <a href="#"><span class="label label-default">Quick</span></a>
+	              <div class="pull-right text-muted">
+	                <small>
+	                  4 min ago by
+	                  <a href="#">Username</a>
+	                </small>
+	              </div>
+	              <p>
+	              </p>
+	            </div>
+	          </div>
+	          <div class="media">
+	            <a class="container" href="#">
+	              </a>
+	            <a class="pull-left" href="#">    <img class="media-object" src="../rev4/img/placeholder-64x64.gif">  </a>
+	            <div class="media-body">
+	              <h4 class="media-heading">
+	                <a href="#">Recipe title</a>
+	              </h4>
+	              <div>
+	                Recipe abstract
+	              </div>
+	              <a href="#"><span class="label label-default">Salmon</span></a>
+	              <a href="#"><span class="label label-default">Dinner</span></a>
+	              <a href="#"><span class="label label-default">Quick</span></a>
+	              <div class="pull-right text-muted">
+	                <small>
+	                  4 min ago by
+	                  <a href="#">Username</a>
+	                </small>
+	              </div>
+	              <p>
+	              </p>
+	            </div>
+	          </div>
+	          <div class="media">
+	            <a class="container" href="#">
+	              </a>
+	            <a class="pull-left" href="#">    <img class="media-object" src="../rev4/img/placeholder-64x64.gif">  </a>
+	            <div class="media-body">
+	              <h4 class="media-heading">
+	                <a href="#">Recipe title</a>
+	              </h4>
+	              <div>
+	                Recipe abstract
+	              </div>
+	              <a href="#"><span class="label label-default">Salmon</span></a>
+	              <a href="#"><span class="label label-default">Dinner</span></a>
+	              <a href="#"><span class="label label-default">Quick</span></a>
+	              <div class="pull-right text-muted">
+	                <small>
+	                  4 min ago by
+	                  <a href="#">Username</a>
+	                </small>
+	              </div>
+	              <p>
+	              </p>
+	            </div>
+	          </div>
+	          <div class="media">
+	            <a class="container" href="#">
+	              </a>
+	            <a class="pull-left" href="#">    <img class="media-object" src="../rev4/img/placeholder-64x64.gif">  </a>
+	            <div class="media-body">
+	              <h4 class="media-heading">
+	                <a href="#">Recipe title</a>
+	              </h4>
+	              <div>
+	                Recipe abstract
+	              </div>
+	              <a href="#"><span class="label label-default">Salmon</span></a>
+	              <a href="#"><span class="label label-default">Dinner</span></a>
+	              <a href="#"><span class="label label-default">Quick</span></a>
+	              <div class="pull-right text-muted">
+	                <small>
+	                  4 min ago by
+	                  <a href="#">Username</a>
+	                </small>
+	              </div>
+	              <p>
+	              </p>
+	            </div>
+	          </div>
+	          <div class="media">
+	            <a class="container" href="#">
+	              </a>
+	            <a class="pull-left" href="#">    <img class="media-object" src="../rev4/img/placeholder-64x64.gif">  </a>
+	            <div class="media-body">
+	              <h4 class="media-heading">
+	                <a href="#">Recipe title</a>
+	              </h4>
+	              <div>
+	                Recipe abstract
+	              </div>
+	              <a href="#"><span class="label label-default">Salmon</span></a>
+	              <a href="#"><span class="label label-default">Dinner</span></a>
+	              <a href="#"><span class="label label-default">Quick</span></a>
+	              <div class="pull-right text-muted">
+	                <small>
+	                  4 min ago by
+	                  <a href="#">Username</a>
+	                </small>
+	              </div>
+	              <p>
+	              </p>
+	            </div>
+	          </div>
+	          <hr>
+	          <ul class="pagination">
+	            <li>
+	              <a href="#">«</a>
+	            </li>
+	            <li>
+	              <a href="#">1</a>
+	            </li>
+	            <li>
+	              <a href="#">2</a>
+	            </li>
+	            <li>
+	              <a href="#">3</a>
+	            </li>
+	            <li>
+	              <a href="#">4</a>
+	            </li>
+	            <li>
+	              <a href="#">5</a>
+	            </li>
+	            <li>
+	              <a href="#">»</a>
+	            </li>
+	          </ul>
+	        </div>
+	        <div class="col-md-3">
+	          <h4>
+	            Favorite tags
+	            <small>
+	              <a href="#">edit</a>
+	            </small>
+	            <br>
+	          </h4>
+	          <div class="text-muted">
+	            <span class="label label-default">Salmon</span>
+	            <small>
+	              x23
+	            </small>
+	          </div>
+	          <hr>
+	          <h4>
+	            Recent tags
+	            <br>
+	          </h4>
+	          <div class="text-muted">
+	            <div>
+	              <span class="label label-default">Salmon</span>
+	              <small>
+	                x23
+	              </small>
+	            </div>
+	            <div>
+	              <span class="label label-default">Breakfast</span>
+	              <small>
+	                x8
+	              </small>
+	            </div>
+	            <div>
+	              <span class="label label-default">Quick</span>
+	              <small>
+	                x2
+	              </small>
+	            </div>
+	          </div>
+	          <hr>
+	          <h4>
+	            Online users
+	            <br>
+	          </h4>
+	          <div class="text-muted">
+	          	<!-- BEGIN activevisitors_visitor -->
+	              	<span 
+	              		class="label label-default visitor" 
+	              		title="
+		              		<dl class='dl'>
+		              			<dt>Last seen online:</dt>
+		              			<dd>{activevisitors_visitor.LAST_SEEN_ONLINE}</dd>
+		              			<br />
+		              			<dt>Connected from:</dt>
+		              			<dd>{activevisitors_visitor.IP}</dd>
+		              			<br />
+		              			<dt>Device:</dt>
+		              			<dd>{activevisitors_visitor.DEVICE}</dd>
+								<br />
+		              			<dt>Platform:</dt>
+								<dd>{activevisitors_visitor.BROWSER} @ {activevisitors_visitor.PLATFORM}</dd>
+							</dl>"
+							data-html="true">
+							{activevisitors_visitor.USERNAME}
+						</span>&nbsp;
+	            <!-- END activevisitors_visitor -->
+	          </div>
+	          <hr>
+	          <blockquote>
+	            <p>
+	              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere
+	              erat a ante.
+	            </p>
+	          </blockquote>
+	          <blockquote>
+	          	<p>
+	          		Member of:<br />
+	          		<!-- BEGIN visitor_usergroups -->
+	          		{visitor_usergroups.NAME} 
+	          		<!-- END visitor_usergroups -->
+	          	</p>
+	          </blockquote>
+	        </div>
+	      </div>
+      </div><!--/.container (page content) -->
+      
+    </div><!--/.wrap -->
+
+    <div id="footer">
+      <div class="container">
+        <p class="text-muted credit">Powered by <a href="http://intensjon.no">Ruby System</a> &copy; <a href="mailto:aleksander.lanes@gmail.com">Aleksander Lanes</a></p>
+      </div>
+      <div id="footer-border-bottom"></div>
+    </div>
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" /></script>
+    <script src="../rev4/js/bootstrap.min.js"></script>
+    <script src="../rev4/js/jqBootstrapValidation.js" ></script>
+    <script>
+  		$(function () { $("input,select,textarea").not("[type=submit]").jqBootstrapValidation()});
+  		$('.visitor').tooltip();
+	</script>
+  </body>
+</html>

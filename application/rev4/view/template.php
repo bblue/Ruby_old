@@ -227,7 +227,7 @@ final class Template
 			// Hack by AL: print the array for bug fixing		{
 			if(PRINT_TEMPLATE_VARS === true)
 			{
-				var_dump($this->_rootref);// @todo Her m� det lages en funksjon som returnerer $this->_rootref for bruk i Debug modulen:
+				echo '<pre>'; print_r($this->_rootref); echo '</pre>';// @todo Her m� det lages en funksjon som returnerer $this->_rootref for bruk i Debug modulen:
 			}
 		}
 

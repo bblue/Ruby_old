@@ -5,7 +5,7 @@ use App\Entity\Collection as EntityCollection;
 final class CollectionProxy extends Proxy implements LoadableInterface, \Countable, \IteratorAggregate
 {
 	protected $_collection;
-   
+
 	/**
 	 * Load explicitly a collection of entities via the 'find()' method of the injected mapper
 	 */
@@ -22,7 +22,7 @@ final class CollectionProxy extends Proxy implements LoadableInterface, \Countab
 		}
 		return $this->_collection;
 	}
-   
+
 	/**
 	 * Count the entities in the collection after lazy-loading them
 	 */
@@ -30,7 +30,7 @@ final class CollectionProxy extends Proxy implements LoadableInterface, \Countab
 	{
 		return count($this->load());
 	} 
-   
+
 	/**
 	 * Load a collection of entities via the 'find()' method of the injected mapper
 	 * when called within a 'foreach' construct
@@ -46,7 +46,7 @@ final class CollectionProxy extends Proxy implements LoadableInterface, \Countab
 	 */
 	public function getEntity()
 	{
-	 	$collection = $this->load();
+		$collection = $this->load();
 		if($collection->count() == 1)
 		{
 			return $collection->get(0);

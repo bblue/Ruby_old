@@ -17,6 +17,7 @@ final class Visitor extends AbstractPresentationObject
 		{
 			$this->assign_block_vars('usergroups', array(
 				'ID' 			=> $usergroup->id,
+				'NAME' 			=> $usergroup->sUsergroupname,
 			));			
 		}	
 	}

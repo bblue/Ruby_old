@@ -10,7 +10,8 @@ use
 
 final class Recognition extends ServiceAbstract
 {
-
+	private $visitor;
+	
 	public function getAppropriateHashCost()
 	{
 		require_once ROOT_PATH . 'lib/password_compat.php';
@@ -28,6 +29,10 @@ final class Recognition extends ServiceAbstract
 	
 	public function getCurrentVisitor()
 	{
+		if(is_object($this->visitor))
+		{
+			return $this->visitor;
+		}
 		$visitor = $this->entityFactory->build('visitor');
 
 		$this->dataMapperFactory
@@ -42,7 +47,7 @@ final class Recognition extends ServiceAbstract
 			->build('visitor')
 			->fetch($visitor);
 
-		return $visitor;
+		return $this->visitor = $visitor;;
 	}
 
 	public function registerVisitor(Visitor $visitor)

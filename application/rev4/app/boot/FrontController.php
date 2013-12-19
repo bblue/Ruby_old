@@ -22,7 +22,7 @@ final class FrontController
 	
 	public function run(Request $request)
 	{
-		$visitor 	= $this->serviceFactory->build('recognition')->getCurrentVisitor();
+		$visitor 	= $this->serviceFactory->build('recognition', true)->getCurrentVisitor();
 		$routing 	= $this->serviceFactory->build('routing');
 		$acl 		= $this->serviceFactory->build('acl');
 		

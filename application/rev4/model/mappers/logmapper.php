@@ -28,6 +28,9 @@ final class LogMapper extends DatabaseDataMapper
     
     protected function setEntitySpecificData(AbstractEntity $logEntry)
     {
-		$logEntry->user = new CollectionProxy($this->_dataMapperFactory->build('user'), array('id' => array(array('operator' => '=', 'value' => $logEntry->user_id))));
+		$logEntry->user = 	new CollectionProxy(
+								$this->_dataMapperFactory->build('user'),
+								array('id' => array(array('operator' => '=', 'value' => $logEntry->user_id)))
+							);
     }
 }

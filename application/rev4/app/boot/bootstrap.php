@@ -31,6 +31,8 @@ if(IS_DEVELOPMENT_AREA === true) {
     	ini_set('display_errors', 1);
 		ini_set('html_errors', 1);
 		error_reporting(E_ALL ^ E_NOTICE);
+		ini_set('error_prepend_string', '<pre>'); 
+		ini_set('error_append_string', '</pre>'); 
 	} else
 	{
 		error_reporting(0);
@@ -64,4 +66,4 @@ $dispatcher->setControllerFactory($controllerFactory);
 $dispatcher->setViewFactory($viewFactory);
 
 $frontController = new FrontController($dispatcher, $serviceFactory);
-$frontController->run($request);
+$frontController->rUn($request);

@@ -6,6 +6,8 @@ final class Recipes extends AbstractView
 {
 	public function indexAction()
 	{
+		$visitor = $this->serviceFactory->build('recognition')->getCurrentVisitor();
+		
 		/** Prepare for possible error output */
 		$this->presentationObjectFactory
 			->build('serverresponse', true)
@@ -15,14 +17,14 @@ final class Recipes extends AbstractView
 		/** Get current visitor information */
 		$this->presentationObjectFactory
 			->build('visitor', true)
-			->assignData($this->serviceFactory->build('recognition')->getCurrentVisitor());
+			->assignData($visitor);
 
 		/** Get list of all visitors */
 		$this->presentationObjectFactory
 			->build('activeVisitors', true)
-			->assignData($this->serviceFactory->build('recognition')->getActiveVisitors());
+			->assignData($this->serviceFactory->build('recognition')->getActiveVisitors());	
 			
-		return $this->display('sticky_footer.html');
+		return $this->display('recipes.html');
 	}
 	
 	public function login()

@@ -43,7 +43,7 @@ final class Dispatcher
 		$controller	= $this->createController($route->sResourceName);
 		$view 		= $this->createView($route->getResourceName());
 		$sCommand 	= $route->getCommand();
-
+echo $sCommand;
 		try 
 		{
 			// Execute command on controller

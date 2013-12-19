@@ -41,7 +41,9 @@ final class Routing extends ServiceAbstract
 				if($this->visitor->isLoggedIn())
 				{
 					$this->redirect(self::ERROR_403_URL);
-				} else {
+				} 
+				else 
+				{
 					$this->redirect(self::LOGIN_URL);
 				}
 			}
@@ -92,6 +94,9 @@ final class Routing extends ServiceAbstract
 
 	private function redirect($sRedirectUrl)
 	{
+		// Completely clear out the old route
+		unset($this->route);
+		
 		$this->setModelState('error', $this->createLogEntry('Redirect to ' . $sRedirectUrl . ' detected', $this->visitor));
 		
 		return $this->route = $this->buildRoute($sRedirectUrl);

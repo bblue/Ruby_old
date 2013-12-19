@@ -28,7 +28,7 @@ final class Visitor extends AbstractEntity
     }
 	public function getUser_id()
 	{
-		return isset($this->_values['user_id']) ? $this->_values['user_id'] : User::$GUEST_ID; 
+		return isset($this->_values['user_id']) ? $this->_values['user_id'] : User::GUEST_ID; 
 	}
 	
     public function setUser_id($id)
@@ -39,7 +39,7 @@ final class Visitor extends AbstractEntity
     		$this->_values['user'] = false;
     	}
     	
-    	$this->_values['user_id'] = isset($id) ? (int)$id : User::$GUEST_ID; 
+    	$this->_values['user_id'] = isset($id) ? (int)$id : User::GUEST_ID; 
     }
     
     public function setHttp_user_agent($http_user_agent)

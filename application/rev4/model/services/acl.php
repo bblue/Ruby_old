@@ -36,7 +36,7 @@ final class ACL extends ServiceAbstract
 		return $this->testVisitorBlock($visitor);
 	}
 	
-	private function testUsergroupsAccess($usergroups, Route $route)
+	public function testUsergroupsAccess($usergroups, Route $route)
 	{
 		if($usergroups instanceof Usergroups || $usergroups instanceof CollectionProxy)
 		{
@@ -50,12 +50,12 @@ final class ACL extends ServiceAbstract
 		}
 	}
 
-	private function testUserAccess(User $user, Route $route)
+	public function testUserAccess(User $user, Route $route)
 	{
-		$route->userHasAccess($user->id);
+		return $route->userHasAccess($user->id);
 	}
 	
-	private function testVisitorBlock(Visitor $visitor)
+	public function testVisitorBlock(Visitor $visitor)
 	{
 		// Test if IP is blocked
 		

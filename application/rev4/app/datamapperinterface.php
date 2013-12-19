@@ -9,7 +9,7 @@ interface DataMapperInterface
 
     public function findAll();
 
-    public function find(array $aCriterias, $entity);
+    public function find($aCriterias, $entity);
 
     public function insert(AbstractEntity $entity);
 

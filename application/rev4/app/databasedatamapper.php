@@ -31,9 +31,12 @@ abstract class DatabaseDataMapper extends AbstractDataMapper implements DataMapp
 		$aTableSource = array_merge($this->_acceptedFields, $this->_cascadeFields);
 		
 		$aTables	= $this->extractTables($aTableSource);
-		$sWhere 	= $this->prepareCriterias($aCriterias);
 		$sSelect	= implode(', ', $this->_acceptedFields);
-				
+		$sWhere		= $this->compileClauseStrings(array(
+							$this->getClauseStrings($aCriterias),
+							$this->compileClauseStrings($this->_cascadeFields)
+					));
+
 		$this->_adapter->select($aTables, $sWhere, $sSelect);
 		
 		$data = $this->_adapter->fetch() ? : array();
@@ -55,8 +58,8 @@ abstract class DatabaseDataMapper extends AbstractDataMapper implements DataMapp
 		$aTableSource = array_merge($this->_acceptedFields, $this->_cascadeFields);
 		
 		$aTables	= $this->extractTables($aTableSource);
-		$sWhere 	= implode(', ', $this->_cascadeFields);
 		$sSelect	= implode(', ', $this->_acceptedFields);
+		$sWhere 	= $this->compileClauseStrings($this->_cascadeFields);
 		
 		$this->_adapter->select($aTables, $sWhere, $sSelect);
 		
@@ -71,12 +74,16 @@ abstract class DatabaseDataMapper extends AbstractDataMapper implements DataMapp
 	}
 
 	/** Find all the entities that match the specified criteria */
-	public function find(array $aCriterias, $entity = null, $aInjectedClauses = array())
+	public function find($aCriterias = array(), $entity = null, $aInjectedClauses = array())
 	{	
-		$aTableSource = array_merge($this->_acceptedFields, $this->_cascadeFields, $aInjectedClauses);
+		$aTableSource = array_merge($this->_acceptedFields, $this->_cascadeFields, array_keys($aInjectedClauses));
 		
 		$aTables	= $this->extractTables($aTableSource);
-		$sWhere		= $this->prepareCriterias($aCriterias, $aInjectedClauses);
+		$sWhere		= $this->compileClauseStrings(array(
+							$this->getClauseStrings($aCriterias),
+							$this->getClauseStrings($aInjectedClauses, true),
+							$this->compileClauseStrings($this->_cascadeFields)
+					));
 		$sSelect	= implode(', ', $this->_acceptedFields);	
 		
 		$this->_adapter->select($aTables, $sWhere, $sSelect);
@@ -147,7 +154,10 @@ abstract class DatabaseDataMapper extends AbstractDataMapper implements DataMapp
 		
 		$aTables	= $this->extractTables($aTableSource);
 		$aData		= $this->filterOnlyAcceptedFields($entity->toArray());		
-		$sWhere		= $this->prepareCriterias($aCriterias);
+		$sWhere		= $this->compileClauseStrings(array(
+							$this->getClauseStrings($aCriterias),
+							$this->compileClauseStrings($this->_cascadeFields)
+					));
 		
 		return $this->_adapter->update($aTables, $aData, $sWhere);
 	}
@@ -168,7 +178,10 @@ abstract class DatabaseDataMapper extends AbstractDataMapper implements DataMapp
 		$aTableSource = array_merge($this->_acceptedFields, $this->_cascadeFields);
 		
 		$aTables	= $this->extractTables($aTableSource);	
-		$sWhere		= $this->prepareCriterias($aCriterias);
+		$sWhere		= $this->compileClauseStrings(array(
+							$this->getClauseStrings($aCriterias),
+							$this->compileClauseStrings($this->_cascadeFields)
+					));
 					
 		return $this->_adapter->delete($aTables, $sWhere);
 	}
@@ -194,58 +207,117 @@ abstract class DatabaseDataMapper extends AbstractDataMapper implements DataMapp
 	
 	private function extractTable($sTableSource)
 	{
-		$array = explode('.', $sTableSource);
-		return $array[0];
+		//$array = explode('.', $sTableSource);
+		//return $array[0];
+		$pattern = "/([\w]+)\./";
+		preg_match_all($pattern, $sTableSource, $matches);
+		
+		return $matches[0];
 	}
 	
-	private function extractTables($aTablesSource)
+	private function extractTables(array $aTablesSource)
 	{
 		$aTables = array();
+		$pattern = "/([\w]+)\./";
 		foreach($aTablesSource as $sTableSource)
 		{
-			$aTables[] = $this->extractTable($sTableSource);
+			preg_match_all($pattern, $sTableSource, $matches);
+			
+			foreach($matches[1] as $match)
+			{
+				$aTables[] = $match;
+			}
 		}
 		return array_unique($aTables);
 	}
-	
-	private function prepareCriterias(array $aCriterias, $aInjectedClauses = array())
+
+	private function operatorIsValid($operator)
 	{
-		if(empty($aCriterias))
+		$aValidOperators = array('<', '>', '=<', '>=', '!=', '=');
+		
+		return in_array($operator, $aValidOperators);
+	}
+	
+	private function compileClauseStrings(array $aClauseStrings)
+	{	
+		// Remove empty arrays
+		$aClauseStrings = array_filter($aClauseStrings);
+		
+		// Compile all clauses into a single string for the database
+		$sClauseString = implode(' AND ', $aClauseStrings);
+
+		// Return the result array
+		return $sClauseString;		
+	}
+	
+	private function getClauseStrings($aClauses, $bIsInjected = false)
+	{	
+		if(empty($aClauses) || !is_array($aClauses))
 		{
 			return null;
 		}
 		
-		$aPreparedCriterias = array();
-		
-		// Prepare any potential injected clauses into the criterias
-		if(!empty($aInjectedClauses))
-		{
-			array_merge($aPreparedCriterias, $aInjectedClauses);
-		}
-		
-		// Prepare any potential cascaded data sections
-		if(!empty($this->_cascadeFields))
-		{
-			array_merge($aPreparedCriterias, $this->_cascadeFields);
-		}		
+		$aClauseStrings = array();
 		
 		// Prepare the criterias
-		foreach($aCriterias as $field => $criterias)
+		foreach($aClauses as $sField => $aCriterias)
 		{
-			if(isset($this->_acceptedFields[$field]))
+			if(!is_array($aCriterias) || empty($aCriterias))
 			{
-				foreach($criterias as $criteria)
+				throw new \Exception('Error in ' . __METHOD__  . ': Error in parsing the criterias');
+			}
+			
+			if(!$bIsInjected)
+			{
+				// Confirm the field can be handled by the datamapper 
+				if(!isset($this->_acceptedFields[$sField]))
 				{
-					$array[] = $this->_acceptedFields[$field] . $criteria['operator'] . '"'. $criteria['value'] . '"';
+					throw new \Exception('Error in ' . __METHOD__  . ': ' . $sField . ' is not accepted by this datamapper');
 				}
-				$aPreparedCriterias[] = '(' . implode(' OR ', $array) . ')';
+				// Get the database field from fieldname
+				$sField = $this->_acceptedFields[$sField];			
+			}
+			
+			if($sCriteriaStrings = $this->compileCriteriaStrings($aCriterias, $sField))
+			{
+				$aClauseStrings[] = $sCriteriaStrings;
 			}
 		}
 
-		// Merge the injected clauses, the criteria and the cascaded fields
-		if(!empty($aPreparedCriterias))
+		if(empty($aClauseStrings))
 		{
-			return implode(' AND ', $aPreparedCriterias);
+			throw new \Exception('Error in ' . __METHOD__  . ': can not return empty clause string');
 		}
+		
+		$string = implode(' OR ', $aClauseStrings);
+
+		return $string;
+	}
+	
+	private function compileCriteriaStrings(array $aCriterias, $sDatabaseField)
+	{
+		$array = array();
+		
+		// Handle each criteria
+		foreach($aCriterias as $aCriteria)
+		{
+			if(!is_array($aCriteria) || empty($aCriteria))
+			{
+				throw new \Exception('Error in ' . __METHOD__  . ': Error in parsing the criteria');
+			}
+			
+			// Check the operator is valid
+			if(!$this->operatorIsValid($aCriteria['operator']))
+			{
+				throw new \Exception('Error in ' . __METHOD__  . ': Criteria operator is invalid (' . $aCriteria['operator'] . ')');
+			}
+
+			// Compile the criteria string
+			$array[] = $sDatabaseField . $aCriteria['operator'] . '"'. $aCriteria['value'] . '"';
+		}
+		// Compile all criterias into a single string
+		$string = (empty($array)) ? null : '(' . implode(' OR ', $array) . ')';
+
+		return $string;
 	}
 }

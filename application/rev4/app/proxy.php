@@ -12,9 +12,6 @@ abstract class Proxy
 	 */
 	public function __construct(AbstractDataMapper $mapper, $aCriterias, $aInjectedClauses = array())
 	{
-		if (!is_array($aCriterias) || empty($aCriterias)) {
-			throw new \InvalidArgumentException('The mapper parameters are invalid.');
-		}
 		$this->_mapper = $mapper;
 		$this->_aCriterias = $aCriterias; 
 		$this->_aInjectedClauses = $aInjectedClauses;

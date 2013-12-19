@@ -39,12 +39,14 @@ final class ACL extends ServiceAbstract
 	private function testUsergroupsAccess($usergroups, Route $route)
 	{
 		if($usergroups instanceof Usergroups || $usergroups instanceof CollectionProxy)
-		foreach($usergroups as $usergroup)
 		{
-			if($route->usergroupHasAccess($usergroup->id))
+			foreach($usergroups as $usergroup)
 			{
-				return true;
-			}
+				if($route->usergroupHasAccess($usergroup->id))
+				{
+					return true;
+				}
+			}	
 		}
 	}
 

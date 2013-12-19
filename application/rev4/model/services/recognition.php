@@ -134,11 +134,18 @@ final class Recognition extends ServiceAbstract
 	
 	public function logoutVisitor(Visitor $visitor)
 	{
-		$visitor->user_id = User::$GUEST_ID;
-		$this->dataMapperFactory
-			->build('visitor')
-			->store($visitor);
-		$this->setModelState('success', $this->createLogEntry('Successful logout', $visitor));
+		if($visitor->isLoggedIn())
+		{
+			$visitor->user_id = User::GUEST_ID;
+			$this->dataMapperFactory
+				->build('visitor')
+				->store($visitor);
+			$this->setModelState('success', $this->createLogEntry('Successful logout', $visitor));	
+		}
+		else 
+		{
+			$this->setModelState('success', $this->createLogEntry('You are already logged out', $visitor));	
+		}
 	}
 	
 	// @todo: Lage et decorator pattern på service methods slik at jeg kan logge results automatisk. Eventuelt så må jeg legge til logger i alle methods. Dette kan være det beste, men det krever jo en del repetisjon.

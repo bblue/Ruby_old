@@ -67,7 +67,7 @@ abstract class AbstractEntity
 	public function __get($name)
 	{
 		if (!in_array($name, $this->_allowedFields)) {
-			throw new \Exception('The field ' . $name . ' is not allowed for this entity.');   
+			return null;
 		}
 		$accessor = 'get' . ucfirst($name);
 		if (method_exists($this, $accessor) && is_callable(array($this, $accessor))) {

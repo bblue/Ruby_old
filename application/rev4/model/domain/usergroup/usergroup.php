@@ -10,7 +10,8 @@ final class Usergroup extends AbstractEntity
     	'active',
     	'description',
     	'g_id',
-    	'u_id'
+    	'u_id',
+    	'a_id'
     );
    
     //@todo: fikse at det kun er allowed fields som blir lastet fra databasen (dette skaper problemer siden 'comments' vil være et av de godkjente feltene her)

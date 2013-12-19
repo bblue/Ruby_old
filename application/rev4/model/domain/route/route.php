@@ -15,7 +15,8 @@ final class Route extends AbstractEntity
 		'url',
 		'sResourceName',
 		'bIsEnabled',
-		'sCommand'
+		'sCommand',
+		'a_id'
 	);
 	
 	const DEFAULT_COMMAND = 'indexAction';

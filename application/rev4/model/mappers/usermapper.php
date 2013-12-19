@@ -59,7 +59,9 @@ final class UserMapper extends DatabaseDataMapper
 		$user->usergroups = new CollectionProxy(
 			$this->_dataMapperFactory->build('usergroup'),
 			null,
-			array('cascade_usergroups_users.u_id' => array(array('operator' => '=','value' => $user->id)
-		)));
+			array(
+				'cascade_usergroups_users.u_id' => array(array('operator' => '=','value' => $user->id)),
+				'id' 							=> array(array('operator' => '=','value' => 'cascade_usergroups_users.g_id', 'tablevalue' => true)),
+		));
     }
 }

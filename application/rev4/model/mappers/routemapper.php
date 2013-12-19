@@ -53,7 +53,10 @@ final class RouteMapper extends DatabaseDataMapper
 		$route->usergroups = new CollectionProxy(
 			$this->_dataMapperFactory->build('usergroup'),
 			null,
-			array('cascade_a_usergroups.a_id' => array(array('operator' => '=','value' => $route->a_id)))
+			array(
+				'cascade_a_usergroups.a_id' => array(array('operator' => '=','value' => $route->a_id)),
+				'id' 						=> array(array('operator' => '=','value' => 'cascade_a_usergroups.ug_id', 'tablevalue' => true))
+			)
 		);
 		
     }

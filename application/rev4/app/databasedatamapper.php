@@ -273,12 +273,16 @@ abstract class DatabaseDataMapper extends AbstractDataMapper implements DataMapp
 				if(!isset($this->_acceptedFields[$sField]))
 				{
 					throw new \Exception('Error in ' . __METHOD__  . ': ' . $sField . ' is not accepted by this datamapper');
-				}
-				// Get the database field from fieldname
-				$sField = $this->_acceptedFields[$sField];			
+				}		
 			}
 			
-			if($sCriteriaStrings = $this->compileCriteriaStrings($aCriterias, $sField))
+			if(array_key_exists($sField, $this->_acceptedFields))
+			{
+				// Get the database field from fieldname
+				$sField = $this->_acceptedFields[$sField];
+			}
+			
+			if($sCriteriaStrings = $this->compileCriteriaStrings($aCriterias, $sField, $bIsInjected))
 			{
 				$aClauseStrings[] = $sCriteriaStrings;
 			}
@@ -289,12 +293,12 @@ abstract class DatabaseDataMapper extends AbstractDataMapper implements DataMapp
 			throw new \Exception('Error in ' . __METHOD__  . ': can not return empty clause string');
 		}
 		
-		$string = implode(' OR ', $aClauseStrings);
+		$string = implode(' ' . ($bIsInjected ? 'AND' : 'OR') . ' ', $aClauseStrings);
 
 		return $string;
 	}
 	
-	private function compileCriteriaStrings(array $aCriterias, $sDatabaseField)
+	private function compileCriteriaStrings(array $aCriterias, $sDatabaseField, $bIsInjected = false)
 	{
 		$array = array();
 		
@@ -313,7 +317,7 @@ abstract class DatabaseDataMapper extends AbstractDataMapper implements DataMapp
 			}
 
 			// Compile the criteria string
-			$array[] = $sDatabaseField . $aCriteria['operator'] . '"'. $aCriteria['value'] . '"';
+			$array[] = $sDatabaseField . $aCriteria['operator'] . ($aCriteria['tablevalue'] ? $aCriteria['value'] : '"'. $aCriteria['value'] . '"');
 		}
 		// Compile all criterias into a single string
 		$string = (empty($array)) ? null : '(' . implode(' OR ', $array) . ')';

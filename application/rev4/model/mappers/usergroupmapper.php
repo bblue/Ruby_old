@@ -13,6 +13,6 @@ final class UsergroupMapper extends DatabaseDataMapper
     	'description'			=> 'usergroups.description'
 	);
 	protected $_cascadeFields = array(
-		'usergroups.id = cascade_usergroups_users.g_id'
+		
 	);
 }

@@ -52,7 +52,7 @@ final class RouteMapper extends DatabaseDataMapper
     	// Find the usergroups that have access to the area in this route
 		$route->usergroups = new CollectionProxy(
 			$this->_dataMapperFactory->build('usergroup'),
-			null,
+			array('active' => array(array('operator' => '=','value' => 1))),
 			array(
 				'cascade_a_usergroups.a_id' => array(array('operator' => '=','value' => $route->a_id)),
 				'id' 						=> array(array('operator' => '=','value' => 'cascade_a_usergroups.ug_id', 'tablevalue' => true))

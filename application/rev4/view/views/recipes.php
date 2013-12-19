@@ -65,6 +65,8 @@ final class Recipes extends AbstractView
 			->setPresentationName('success')
 			->assignData($this->serviceFactory->build('model')->getModelResponse('success'));
 			
-		return $this->indexAction();
+		return $this->serviceFactory->build('recognition')->getCurrentVisitor()->isLoggedIn() ? 
+					$this->display('logout.html') : 
+					$this->display('login.html');
 	}
 } 

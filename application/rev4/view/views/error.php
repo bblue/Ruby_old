@@ -18,7 +18,7 @@ final class Error extends AbstractView
 			->assignData($this->serviceFactory->build('model')->getModelResponse('error'));
 		
 		$this->display('overall_header.html');
-		$this->display('overall_navigation.html');
+//		$this->display('overall_navigation.html');
 		$this->display('error.html');
 		$this->display('overall_footer.html');
 		

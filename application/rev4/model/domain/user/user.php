@@ -32,7 +32,7 @@ final class User extends AbstractEntity
     	'GUEST_ID'
     );
 
-    public static $GUEST_ID = 0;
+    const GUEST_ID = 0;
     
     public function matchPassword($password)
     {
@@ -71,7 +71,7 @@ final class User extends AbstractEntity
     
     public function isGuest()
     {
-		return ((self::$GUEST_ID === $this->id) ? true : false);
+		return ((self::GUEST_ID === $this->id) ? true : false);
     }
     
     public function isAdmin()

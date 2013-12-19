@@ -167,7 +167,7 @@ final class Visitor extends AbstractEntity
     ###################################### Methods ###################################### 
     public function isLoggedIn()
     {
-    	if($this->getUser_id() != User::$GUEST_ID)
+    	if($this->getUser_id() != User::GUEST_ID)
     	{
     		return true;
     	}

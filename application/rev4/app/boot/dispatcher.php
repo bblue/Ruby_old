@@ -43,7 +43,12 @@ final class Dispatcher
 		$controller	= $this->createController($route->sResourceName);
 		$view 		= $this->createView($route->getResourceName());
 		$sCommand 	= $route->getCommand();
-echo $sCommand;
+	    
+		if(PRINT_CONTROLLER_COMMAND === true)
+    	{
+    		echo '<pre>Performing command on controller: <i>$' . $route->sResourceName . '->' . $sCommand . '()</i></pre>';
+    	}
+    	
 		try 
 		{
 			// Execute command on controller

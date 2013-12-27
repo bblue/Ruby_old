@@ -47,7 +47,7 @@ final class Route extends AbstractEntity
 	
 	public function getResourceName()
 	{
-		if(isset($this->_values['sResourceName']))
+		if(!empty($this->_values['sResourceName']))
 		{
 			return $this->_values['sResourceName'];
 		}

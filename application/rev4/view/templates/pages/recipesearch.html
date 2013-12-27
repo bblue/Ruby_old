@@ -1,0 +1,142 @@
+<!-- Begin page content -->
+<div class="container">
+	<div class="navbar" style="background: none; border: none; box-shadow: none;">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="#">ruby.intensjon.no</a>
+		</div>
+		<div class="pull-right">
+			<a class="btn navbar-btn btn-xs btn-success">Add new recipe</a>
+		</div>
+		<div class="collapse navbar-collapse navbar-ex1-collapse">
+			<a class="btn navbar-btn btn-xs btn-primary">Recipes</a>
+			<a class="btn navbar-btn btn-xs btn-primary">Ingredients</a>
+			<a class="btn navbar-btn btn-xs btn-primary">Tags</a>
+			<a class="btn navbar-btn btn-xs btn-primary">Users</a>
+		</div>
+	</div>
+	
+	<!-- INCLUDE blocks/serverresponse.html -->
+	
+	<div class="row">
+		<div class="col-md-9">
+			<ul class="nav nav-tabs">
+				<li class="pull-left">
+					<h4>Search recipes</h4>
+				</li>
+			</ul>
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-3">
+			            <div class="input-group custom-search-form">
+			              <input type="text" class="form-control">
+			              <span class="input-group-btn">
+			              <button class="btn btn-default" type="button">
+			              <span class="glyphicon glyphicon-search"></span>
+			             </button>
+			             </span>
+			             </div><!-- /input-group -->
+			        </div>
+				</div>
+			</div>
+			<hr>
+			<ul class="pagination">
+				<li>
+					<a href="#">«</a>
+				</li>
+				<li>
+					<a href="#">1</a>
+				</li>
+				<li>
+					<a href="#">2</a>
+				</li>
+				<li>
+					<a href="#">3</a>
+				</li>
+				<li>
+					<a href="#">4</a>
+				</li>
+				<li>
+					<a href="#">5</a>
+				</li>
+				<li>
+					<a href="#">»</a>
+				</li>
+			</ul>
+		</div>
+		<div class="col-md-3">
+			<h4>
+				Favorite tags
+				<small>
+					<a href="#">edit</a>
+				</small>
+				<br>
+			</h4>
+			<div class="text-muted">
+				<span class="label label-default">Salmon</span>
+				<small>x23</small>
+			</div>
+			<hr>
+			<h4>
+				Recent tags
+				<br>
+			</h4>
+			<div class="text-muted">
+				<div>
+					<span class="label label-default">Salmon</span>
+					<small>x23</small>
+				</div>
+				<div>
+					<span class="label label-default">Breakfast</span>
+					<small>x8</small>
+				</div>
+				<div>
+					<span class="label label-default">Quick</span>
+					<small>x2</small>
+				</div>
+			</div>
+			<hr>
+			<h4>
+				Online users
+				<br>
+			</h4>
+			<div class="text-muted">
+				<!-- BEGIN activevisitors_visitor -->
+				<span 
+					class="label label-default visitor" 
+					title="
+						<dl class='dl'>
+							<dt>Last seen online:</dt>
+							<dd>{activevisitors_visitor.LAST_SEEN_ONLINE}</dd>
+							<br />
+							<dt>Connected from:</dt>
+							<dd>{activevisitors_visitor.IP}</dd>
+							<br />
+							<dt>Device:</dt>
+							<dd>{activevisitors_visitor.DEVICE}</dd>
+							<br />
+							<dt>Platform:</dt>
+							<dd>{activevisitors_visitor.BROWSER} @ {activevisitors_visitor.PLATFORM}</dd>
+						</dl>"
+						data-html="true">
+						{activevisitors_visitor.USERNAME}
+				</span>&nbsp;
+				<!-- END activevisitors_visitor -->
+			</div>
+			<hr>
+			<blockquote>
+		<p>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere
+			erat a ante.
+		</p>
+			</blockquote>
+			<blockquote>
+				<p>
+					Member of:<br />
+					<!-- BEGIN visitor_usergroups -->
+					{visitor_usergroups.NAME} 
+					<!-- END visitor_usergroups -->
+				</p>
+			</blockquote>
+		</div>
+	</div>
+</div><!--/.container (page content) -->

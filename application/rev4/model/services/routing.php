@@ -11,12 +11,12 @@ final class Routing extends ServiceAbstract
 	private $visitor;
 	private $acl;
 
-	const MAINTENANCE_URL 	= 'controller/action';
+	const MAINTENANCE_URL 	= 'error/maintenance';
 	const ERROR_403_URL		= 'error/403';
 	const ERROR_404_URL		= 'error/404';
 	const ERROR_500_URL		= 'error/500';
-	const LOGIN_URL			= 'recipes/login';
-	const DEFAULT_URL		= 'recipes';
+	const LOGIN_URL			= 'login';
+	const DEFAULT_URL		= 'index';
 
 	public function route($sUrl, Visitor $visitor, ACL $acl)
 	{

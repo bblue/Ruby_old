@@ -41,6 +41,9 @@ final class Template
 	var $inherit_root = '';
 	var $orig_tpl_storedb;
 	var $orig_tpl_inherits_id;
+	
+	// Hack by AL 20.12
+	private $bHasShownTemplateVars;
 
 	// this will hash handle names to the compiled/uncompiled code for that handle.
 	var $compiled_code = array();
@@ -51,7 +54,6 @@ final class Template
 	*/
 	function set_template()
 	{
-		global $phpbb_root_path, $user;
 
 		if (file_exists($phpbb_root_path . 'styles/' . $user->theme['template_path'] . '/template'))
 		{
@@ -92,8 +94,6 @@ final class Template
 	*/
 	function set_custom_template($template_path, $template_name, $template_mode = 'template')
 	{
-		// Hack by AL 3.9.13 (removed line)
-		//global $phpbb_root_path, $user;
 
 		// Make sure $template_path has no ending slash
 		if (substr($template_path, -1) == '/')
@@ -102,7 +102,6 @@ final class Template
 		}
 
 		$this->root = $template_path;
-		$this->cachepath = $phpbb_root_path . 'cache/ctpl_' . str_replace('_', '-', $template_name) . '_';
 
 		// As the template-engine is used for more than the template (emails, etc.), we should not set $user->theme in all cases, but only on the real template.
 		if ($template_mode == 'template')
@@ -194,24 +193,6 @@ final class Template
 	*/
 	function display($handle, $include_once = true)
 	{
-		global $user, $phpbb_hook;
-
-		if (!empty($phpbb_hook) && $phpbb_hook->call_hook(array(__CLASS__, __FUNCTION__), $handle, $include_once))
-		{
-			if ($phpbb_hook->hook_return(array(__CLASS__, __FUNCTION__)))
-			{
-				return $phpbb_hook->hook_return_result(array(__CLASS__, __FUNCTION__));
-			}
-		}
-
-		if (defined('IN_ERROR_HANDLER'))
-		{
-			if ((E_NOTICE & error_reporting()) == E_NOTICE)
-			{
-				error_reporting(error_reporting() ^ E_NOTICE);
-			}
-		}
-
 		if ($filename = $this->_tpl_load($handle))
 		{
 			($include_once) ? include_once($filename) : include($filename);
@@ -225,8 +206,9 @@ final class Template
 			eval(' ?>' . $this->compiled_code[$handle] . '<?php ');
 			
 			// Hack by AL: print the array for bug fixing		{
-			if(PRINT_TEMPLATE_VARS === true)
+			if(PRINT_TEMPLATE_VARS === true && !$this->bHasShownTemplateVars)
 			{
+				$this->bHasShownTemplateVars = true;
 				echo '<pre>'; print_r($this->_rootref); echo '</pre>';// @todo Her m� det lages en funksjon som returnerer $this->_rootref for bruk i Debug modulen:
 			}
 		}

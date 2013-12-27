@@ -23,5 +23,10 @@ final class Error extends AbstractController
 	public function set500error()
 	{
 		return true;
-	}	
+	}
+
+	public function setMaintenance()
+	{
+		return true;
+	}
 }

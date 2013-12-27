@@ -6,8 +6,6 @@ use App\Boot\Request;
 
 abstract class AbstractView
 {
-	public $DEFAULT_ACTION = 'indexAction';
-	public $SITE_TEMPLATE;
 	
 	protected $serviceFactory;
 	protected $presentationObjectFactory;
@@ -23,6 +21,41 @@ abstract class AbstractView
 		
 		if(!defined('WEBSITE')) { throw new \Exception('WEBSITE constant has not been set'); }
 		if(!defined('SITE_TEMPLATE')) { throw new \Exception('SITE_TEMPLATE constant has not been set'); } //@todo: hente template fra databasen
+	}
+	
+	protected function load($sCommand)
+	{
+		$sCommand = ucfirst($sCommand);
+		
+		$mutator = 'execute' . $sCommand;
+
+		if (!method_exists($this, $mutator) || !is_callable(array($this, $mutator))) {
+			throw new \Exception($sCommand . ' could not be called on View');
+		}
+		
+		return $this->$mutator();
+	}
+	
+	public function execute($sCommand)
+	{
+		/** Prepare for possible error output */
+		$this->presentationObjectFactory
+			->build('serverresponse', true)
+			->setPresentationName('error')
+			->assignData($this->serviceFactory->build('model')->getModelResponse('error'));
+			
+		/** Prepare server response */
+		$this->presentationObjectFactory
+			->build('serverresponse', true)
+			->setPresentationName('success')
+			->assignData($this->serviceFactory->build('model')->getModelResponse('success'));
+			
+		/** Get current visitor information */
+		$this->presentationObjectFactory
+			->build('visitor', true)
+			->assignData($this->serviceFactory->build('recognition')->getCurrentVisitor());
+
+		return $this->load($sCommand);
 	}
 	
 	protected function display($sTemplateFile)
@@ -47,14 +80,8 @@ abstract class AbstractView
 		}		
 	}
 	
-	protected function displayTemplate($sTemplateFile)
+	protected function sendVariablesToTemplate()
 	{
-		if(!is_object($this->template))
-		{
-			$this->template = new Template();
-			$this->template->set_custom_template(ROOT_PATH . 'view/templates', 'templateName');	
-		}
-			
 		foreach($this->presentationObjectFactory->getCache() as $presentationObject)
 		{
 			$this->template->assign_vars($presentationObject->getVars());
@@ -66,6 +93,17 @@ abstract class AbstractView
 					$this->template->assign_block_vars($blockname, $vararray);
 				}
 			}
+		}		
+	}
+	
+	protected function displayTemplate($sTemplateFile)
+	{
+		if(!is_object($this->template))
+		{
+			$this->template = new Template();
+			$this->template->set_custom_template(ROOT_PATH . 'view/templates', 'templateName');	
+			
+			$this->sendVariablesToTemplate();
 		}
 
 		$this->template->set_filenames(array($sTemplateFile => $sTemplateFile));

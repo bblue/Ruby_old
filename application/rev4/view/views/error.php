@@ -4,28 +4,16 @@ use View\AbstractView, View\Template;
 
 final class Error extends AbstractView
 {
-	public function indexAction()
+	public function executeIndexAction()
 	{
-		/** Get current visitor information */
-		$this->presentationObjectFactory
-			->build('visitor', true)
-			->assignData($this->serviceFactory->build('recognition')->getCurrentVisitor());
-			
-		/** Prepare for possible error output */
-		$this->presentationObjectFactory
-			->build('serverresponse', true)
-			->setPresentationName('error')
-			->assignData($this->serviceFactory->build('model')->getModelResponse('error'));
-		
 		$this->display('overall_header.html');
-//		$this->display('overall_navigation.html');
-		$this->display('error.html');
+		$this->display('pages/error.html');
 		$this->display('overall_footer.html');
 		
 		return true;
 	}
 	
-	public function set403error()
+	public function executeSet403error()
 	{
 		$this->presentationObjectFactory
 			->build('errormessage', true)
@@ -34,10 +22,10 @@ final class Error extends AbstractView
 			
 		http_response_code(403);
 			
-		return $this->indexAction();
+		return $this->load('indexAction');
 	}
 	
-	public function set404error()
+	public function executeSet404error()
 	{
 		$this->presentationObjectFactory
 			->build('errormessage', true)
@@ -46,10 +34,10 @@ final class Error extends AbstractView
 			
 		http_response_code(404);
 		
-		return $this->indexAction();
+		return $this->load('indexAction');
 	}
 	
-	public function set500error()
+	public function executeSet500error()
 	{
 		$this->presentationObjectFactory
 			->build('errormessage', true)
@@ -58,7 +46,7 @@ final class Error extends AbstractView
 		
 		http_response_code(500);
 			
-		return $this->indexAction();
+		return $this->load('indexAction');
 	}	
 	
 } 

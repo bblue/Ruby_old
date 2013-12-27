@@ -40,13 +40,13 @@ final class Dispatcher
 	
 	public function dispatch(Route $route, Request $request)
 	{
-		$controller	= $this->createController($route->sResourceName);
+		$controller	= $this->createController($route->getResourceName());
 		$view 		= $this->createView($route->getResourceName());
 		$sCommand 	= $route->getCommand();
 	    
 		if(PRINT_CONTROLLER_COMMAND === true)
     	{
-    		echo '<pre>Performing command on controller: <i>$' . $route->sResourceName . '->' . $sCommand . '()</i></pre>';
+    		echo '<pre>Performing command on controller: <i>$' . $route->getResourceName() . '->' . $sCommand . '()</i></pre>';
     	}
     	
 		try 
@@ -61,7 +61,7 @@ final class Dispatcher
 			$controller->registerCurrentVisitor();
 			
 			// Execute command on view
-			if(!$view->$sCommand())
+			if(!$view->execute($sCommand))
 			{
 				throw new \Exception('Command on view did not execute as expected');
 			}

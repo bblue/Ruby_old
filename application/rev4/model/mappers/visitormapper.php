@@ -41,6 +41,7 @@ final class VisitorMapper extends DatabaseDataMapper
     {
 		$visitor->user = new CollectionProxy(
 			$this->_dataMapperFactory->build('user'),
+			null,
 			array('id' => array(array('operator' => '=', 'value' => $visitor->user_id)))
 		);
     }

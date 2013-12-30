@@ -33,6 +33,10 @@ if(IS_DEVELOPMENT_AREA === true) {
 		error_reporting(E_ALL ^ E_NOTICE);
 		ini_set('error_prepend_string', '<pre>'); 
 		ini_set('error_append_string', '</pre>'); 
+		if(PRINT_TEMPLATE_VARS === true || PRINT_SQL_QUERY === true || PRINT_CONTROLLER_COMMAND === true)
+		{
+			echo '<br /><br />'; // Ugly fix to push the <pre> tags below the floating header menu in bootstrap theme
+		}
 	} else
 	{
 		error_reporting(0);
@@ -66,4 +70,4 @@ $dispatcher->setControllerFactory($controllerFactory);
 $dispatcher->setViewFactory($viewFactory);
 
 $frontController = new FrontController($dispatcher, $serviceFactory);
-$frontController->rUn($request);
+$frontController->run($request);

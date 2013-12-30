@@ -17,7 +17,7 @@ final class CollectionProxy extends Proxy implements LoadableInterface, \Countab
 			
 			if (!$this->_collection instanceof EntityCollection)
 			{
-				throw new \RunTimeException('Unable to load the specified collection.');
+				throw new \Exception('Unable to load the specified collection.');
 			}
 		}
 		return $this->_collection;
@@ -47,10 +47,22 @@ final class CollectionProxy extends Proxy implements LoadableInterface, \Countab
 	public function getEntity()
 	{
 		$collection = $this->load();
-		if($collection->count() == 1)
+		
+		$count = $collection->count();
+
+		if($count === 1)
 		{
 			return $collection->get(0);
 		}
-		throw new \Exception('EntityCollection contains more than 1 entity');   	
+		
+		if($count > 1)
+		{
+			throw new \Exception('EntityCollection contains more than 1 entity (' . $count . ')'); 
+		}
+		
+		if($count === 0)
+		{
+			throw new \Exception('EntityCollection contains 0 entites'); 
+		}
 	}
 }

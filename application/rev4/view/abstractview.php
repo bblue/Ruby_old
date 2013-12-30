@@ -40,19 +40,19 @@ abstract class AbstractView
 	{
 		/** Prepare for possible error output */
 		$this->presentationObjectFactory
-			->build('serverresponse')
+			->build('serverresponse', true)
 			->setPresentationName('error')
 			->assignData($this->serviceFactory->build('model')->getModelResponse('error'));
 			
 		/** Prepare server response */
 		$this->presentationObjectFactory
-			->build('serverresponse')
+			->build('serverresponse', true)
 			->setPresentationName('success')
 			->assignData($this->serviceFactory->build('model')->getModelResponse('success'));
 			
 		/** Get current visitor information */
 		$this->presentationObjectFactory
-			->build('visitor')
+			->build('visitor', true)
 			->assignData($this->serviceFactory->build('recognition')->getCurrentVisitor());
 
 		return $this->load($sCommand);

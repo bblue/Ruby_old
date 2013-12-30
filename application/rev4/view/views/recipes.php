@@ -9,7 +9,7 @@ final class Recipes extends AbstractView
 	{
 		/** Get list of all visitors */
 		$this->presentationObjectFactory
-			->build('activeVisitors')
+			->build('activeVisitors', true)
 			->assignData($this->serviceFactory->build('recognition')->getActiveVisitors());
 
 		/** Render the pages */

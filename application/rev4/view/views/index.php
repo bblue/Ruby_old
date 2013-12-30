@@ -10,7 +10,7 @@ final class Index extends AbstractView
 	{
 		/** Get list of all visitors */
 		$this->presentationObjectFactory
-			->build('activeVisitors')
+			->build('activeVisitors', true)
 			->assignData($this->serviceFactory->build('recognition')->getActiveVisitors());	
 			
 		$this->display('overall_header.html');

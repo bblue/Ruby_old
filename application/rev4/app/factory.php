@@ -10,27 +10,27 @@ abstract class Factory
 		return $this->_cache;
 	}
 	
-	public function build($sClassName, $cache = false)
+	public function build($sClassName, $store = false)
 	{
 		// Check for cached version
-		if($cache && array_key_exists($sClassName, $this->_cache))
+		if(array_key_exists($sClassName, $this->_cache))
 		{
-			return $this->_cache[$sClassName];
+			$class = $this->_cache[$sClassName];
 		}
-		
-		// Create a new instance
-		$class = $this->construct($sClassName);
-		if(!is_object($class))
+		else
 		{
-			throw new \Exception('Unable to create instance of ' . $sClassName . ', called by ' . get_called_class());
+			// Create a new instance
+			$class = $this->construct($sClassName);
+			if(!is_object($class))
+			{
+				throw new \Exception('Unable to create instance of ' . $sClassName . ', called by ' . get_called_class());
+			}
+			
+			if($store)
+			{
+				$this->saveToCache($sClassName, $class);
+			}
 		}
-		
-		// Save the new instance in the cache
-		if($cache)
-		{
-			$this->saveToCache($sClassName, $class);
-		}
-		
 		return $class;
 	}
 	

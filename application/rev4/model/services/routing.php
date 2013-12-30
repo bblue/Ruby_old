@@ -17,6 +17,8 @@ final class Routing extends ServiceAbstract
 	const ERROR_500_URL		= 'error/500';
 	const LOGIN_URL			= 'login';
 	const DEFAULT_URL		= 'index';
+	
+	const FORCED_LOGIN		= FORCED_LOGIN;
 
 	public function route($sUrl, Visitor $visitor, ACL $acl)
 	{
@@ -62,11 +64,11 @@ final class Routing extends ServiceAbstract
 		
 		// Test if the route exists
 		if($this->redirect_to_404())
-		{
-			return self::ERROR_404_URL;
-		}
-		
-		// Test if forced login is in effect
+        {
+        	return self::ERROR_404_URL;
+	    }
+
+	    // Test if forced login is in effect
 		if($this->redirect_to_login_page())
 		{
 			return self::LOGIN_URL;
@@ -114,10 +116,27 @@ final class Routing extends ServiceAbstract
 		$this->dataMapperFactory
 			->build('route')
 			->fetch($route);
+
+		// Confirm route match in database
+		if(!$route->id)
+		{
+			// No route match. Attempt to load the route from the url split
+			$route->sResourceName = $route->extractControllerFromUrl($route->url);
+			$route->sCommand = $route->extractCommandFromUrl($route->url);
 			
+			$this->dataMapperFactory
+				->build('routecontroller')
+				->fetch($route);
+		}
+		
+		// Check for entity errors
+		if($route->hasError())
+		{
+			throw new \Exception('Route should not throw an error. Something is very wrong.');
+		}
+
 		return $route;
 	}
-	
 
 	private function redirect_to_user_specific_rule()
 	{
@@ -136,14 +155,7 @@ final class Routing extends ServiceAbstract
 	
 	private function redirect_to_404()
 	{
-		if($this->route->id)
-		{
-			if($this->route->isEnabled())
-			{
-				return false;  
-			}
-		}
-		return true;
+		return !$this->route->isEnabled();			
 	}
 	
 	private function redirect_to_403()
@@ -172,7 +184,7 @@ final class Routing extends ServiceAbstract
 		{
 			return false;
 		}
-
+		
 		// Redirect to maintenance page
 		return true;
 	}
@@ -208,6 +220,6 @@ final class Routing extends ServiceAbstract
 
 	private function is_forced_login()
 	{
-		return false;
+		return self::FORCED_LOGIN;
 	}
 }

@@ -19,7 +19,36 @@ final class Route extends AbstractEntity
 		'a_id'
 	);
 	
+	private $aUrlElements;
+	
 	const DEFAULT_COMMAND = 'indexAction';
+	
+	public function extractControllerFromUrl($url)
+	{
+		$elements = $this->dissectUrl($url);
+		return $elements['controller'];
+	}
+
+	public function extractCommandFromUrl($url)
+	{
+		$elements = $this->dissectUrl($url);
+		return $elements['command'];
+	}
+	
+	private function dissectUrl($url)
+	{
+		if(isset($this->aUrlElements[$url]))
+		{
+			return $this->aUrlElements[$url];
+		}
+		
+		$parts = explode('/', $url);
+		
+		$elements['controller'] = ($parts[0]) ? : null;
+		$elements['comand'] = ($parts[1]) ? : null;
+		
+		return $this->aUrlElements[$url] = $elements;
+	}
 	
 	public function getUrl()
 	{

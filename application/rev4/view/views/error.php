@@ -9,7 +9,7 @@ final class Error extends AbstractView
 		$this->display('overall_header.html');
 		$this->display('pages/error.html');
 		$this->display('overall_footer.html');
-		
+
 		return true;
 	}
 	
@@ -30,7 +30,7 @@ final class Error extends AbstractView
 		$this->presentationObjectFactory
 			->build('errormessage', true)
 			->setPresentationName('http_error')
-			->assignData(403, 'Page Not Found', 'The page you requested could not be found');
+			->assignData(404, 'Page Not Found', 'The page you requested could not be found');
 			
 		http_response_code(404);
 		

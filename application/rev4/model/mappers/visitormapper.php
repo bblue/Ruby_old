@@ -22,7 +22,7 @@ final class VisitorMapper extends DatabaseDataMapper
 		'http_vars'				=> 'visitors.http_vars',
 		'device'				=> 'visitors.device',
 		'platform'				=> 'visitors.platform',
-		'browswer'				=> 'visitors.browser'
+		'browser'				=> 'visitors.browser'
 		
 	);
 	protected $_cascadeFields = array();

@@ -14,7 +14,7 @@ final class RouteMapper extends DatabaseDataMapper
 		'id'			=> 'routes.id',
 		'url'			=> 'routes.url',
 		'sResourceName'	=> 'routes.sResourceName',
-		'bIsEnabled'	=> 'routes.bIsEnabled',
+		'bIsEnabled'	=> 'areas.bIsEnabled',
 		'sCommand'		=> 'routes.sCommand',
 		'a_id'			=> 'areas.a_id'
 	);
@@ -41,6 +41,7 @@ final class RouteMapper extends DatabaseDataMapper
 	    	$this->find($aCriterias, $route);
 	    	
     	}
+
     	return $route;
     }
     

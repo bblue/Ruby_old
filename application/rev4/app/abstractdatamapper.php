@@ -49,14 +49,22 @@ abstract class AbstractDataMapper
     
     protected function setEntityData(AbstractEntity $entity, array $data = array())
     {
-		foreach($data as $key => $value)
+        foreach($this->_acceptedFields as $entityKey => $dbFieldName)
+    	{
+    		$arr = explode('.', $dbFieldName);
+    		$dbKey = $arr[1];
+    		$aConvertedKeys[$dbKey] = $entityKey;
+    	}
+    	
+		foreach($data as $dbKey => $value)
 		{
-			$entity->$key = $value;
+			$entity->$aConvertedKeys[$dbKey] = $value;
 		}
 	
 		if(!isset($data['id']) && !isset($entity->id))
 		{	
-			throw new \Exception('Failed to set id for entity ' . $this->_entityClass);
+			return $entity;
+			//throw new \Exception('Failed to set id for entity ' . $this->_entityClass . ' with mapper ' . get_called_class());
 		}
 
 		$this->setEntitySpecificData($entity);

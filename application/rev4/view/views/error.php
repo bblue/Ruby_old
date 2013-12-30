@@ -16,7 +16,7 @@ final class Error extends AbstractView
 	public function executeSet403error()
 	{
 		$this->presentationObjectFactory
-			->build('errormessage', true)
+			->build('errormessage')
 			->setPresentationName('http_error')
 			->assignData(403, 'Forbidden', 'You do not have access to this area');
 			
@@ -28,7 +28,7 @@ final class Error extends AbstractView
 	public function executeSet404error()
 	{
 		$this->presentationObjectFactory
-			->build('errormessage', true)
+			->build('errormessage')
 			->setPresentationName('http_error')
 			->assignData(404, 'Page Not Found', 'The page you requested could not be found');
 			
@@ -40,7 +40,7 @@ final class Error extends AbstractView
 	public function executeSet500error()
 	{
 		$this->presentationObjectFactory
-			->build('errormessage', true)
+			->build('errormessage')
 			->setPresentationName('http_error')
 			->assignData(500, 'Internal Server Error', 'An internal server error occured');
 		

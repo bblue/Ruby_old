@@ -1,10 +1,10 @@
 <?php
 namespace App\Factories;
 
-use App\Factory;
+use App\CacheableFactory;
 
 
-final class PresentationObject extends Factory
+final class PresentationObject extends CacheableFactory
 {
 	protected function construct($sPresentationObject)
 	{

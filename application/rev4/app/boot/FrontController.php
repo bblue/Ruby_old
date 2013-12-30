@@ -22,8 +22,8 @@ final class FrontController
 	
 	public function run(Request $request)
 	{
-		$visitor 	= $this->serviceFactory->build('recognition', true)->getCurrentVisitor();
-		$routing 	= $this->serviceFactory->build('routing');
+		$visitor 	= $this->serviceFactory->build('recognition')->getCurrentVisitor();
+		$routing 	= $this->serviceFactory->build('routing', false);
 		$acl 		= $this->serviceFactory->build('acl');
 		
 		// Run the requested route via the routing mechanism, and check it towards the ACL

@@ -1,9 +1,11 @@
 <?php
 namespace App\Factories;
 
-use App\Factory;
+use App\CacheableFactory,
+	App\Factory;
 
-final class Service extends Factory
+
+final class Service extends CacheableFactory
 {
 	private $dataMapperFactory;
 	private $entityFactory;

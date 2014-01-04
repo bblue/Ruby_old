@@ -51,6 +51,11 @@ final class Dispatcher
     	
 		try 
 		{
+			if(!is_callable(array($controller, $sCommand)))
+			{
+				throw new \Exception($sCommand . ' is not a recognized command on ' . get_class($controller));
+			}
+			
 			// Execute command on controller
 			if(!$controller->$sCommand($request))
 			{

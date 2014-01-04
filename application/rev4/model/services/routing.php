@@ -9,46 +9,25 @@ final class Routing extends ServiceAbstract
 	private $sOriginalUrl;
 	private $route;
 	private $visitor;
-	private $acl;
 
 	const MAINTENANCE_URL 	= 'error/maintenance';
 	const ERROR_403_URL		= 'error/403';
 	const ERROR_404_URL		= 'error/404';
 	const ERROR_500_URL		= 'error/500';
-	const LOGIN_URL			= 'login';
+	const LOGIN_URL			= 'users/login';
 	const DEFAULT_URL		= 'index';
 	
 	const FORCED_LOGIN		= FORCED_LOGIN;
 
-	public function route($sUrl, Visitor $visitor, ACL $acl)
+	public function route($sUrl, Visitor $visitor)
 	{
 		$this->sOriginalUrl = $sUrl;
 		$this->visitor = $visitor;
-		$this->acl = $acl;
 		
 		$this->route = $this->buildRoute(!empty($this->sOriginalUrl) ? $this->sOriginalUrl : self::DEFAULT_URL);
 
-		if($this->acl->visitorIsBlocked($this->visitor)) {
-			return $this->redirect(self::ERROR_403_URL);
-		}
-
 		if($sRedirectUrl = $this->executeRedirectRules()) {
 			$this->redirect($sRedirectUrl);
-		}
-
-		if(!$this->acl->visitorHasAccess($this->visitor, $this->route)) {
-			if($sRedirectUrl) {
-				$this->redirect(self::ERROR_500_URL);
-			} else {
-				if($this->visitor->isLoggedIn())
-				{
-					$this->redirect(self::ERROR_403_URL);
-				} 
-				else 
-				{
-					$this->redirect(self::LOGIN_URL);
-				}
-			}
 		}
 
 		return $this->route;
@@ -62,19 +41,19 @@ final class Routing extends ServiceAbstract
 			return self::MAINTENANCE_URL;
 		}
 		
-		// Test if the route exists
-		if($this->redirect_to_404())
-        {
-        	return self::ERROR_404_URL;
-	    }
-
 	    // Test if forced login is in effect
 		if($this->redirect_to_login_page())
 		{
 			return self::LOGIN_URL;
 		}
-
-		// Test if route is enabled
+		
+		// Test if the route exists
+		if($this->redirect_to_404())
+        {
+        	return self::ERROR_404_URL;
+	    }
+		
+	    // Test if route is enabled
 		if($this->redirect_to_403())
 		{
 			return self::ERROR_403_URL;
@@ -94,14 +73,19 @@ final class Routing extends ServiceAbstract
 		}
 	}
 
-	private function redirect($sRedirectUrl)
+	public function redirect($sRedirectUrl)
 	{
 		// Completely clear out the old route
 		unset($this->route);
 		
-		$this->setModelState('error', $this->createLogEntry('Redirect to ' . $sRedirectUrl . ' detected', $this->visitor));
+		$sMessage = 'Redirect to ' . $sRedirectUrl . ' detected';
+		$this->log->createLogEntry($sMessage, $this->visitor, 'info', true);
 		
-		return $this->route = $this->buildRoute($sRedirectUrl);
+		$this->route = $this->buildRoute($sRedirectUrl);
+		
+		$this->route->isRedirect = true;
+		
+		return $this->route;
 	}
 	
 	private function buildRoute($url)
@@ -123,12 +107,11 @@ final class Routing extends ServiceAbstract
 			// No route match. Attempt to load the route from the url split
 			$route->sResourceName = $route->extractControllerFromUrl($route->url);
 			$route->sCommand = $route->extractCommandFromUrl($route->url);
-			
 			$this->dataMapperFactory
 				->build('routecontroller')
 				->fetch($route);
 		}
-		
+
 		// Check for entity errors
 		if($route->hasError())
 		{
@@ -155,7 +138,25 @@ final class Routing extends ServiceAbstract
 	
 	private function redirect_to_404()
 	{
-		return !$this->route->isEnabled();			
+		// Check if the route is enabled. This will also verify if the route exists
+		if($this->route->isEnabled())
+		{
+			return false; 
+		}
+		
+		// Route does not exists, check if we should still attempt to load it
+		if(!defined('BYPASS_IS_ENABLED_CHECK') || BYPASS_IS_ENABLED_CHECK === false)
+		{
+			return true;
+		}
+		
+		// We are in dev mode and can attempt to load the route. Check if we have permission
+		if($this->visitor->user->isAdmin())
+		{	
+			return false;
+		}
+
+		return true;
 	}
 	
 	private function redirect_to_403()
@@ -203,7 +204,7 @@ final class Routing extends ServiceAbstract
 
 		if($this->is_forced_login())
 		{
-			if($this->route->canBypassForcedLogin())
+			if($this->route->bCanBypassForcedLogin)
 			{
 				return false;
 			}

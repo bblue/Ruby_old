@@ -13,9 +13,11 @@ final class RouteControllerMapper extends DatabaseDataMapper
 	protected $_acceptedFields = array(
 		'bIsEnabled'	=> 'areas.bIsEnabled',
 		'id'			=> 'areas.a_id',
-		'sResourceName'	=> 'areas.name'
+		'sResourceName'	=> 'areas.name',
+		'bCanBypassForcedLogin' => 'commands.bCanBypassForcedLogin',
+		'sCommand'		=> 'commands.sName'
 	);
-	protected $_cascadeFields = array();
+	protected $_cascadeFields = array('commands.a_id = areas.a_id');
     
     public function fetch(AbstractEntity $route)
     {
@@ -26,13 +28,19 @@ final class RouteControllerMapper extends DatabaseDataMapper
     	}
     	elseif(isset($route->sResourceName))
     	{
-	    	$aCriterias['sResourceName'] = array(
+	    	$aCriterias['sResourceName'] = array( 
 	    		array(
 	    			'operator' 	=> '=',
 	    			'value' 	=> $route->sResourceName
 	    		)
 	    	);
-
+	    	$aCriterias['sCommand'] = array( 
+	    		array(
+	    			'operator' 	=> '=',
+	    			'value' 	=> $route->getCommand()
+	    		)
+			);
+			
 	    	$this->find($aCriterias, $route);
     	}
 

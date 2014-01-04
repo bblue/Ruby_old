@@ -1,12 +1,13 @@
 <?php
 namespace View;
-use App\Factories\Service as ServiceFactory;;
-use App\Factories\PresentationObject as PresentationObjectFactory;
+
+use App\Factories\Service as ServiceFactory,
+	App\Factories\PresentationObject as PresentationObjectFactory;
+	
 use App\Boot\Request;
 
 abstract class AbstractView
 {
-	
 	protected $serviceFactory;
 	protected $presentationObjectFactory;
 	protected $request;
@@ -15,17 +16,20 @@ abstract class AbstractView
 	
 	public function __construct(ServiceFactory $serviceFactory, Request $request)
 	{
-		$this->serviceFactory = $serviceFactory;
-		$this->request = $request;
-		$this->presentationObjectFactory = new PresentationObjectFactory();
+		$this->serviceFactory 				= $serviceFactory;
+		$this->request 						= $request;
+		$this->template  					= new Template();
+		$this->presentationObjectFactory 	= new PresentationObjectFactory($this->template);		
 		
 		if(!defined('WEBSITE')) { throw new \Exception('WEBSITE constant has not been set'); }
 		if(!defined('SITE_TEMPLATE')) { throw new \Exception('SITE_TEMPLATE constant has not been set'); } //@todo: hente template fra databasen
+		
+		$this->template->set_custom_template(ROOT_PATH . 'view/templates/' . SITE_TEMPLATE, 'templateName');
 	}
 	
 	protected function load($sCommand)
 	{
-		$sCommand = ucfirst($sCommand);
+		$sCommand = ucfirst(strtolower($sCommand));
 		
 		$mutator = 'execute' . $sCommand;
 
@@ -38,23 +42,42 @@ abstract class AbstractView
 	
 	public function execute($sCommand)
 	{
-		/** Prepare for possible error output */
+		/** Build the log reports */
 		$this->presentationObjectFactory
-			->build('serverresponse', true)
-			->setPresentationName('error')
-			->assignData($this->serviceFactory->build('model')->getModelResponse('error'));
-			
-		/** Prepare server response */
-		$this->presentationObjectFactory
-			->build('serverresponse', true)
-			->setPresentationName('success')
-			->assignData($this->serviceFactory->build('model')->getModelResponse('success'));
+			->build('log', true)
+			->assignData($this->serviceFactory->build('logging', true)->getCurrentLogs());
 			
 		/** Get current visitor information */
 		$this->presentationObjectFactory
 			->build('visitor', true)
-			->assignData($this->serviceFactory->build('recognition')->getCurrentVisitor());
+			->setTemplatePrefix('visitor')
+			->assignData($this->serviceFactory->build('recognition', true)->getCurrentVisitor());
 
+		/** Load the user info for top menu */
+		$this->presentationObjectFactory
+			->build('nav_userinfo', true)
+			->assignData($this->serviceFactory->build('recognition', true)->getCurrentVisitor());
+
+		/** Load the user inbox for top menu  */
+		$this->presentationObjectFactory
+			->build('nav_userinbox', true)
+			->assignData($this->serviceFactory->build('recognition', true)->getCurrentVisitor());
+			
+		/** Load the user notifications for top menu  */
+		$this->presentationObjectFactory
+			->build('nav_usernotifications', true)
+			->assignData($this->serviceFactory->build('recognition', true)->getCurrentVisitor());
+		
+		/** Load required scripts */
+		$this->presentationObjectFactory
+			->build('scripttags', true)
+			->assignData($sTemplateFile);
+			
+		/** Get list of all visitors */
+		$this->presentationObjectFactory
+			->build('activeVisitors', true)
+			->assignData($this->serviceFactory->build('recognition', true)->getActiveVisitors());
+						
 		return $this->load($sCommand);
 	}
 	
@@ -80,32 +103,8 @@ abstract class AbstractView
 		}		
 	}
 	
-	protected function sendVariablesToTemplate()
-	{
-		foreach($this->presentationObjectFactory->getCache() as $presentationObject)
-		{
-			$this->template->assign_vars($presentationObject->getVars());
-			$aBlockVars = $presentationObject->getBlockVars();
-			foreach($aBlockVars as $blockname => $block)
-			{
-				foreach($block as $key => $vararray)
-				{
-					$this->template->assign_block_vars($blockname, $vararray);
-				}
-			}
-		}		
-	}
-	
 	protected function displayTemplate($sTemplateFile)
 	{
-		if(!is_object($this->template))
-		{
-			$this->template = new Template();
-			$this->template->set_custom_template(ROOT_PATH . 'view/templates', 'templateName');	
-			
-			$this->sendVariablesToTemplate();
-		}
-
 		$this->template->set_filenames(array($sTemplateFile => $sTemplateFile));
 
 		return $this->template->display($sTemplateFile);

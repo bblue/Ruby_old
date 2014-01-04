@@ -16,7 +16,11 @@ final class Service extends Factory
 	
 	protected function construct($sServiceName)
 	{
+		// Load the logging service for injection
+		$logService = ($sServiceName == 'logging') ? null : $this->build('logging', true);
 		$sServiceName = 'Model\Services\\' . $sServiceName;
-		return new $sServiceName($this->dataMapperFactory, $this->entityFactory);
+		
+		
+		return new $sServiceName($this->dataMapperFactory, $this->entityFactory, $logService);
 	}
 }

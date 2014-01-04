@@ -9,7 +9,16 @@ final class Log extends AbstractEntity
     	'text', 
     	'user',
     	'user_id',
-    	'timestamp'
+    	'timestamp',
+    	'type',
+    	'bShowLog'
+    );
+    
+    private $aTypes = array(
+	    'info'			=> 'log for information',
+	    'warning'		=> 'error log',
+    	'danger'		=> 'critical error log',
+    	'success'		=> 'success return'
     );
     
     /** Set entity ID */
@@ -21,4 +30,18 @@ final class Log extends AbstractEntity
         $this->_values['id'] = $id;
     }
 
+    public function setType($type)
+    {
+    	if(!$this->isValidType($type))
+    	{
+    		throw new \Exception('Unknown log type');
+    	}
+    	
+    	$this->_values['type'] = $type;
+    }
+    
+    public function isValidType($type)
+    {
+        return isset($this->aTypes[$type]);   	
+    }
 }

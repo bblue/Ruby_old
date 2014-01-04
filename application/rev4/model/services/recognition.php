@@ -32,22 +32,23 @@ final class Recognition extends ServiceAbstract
 		if(is_object($this->visitor))
 		{
 			return $this->visitor;
+		} else {
+			$visitor = $this->entityFactory->build('visitor');
+	
+			$this->dataMapperFactory
+				->build('session') //@todo: session_status() == PHP_SESSION_ACTIVE
+				->fetch($visitor);
+	
+			$this->dataMapperFactory
+				->build('server')
+				->fetch($visitor);
+	
+			$this->dataMapperFactory
+				->build('visitor')
+				->fetch($visitor);
+	
+			return $this->visitor = $visitor;		
 		}
-		$visitor = $this->entityFactory->build('visitor');
-
-		$this->dataMapperFactory
-			->build('session') //@todo: session_status() == PHP_SESSION_ACTIVE
-			->fetch($visitor);
-
-		$this->dataMapperFactory
-			->build('server')
-			->fetch($visitor);
-
-		$this->dataMapperFactory
-			->build('visitor')
-			->fetch($visitor);
-
-		return $this->visitor = $visitor;;
 	}
 
 	public function registerVisitor(Visitor $visitor)
@@ -96,13 +97,13 @@ final class Recognition extends ServiceAbstract
 			->fetch($user);
 
 		// Build a visitor object
-		$visitor = $this->getCurrentVisitor();
+		$this->visitor = $this->getCurrentVisitor();
 		
 		if($aErrors = $user->hasError())
 		{
-			foreach($aErrors as $error)
+			foreach($aErrors as $sMessage)
 			{
-				$this->setModelState('error', $this->createLogEntry($error, $visitor));
+				$this->log->createLogEntry($sMessage, $this->visitor, 'warning', true);
 			}
 			return false;
 		}
@@ -110,25 +111,33 @@ final class Recognition extends ServiceAbstract
 		// Make sure user exists
 		if(!$user->id)
 		{
-			$this->setModelState('error', $this->createLogEntry('Username or password incorrect', $visitor));
+			$sMessage = 'Username or password incorrect';
+			$this->log->createLogEntry($sMessage, $this->visitor, 'warning', true);
 			return false;
 		}
 			
 		// Check password
 		if(!$user->matchPassword($password))
 		{
-			$this->setModelState('error', $this->createLogEntry('Username or password incorrect', $visitor));
+			$sMessage = 'Username or password incorrect';
+			$this->log->createLogEntry($sMessage, $this->visitor, 'warning', true);
 			return false;
 		}
 		
-		$visitor->user_id = $user->id;
+		// Update the entity
+		$this->visitor->user_id = $user->id;
+		$this->visitor->user = $user;
+		
 		//@todo: dersom jeg oppdaterer $visitor->user_id etter å ha hentet $visitor->user så blir det krøll.
 		//@todo: Det må IKKE fungerer å $entity->entity2->value = $verdi, da dette ikke vil kunne lagres som det skal. Eventuelt så må jeg lage en funksjon som faktisk vil kunne lagre de sakene, men det virker tungvint...
 		
-		if($this->registerVisitor($visitor))
+		if($this->registerVisitor($this->visitor))
 		{
-			$this->setModelState('success', $this->createLogEntry('Successful authentication', $visitor));
+			$sMessage = 'You are now logged in as ' . $this->visitor->user->Firstname;
+			$this->log->createLogEntry($sMessage, $this->visitor, 'success', true);
 			return true;
+		} else {
+			throw \Exception('Unable to register logged in user'); 
 		}
 	}
 	
@@ -140,11 +149,13 @@ final class Recognition extends ServiceAbstract
 			$this->dataMapperFactory
 				->build('visitor')
 				->store($visitor);
-			$this->setModelState('success', $this->createLogEntry('Successful logout', $visitor));	
+			$sMessage = 'Successful sign out';
+			$this->log->createLogEntry($sMessage, $this->visitor, 'success', true);
 		}
 		else 
 		{
-			$this->setModelState('success', $this->createLogEntry('You are already logged out', $visitor));	
+			$sMessage = 'You are already logged out';
+			$this->log->createLogEntry($sMessage, $this->visitor, 'info', true);
 		}
 	}
 	

@@ -220,17 +220,11 @@ final class Template
 	* Display the handle and assign the output to a template variable or return the compiled result.
 	* @access public
 	*/
-	// Hack by AL: Changed from $hanld, $template_var = '', $return_content = true, $include_once = false
-	function assign_display($handle, $return_content = true, $include_once = false, $template_var = '')
+	function assign_display($handle, $template_var = '', $include_once = false)
 	{
 		ob_start();
 		$this->display($handle, $include_once);
 		$contents = ob_get_clean();
-
-		if ($return_content)
-		{
-			return $contents;
-		}
 
 		$this->assign_var($template_var, $contents);
 

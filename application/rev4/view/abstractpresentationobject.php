@@ -5,58 +5,60 @@ use App\ServiceFactory;
 
 abstract class AbstractPresentationObject
 {
-	protected $sName;
-	private $sPresentationName;
-	protected $serviceFactory;
-	protected $aVars = array();
+	protected $sTemplatePrefix;
 
-	
-	public function setPresentationName($sName)
+	protected $serviceFactory;
+	protected $template;
+
+	public function __construct(Template $template)
 	{
-		$this->sPresentationName = $sName;
+		$this->template = $template;
+	}
+	
+	private function getTemplatePrefix($toLower = false)
+	{
+		return (empty($this->sTemplatePrefix)) ? null : ((($toLower) ? strtolower($this->sTemplatePrefix) : $this->sTemplatePrefix) . '_');	
+	}
+	
+	public function setTemplatePrefix($sPrefix)
+	{
+		$this->sTemplatePrefix = strtoupper($sPrefix);
 		return $this;
-	}
-	
-	public function getName()
-	{
-		if(!isset($this->sName))
-		{
-			$array = explode('\\', get_called_class());
-			$this->sName = end($array) . ((!empty($this->sPresentationName)) ? '_' . $this->sPresentationName : '');
-		}
-		return $this->sName;
-	}
-	
-	public function getVars()
-	{
-		return (isset($this->aVars['default'])) ? $this->aVars['default'] : array();
-	}
-	
-	public function getBlockVars()
-	{
-		return (isset($this->aVars['blocks'])) ? $this->aVars['blocks'] :  array();
-	}
-	
-	public function getAllVars()
-	{
-		return $this->aVars;
 	}
 	
 	protected function assign_vars(array $aVars)
 	{
-		foreach($aVars as $key => $value)
+		foreach ($aVars as $key => $val)
 		{
-			$this->assign_var($key, $value);
+	    	$aVars[$this->getTemplatePrefix().$key] = $val;
+		    unset($aVars[$key]);
 		}
+		
+		$this->template->assign_vars($aVars);
 	}
 	
 	protected function assign_var($key, $value)
 	{
-		$this->aVars['default'][strtoupper($this->getName()) . '_' . $key] = $value;
+		$this->template->assign_var($this->getTemplatePrefix().$key, $value);
 	}
-	
+
+	/**
+	* Wrapper function to add specific prefix to the variable pairs
+	* 
+	* This function will convert <blockname> into <prefix_blockname>
+	* 
+	* @param string $blockname Block identifier for the template
+	* @param array $vararray Array containing key and var pairs
+	* 
+	* @return void
+	*/
 	protected function assign_block_vars($blockname, array $vararray)
 	{
-		$this->aVars['blocks'][strtolower($this->getName()) . '_' . $blockname][] = $vararray;
+		$this->template->assign_block_vars($this->getTemplatePrefix(true).$blockname, $vararray);
+	}
+	
+	protected function assign_display($handle, $template_var, $include_once = false)
+	{
+		$this->template->assign_display($handle, ($this->getTemplatePrefix().$template_var), $include_once);
 	}
 }

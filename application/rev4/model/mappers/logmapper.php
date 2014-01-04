@@ -12,7 +12,8 @@ final class LogMapper extends DatabaseDataMapper
 		'id'						=> 'logs.id',
 		'user_id'					=> 'logs.user_id',
 		'text'						=> 'logs.text',
-		'timestamp'					=> 'logs.timestamp'
+		'timestamp'					=> 'logs.timestamp',
+		'type'						=> 'logs.type'
 	);
 	protected $_cascadeFields = array();
     

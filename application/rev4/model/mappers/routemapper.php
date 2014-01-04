@@ -16,10 +16,13 @@ final class RouteMapper extends DatabaseDataMapper
 		'sResourceName'	=> 'routes.sResourceName',
 		'bIsEnabled'	=> 'areas.bIsEnabled',
 		'sCommand'		=> 'routes.sCommand',
-		'a_id'			=> 'areas.a_id'
+		'a_id'			=> 'areas.a_id',
+		'bCanBypassForcedLogin' => 'commands.bCanBypassForcedLogin',
 	);
 	protected $_cascadeFields = array(
-		'routes.sResourceName = areas.name'
+		'routes.sResourceName = areas.name',
+		'commands.sName = routes.sCommand',
+		'commands.a_id = areas.a_id'
 	);
     
     public function fetch(AbstractEntity $route)

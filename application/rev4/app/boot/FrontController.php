@@ -22,17 +22,41 @@ final class FrontController
 	
 	public function run(Request $request)
 	{
-		$visitor 	= $this->serviceFactory->build('recognition', true)->getCurrentVisitor();
-		$routing 	= $this->serviceFactory->build('routing');
-		$acl 		= $this->serviceFactory->build('acl');
+		$visitor	= $this->serviceFactory->build('recognition', true)->getCurrentVisitor();
+		$routing	= $this->serviceFactory->build('routing');
+		$acl		= $this->serviceFactory->build('acl');
 		
 		// Run the requested route via the routing mechanism, and check it towards the ACL
-		$route = $routing->route($request->getResourceName(), $visitor, $acl); 
-
+		$route = $routing->route($request->getResourceName(), $visitor); 
+		
+		require ROOT_PATH . 'lib/PhpRbac/autoload.php';
+		
+		//$rbac = new \PhpRbac\Rbac();
+		
+		/*
+		// @todo: Gjøre sjekk under i ACL, og å returnere behov for rerouting. Constants burde settes i $route, ikke $routing.
+		if($acl->visitorIsBlocked($visitor)) {
+			$route = $routing->redirect($routing::ERROR_403_URL);
+		}
+		
+		// Perform RBAC
+		if(!$acl->visitorHasAccess($visitor, $route)) {
+			if($route->isRedirect) {
+				$route = $routing->redirect($routing::ERROR_500_URL);
+			} else {
+				if($visitor->isLoggedIn())
+				{
+					$route = $routing->redirect($routing::ERROR_403_URL);
+				} 
+				else
+				{
+					$route = $routing->redirect($routing::LOGIN_URL);
+				}
+			}
+		}
+		*/
+		
 		// Dispatch to whatever route we ended up with
 		$this->dispatcher->dispatch($route, $request);
-		
-		// Clear the response log before next 
-		$this->serviceFactory->build('model')->clearModelResponse();
 	}
 }

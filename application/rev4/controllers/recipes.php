@@ -7,6 +7,11 @@ final class Recipes extends AbstractController
 {
 	public function indexAction()
 	{
+		return $this->managemyrecipes();
+	}
+	
+	public function managemyrecipes()
+	{
 		return true;
 	}
 }

@@ -17,27 +17,12 @@ abstract class AbstractController
 	
 	public function indexAction()
 	{
-		throw new \Exception('Unable to identify index action called by ' . get_called_class());
+		return true;
 	}
 	
 	public function registerCurrentVisitor()
 	{
-		$recognition = $this->serviceFactory->build('recognition');
+		$recognition = $this->serviceFactory->build('recognition', true);
 		$recognition->registerVisitor($recognition->getCurrentVisitor());
-	}
-	
-	public function login()
-	{
-		$this->serviceFactory
-			->build('recognition')
-			->authenticate($this->request->username, $this->request->password);
-		return true;
-	}
-	
-	public function logout()
-	{
-		$recognition = $this->serviceFactory->build('recognition');
-		$recognition->logoutVisitor($recognition->getCurrentVisitor());
-		return true;
 	}
 }

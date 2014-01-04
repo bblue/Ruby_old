@@ -25,18 +25,14 @@
         {
         	$sFilePath = strtolower($this->sBasePath .  str_replace('\\', '/', $sClassName)) . '.php';
         	
-			if(!$this->hasLoadedClass($sFilePath))
-			{
-				throw new \Exception('Autoloader failed to load ' . $sClassName . ' (' . $sFilePath . ')');
-			}
-			return true;
+			return $this->hasLoadedClass($sFilePath);
         }
         
         private function hasLoadedClass($sFilePath)
         {
             if(is_readable($sFilePath))
 			{
-				require($sFilePath);
+				include($sFilePath);
 				return true;
 			}
 			return false;

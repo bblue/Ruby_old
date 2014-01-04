@@ -16,16 +16,21 @@ final class Usergroup extends AbstractEntity
    
     //@todo: fikse at det kun er allowed fields som blir lastet fra databasen (dette skaper problemer siden 'comments' vil være et av de godkjente feltene her)
 
-    public $ADMIN_ID = 1;
+    const ADMIN_ID = 1;
     
     public function setId($id)
     {
         if(!filter_var($id, FILTER_VALIDATE_INT, array('options' => array('min_range' => 1, 'max_range' => 999999)))) {
             throw new \Exception('The specified ID is invalid.');
         }
-        $this->_values['id'] = $id;
+        $this->_values['id'] = intval($id);
     }
    
+    public function isAdmin()
+    {
+    	return ($this->_values['id'] === self::ADMIN_ID) ? true : false; 
+    }
+    
     public function setName($sName)
     {
         if (strlen($sName) < 2) {

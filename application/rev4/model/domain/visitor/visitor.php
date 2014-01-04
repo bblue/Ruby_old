@@ -28,7 +28,7 @@ final class Visitor extends AbstractEntity
     }
 	public function getUser_id()
 	{
-		return isset($this->_values['user_id']) ? $this->_values['user_id'] : User::GUEST_ID; 
+		return !empty($this->_values['user_id']) ? $this->_values['user_id'] : User::GUEST_ID; 
 	}
 	
     public function setUser_id($id)
@@ -36,10 +36,10 @@ final class Visitor extends AbstractEntity
     	// Remove the user if user ID changes
     	if(is_object($this->_values['user']))
     	{
-    		$this->_values['user'] = false;
+    		$this->_values['user'] = null;
     	}
     	
-    	$this->_values['user_id'] = isset($id) ? (int)$id : User::GUEST_ID; 
+    	$this->_values['user_id'] = (!empty($id)) ? (int)$id : User::GUEST_ID; 
     }
     
     public function setHttp_user_agent($http_user_agent)
@@ -67,9 +67,11 @@ final class Visitor extends AbstractEntity
     	$this->_values['timestamp'] = ($timestamp)?:time();
     }
     
-    public function setUser(CollectionProxy $user)
+    public function setUser($user)
     {
-        $this->_values['user'] = $user;
+    	if($user instanceof CollectionProxy || $user instanceof User) {
+    		$this->_values['user'] = $user;
+    	}
     }
     
     public function getUser()
@@ -167,10 +169,6 @@ final class Visitor extends AbstractEntity
     ###################################### Methods ###################################### 
     public function isLoggedIn()
     {
-    	if($this->getUser_id() != User::GUEST_ID)
-    	{
-    		return true;
-    	}
-    	return false;
+    	return ($this->getUser_id() != User::GUEST_ID);
     }
 }

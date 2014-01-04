@@ -16,7 +16,9 @@ final class Route extends AbstractEntity
 		'sResourceName',
 		'bIsEnabled',
 		'sCommand',
-		'a_id'
+		'a_id',
+		'isRedirect',
+		'bCanBypassForcedLogin'
 	);
 	
 	private $aUrlElements;
@@ -45,7 +47,7 @@ final class Route extends AbstractEntity
 		$parts = explode('/', $url);
 		
 		$elements['controller'] = ($parts[0]) ? : null;
-		$elements['comand'] = ($parts[1]) ? : null;
+		$elements['command'] = (!empty($parts[1])) ? $parts[1] : null;
 		
 		return $this->aUrlElements[$url] = $elements;
 	}

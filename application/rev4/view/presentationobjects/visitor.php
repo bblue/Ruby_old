@@ -8,6 +8,7 @@ final class Visitor extends AbstractPresentationObject
 	{
 		$this->assign_vars(array(
 			'USERNAME'			=> $visitor->user->Username,
+			'FIRSTNAME'			=> $visitor->user->Firstname,
 			'IS_GUEST'			=> $visitor->user->isGuest(),
 			'IS_ADMIN'			=> $visitor->user->isAdmin(),
 			'IS_LOGGED_IN'		=> $visitor->isLoggedIn(),

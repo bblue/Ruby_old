@@ -293,7 +293,7 @@ abstract class DatabaseDataMapper extends AbstractDataMapper implements DataMapp
 			throw new \Exception('Error in ' . __METHOD__  . ': can not return empty clause string');
 		}
 		
-		$string = implode(' ' . ($bIsInjected ? 'AND' : 'OR') . ' ', $aClauseStrings);
+		$string = implode(' ' . ($bIsInjected ? 'AND' : 'AND') . ' ', $aClauseStrings);
 
 		return $string;
 	}

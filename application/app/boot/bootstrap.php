@@ -19,7 +19,7 @@ if (version_compare(PHP_VERSION, '5.3.1', '<'))
 define('IN_CONTROLLER', true);
 
 /** Define the paths */
-define('ROOT_PATH', '../application/rev4/');
+define('ROOT_PATH', '../application/');
 
 /** Load the configuration file  */
 require (ROOT_PATH . 'app/boot/config.php'); //@todo: Load this into a class 

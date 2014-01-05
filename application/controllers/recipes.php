@@ -5,12 +5,12 @@ use App\AbstractController;
 
 final class Recipes extends AbstractController
 {
-	public function indexAction()
+	public function executeIndexaction()
 	{
-		return $this->managemyrecipes();
+		return $this->load('managemyrecipes');
 	}
 	
-	public function managemyrecipes()
+	public function executeManagemyrecipes()
 	{
 		return true;
 	}

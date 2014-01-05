@@ -3,19 +3,7 @@ namespace View\Views;
 use View\AbstractView, View\Template;
 
 final class Error extends AbstractView
-{	
-	public function executeSet403error()
-	{
-		$this->presentationObjectFactory
-			->build('errormessage', true)
-			->setTemplatePrefix('http_error')
-			->assignData(403, 'Forbidden', 'You do not have access to this area');
-			
-		http_response_code(403);
-		
-		return $this->load('indexAction');
-	}
-	
+{
 	public function executeSet404error()
 	{
 		http_response_code(404);

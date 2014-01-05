@@ -30,7 +30,7 @@ final class Dev extends ServiceAbstract
 		{
 			if($id = $rbac->Permissions->Add($aPermission['title'], $aPermission['description'], $aPermission['parent_role_id']))
 			{
-				$sMessage = 	'Insert permission (#'.((isset($aPermission['parent_id'])) ? ($aPermission['parent_id'] . '-') : '')."<b>$id</b>): ". $aPermission['title']. ' <i>[' . $aPermission['description'] . ']</i>';
+				$sMessage = 'Insert permission (#'.((isset($aPermission['parent_id'])) ? ($aPermission['parent_id'] . '-') : '')."<b>$id</b>): ". $aPermission['title']. ' <i>[' . $aPermission['description'] . ']</i>';
 				$this->log->createLogEntry($sMessage, $visitor, 'info', true);
 			}
 		}

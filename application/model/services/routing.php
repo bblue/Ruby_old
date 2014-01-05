@@ -152,7 +152,8 @@ final class Routing extends ServiceAbstract
 		
 		// We are in dev mode and can attempt to load the route. Check if we have permission
 		if($this->visitor->user->isAdmin())
-		{	
+		{
+			trigger_error('Now bypassing route verification. Fatal errors could be triggered', E_USER_NOTICE);
 			return false;
 		}
 
@@ -161,7 +162,7 @@ final class Routing extends ServiceAbstract
 	
 	private function redirect_to_403()
 	{
-		//return $this->route->isEnabled();
+		// This check should verify that the user is not blocked
 	}
 	
 	private function redirect_to_maintenance_page()

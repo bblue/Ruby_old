@@ -12,6 +12,8 @@ abstract class AbstractView
 	protected $presentationObjectFactory;
 	protected $request;
 	
+	private $sCommand = '';
+	
 	protected $template;
 	
 	public function __construct(ServiceFactory $serviceFactory, Request $request)
@@ -27,8 +29,19 @@ abstract class AbstractView
 		$this->template->set_custom_template(ROOT_PATH . 'view/templates/' . SITE_TEMPLATE, 'templateName');
 	}
 	
-	protected function load($sCommand)
+	public function setCommand($sCommand)
 	{
+		$this->sCommand = $sCommand;
+		return true;
+	}
+	
+	protected function load($sCommand = '')
+	{
+		if(empty($sCommand))
+		{
+			throw new \Exception('Command is empty. Unable to load'); // @todo: Consider if indexAction should be loaded by default.
+		}
+		
 		$sCommand = ucfirst(strtolower($sCommand));
 		
 		$mutator = 'execute' . $sCommand;
@@ -40,7 +53,7 @@ abstract class AbstractView
 		return $this->$mutator();
 	}
 	
-	public function execute($sCommand)
+	public function execute($sCommand = '')
 	{
 		/** Build the log reports */
 		$this->presentationObjectFactory
@@ -77,10 +90,38 @@ abstract class AbstractView
 		$this->presentationObjectFactory
 			->build('activeVisitors', true)
 			->assignData($this->serviceFactory->build('recognition', true)->getActiveVisitors());
-						
-		return $this->load($sCommand);
+
+		// $sCommand should take priority over $this->sCommand
+		$this->sCommand = !empty($sCommand) ? $sCommand : $this->sCommand;
+
+		return $this->load($this->sCommand);
 	}
 	
+	public function executeSet403error()
+	{
+		$this->presentationObjectFactory
+			->build('errormessage', true)
+			->setTemplatePrefix('http_error')
+			->assignData(403, 'Forbidden', 'You do not have access to this area');
+			
+		http_response_code(403);
+		
+		if($this->serviceFactory->build('recognition', true)->getCurrentVisitor()->isLoggedIn() || FORCED_LOGIN === false)
+		{
+			$sTemplateFile = 'extras-403';
+					
+			$this->display('custom/header.htm');
+			$this->display('custom/sidebar.htm');
+			$this->display('custom/rightbar.htm');
+			$this->display('custom/' . $sTemplateFile . '.htm');
+			$this->display('custom/footer.htm');	
+		}
+		else
+		{
+			$this->display('custom/full-page-error.htm');
+		}
+	}
+		
 	protected function display($sTemplateFile)
 	{
 		switch($this->request->getReturnDataType())

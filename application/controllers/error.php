@@ -4,23 +4,18 @@ namespace Controllers;
 use App\AbstractController;
 
 final class Error extends AbstractController
-{	
-	public function set403error()
+{
+	public function executeSet404error()
 	{
 		return true;
 	}
 	
-	public function set404error()
-	{
-		return true;
-	}
-	
-	public function set500error()
+	public function executeSet500error()
 	{
 		return true;
 	}
 
-	public function setMaintenance()
+	public function executeSetmaintenance()
 	{
 		return true;
 	}

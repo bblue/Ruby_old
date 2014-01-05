@@ -6,8 +6,7 @@ use View\AbstractView,
 
 final class Dev extends AbstractView
 {	
-
-	public function executeAddrbacroles()
+	protected function executeIndexaction()
 	{
 		$sTemplateFile = 'dev';
 			
@@ -15,14 +14,21 @@ final class Dev extends AbstractView
 		$this->display('custom/sidebar.htm');
 		$this->display('custom/rightbar.htm');
 		$this->display('custom/' . $sTemplateFile . '.htm');
-		$this->display('custom/footer.htm');	
-		
+		$this->display('custom/footer.htm');
 		return true;
 	}
-	public function executeAddrbacpermissions()
+	
+	protected function executeAddrbacroles()
 	{
-		$this->load('addrbacroles');	
-		
-		return true;
+		return $this->load('indexaction');	
+	}
+	protected function executeAddrbacpermissions()
+	{
+		return $this->load('indexaction');	
+	}
+	
+	protected function executeRbac()
+	{
+		return $this->load('indexaction');	
 	}
 }

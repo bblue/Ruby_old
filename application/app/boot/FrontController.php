@@ -22,16 +22,16 @@ final class FrontController
 	
 	public function run(Request $request)
 	{
-		$visitor	= $this->serviceFactory->build('recognition', true)->getCurrentVisitor();
-		$routing	= $this->serviceFactory->build('routing');
-		$acl		= $this->serviceFactory->build('acl');
+		$recognition	= $this->serviceFactory->build('recognition', true);
+		$visitor = $recognition->getCurrentVisitor();
+		$recognition->registerVisitor($visitor);
+
+		$routing		= $this->serviceFactory->build('routing');
+
+		//$acl			= $this->serviceFactory->build('acl');
 		
 		// Run the requested route via the routing mechanism, and check it towards the ACL
-		$route = $routing->route($request->getResourceName(), $visitor); 
-		
-		require ROOT_PATH . 'lib/PhpRbac/autoload.php';
-		
-		//$rbac = new \PhpRbac\Rbac();
+		$route = $routing->route($request->getResourceName(), $visitor);
 		
 		/*
 		// @todo: Gjøre sjekk under i ACL, og å returnere behov for rerouting. Constants burde settes i $route, ikke $routing.
@@ -57,6 +57,6 @@ final class FrontController
 		*/
 		
 		// Dispatch to whatever route we ended up with
-		$this->dispatcher->dispatch($route, $request);
+		$this->dispatcher->dispatch($route);
 	}
 }

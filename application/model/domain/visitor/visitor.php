@@ -78,9 +78,10 @@ final class Visitor extends AbstractEntity
     {
     	if(is_object($this->_values['user']))
     	{
-    		return $this->_values['user']->getEntity();
+    		return ($this->_values['user'] instanceof User) ? $this->_values['user'] : $this->_values['user']->getEntity();
+    	} else {
+    		throw new \Exception('User is not set for userID=' . $this->user_id);
     	}
-    	throw new \Exception('User is not set for userID=' . $this->user_id);
     }
     
     public function getDevice($recalc = false)

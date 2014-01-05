@@ -25,32 +25,17 @@ final class SessionMapper extends AbstractDataMapper
 	
 	public function fetch(AbstractEntity $entity)
 	{
-	   if($entity instanceof Visitor)
-	   {
-	   		$entity->id = $this->_adapter->getSessionID();
+		if($entity instanceof Visitor)
+		{
+			$entity->id = $this->_adapter->getSessionID();
 			return $entity;
-	   }
-	   
-	   if($entity instanceof Model)
-	   {
-	   		$data = $this->_adapter->getVar(get_class($entity));
+		}
 
-	   		if(is_array($data['responseLogIds']))
-	   		{
-	   			$entity->responseLogIds = $data['responseLogIds'];
-	   		}
-	   		
-			return $entity;
-	   }
 		throw new \Exception('Entity (' . (is_object($entity) ? get_class($entity) : $entity) . ') cannot be mapped by this datamapper (' . __CLASS__ . ')');
 	}
 	
 	public function store(AbstractEntity $entity)
 	{
-		if($entity instanceof Model)
-		{
-			$this->_adapter->setVar(get_class($entity), $entity->toArray());
-			return $entity;
-		}
+		throw new \Exception('Unsupported');
 	}
 }

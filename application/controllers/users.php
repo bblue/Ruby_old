@@ -5,12 +5,12 @@ use App\AbstractController;
 
 final class Users extends AbstractController
 {
-	public function indexAction()
+	public function executeIndexAction()
 	{
-		return $this->view();
+		return $this->load('view');
 	}
 	
-	public function login()
+	public function executeLogin()
 	{
 		$this->serviceFactory
 			->build('recognition')
@@ -18,14 +18,14 @@ final class Users extends AbstractController
 		return true;
 	}
 	
-	public function logout()
+	public function executeLogout()
 	{
 		$recognition = $this->serviceFactory->build('recognition');
 		$recognition->logoutVisitor($recognition->getCurrentVisitor());
 		return true;
 	}
 	
-	public function view()
+	public function executeView()
 	{
 		if(!empty($this->request->u_id))
 		{
@@ -37,27 +37,27 @@ final class Users extends AbstractController
 		return true;
 	}
 	
-	public function register()
+	public function executeRegister()
 	{
 		return true;
 	}
 	
-	public function passwordReset()
+	public function executePasswordreset()
 	{
 		return true;
 	}
 	
-	public function inbox()
+	public function executeInbox()
 	{
 		return true;
 	}
 	
-	public function timeline()
+	public function executeTimeline()
 	{
 		return true;
 	}
 	
-	public function adduser()
+	public function executeAdduser()
 	{
 		return true;
 	}

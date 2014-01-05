@@ -81,6 +81,17 @@ final class Recognition extends ServiceAbstract
 	/* Function to log in a user */
 	public function authenticate($username, $password)
 	{
+		// Build a visitor object
+		$visitor = $this->getCurrentVisitor();
+		
+		// Check if we are already logged in
+		if($visitor->isLoggedIn())
+		{
+			$sMessage = 'You are already logged in';
+			$this->log->createLogEntry($sMessage, $visitor, 'info', true);
+			return true;
+		}
+		
 		// Check that we have received values
 		if(empty($username) || empty($password))
 		{
@@ -95,15 +106,12 @@ final class Recognition extends ServiceAbstract
 		$this->dataMapperFactory
 			->build('user')
 			->fetch($user);
-
-		// Build a visitor object
-		$this->visitor = $this->getCurrentVisitor();
 		
 		if($aErrors = $user->hasError())
 		{
 			foreach($aErrors as $sMessage)
 			{
-				$this->log->createLogEntry($sMessage, $this->visitor, 'warning', true);
+				$this->log->createLogEntry($sMessage, $visitor, 'warning', true);
 			}
 			return false;
 		}
@@ -112,7 +120,7 @@ final class Recognition extends ServiceAbstract
 		if(!$user->id)
 		{
 			$sMessage = 'Username or password incorrect';
-			$this->log->createLogEntry($sMessage, $this->visitor, 'warning', true);
+			$this->log->createLogEntry($sMessage, $visitor, 'warning', true);
 			return false;
 		}
 			
@@ -120,21 +128,22 @@ final class Recognition extends ServiceAbstract
 		if(!$user->matchPassword($password))
 		{
 			$sMessage = 'Username or password incorrect';
-			$this->log->createLogEntry($sMessage, $this->visitor, 'warning', true);
+			$this->log->createLogEntry($sMessage, $visitor, 'warning', true);
 			return false;
 		}
 		
 		// Update the entity
-		$this->visitor->user_id = $user->id;
-		$this->visitor->user = $user;
+		$visitor->user_id = $user->id;
+		$visitor->user = $user;
 		
 		//@todo: dersom jeg oppdaterer $visitor->user_id etter å ha hentet $visitor->user så blir det krøll.
 		//@todo: Det må IKKE fungerer å $entity->entity2->value = $verdi, da dette ikke vil kunne lagres som det skal. Eventuelt så må jeg lage en funksjon som faktisk vil kunne lagre de sakene, men det virker tungvint...
 		
-		if($this->registerVisitor($this->visitor))
+		if($this->registerVisitor($visitor))
 		{
-			$sMessage = 'You are now logged in as ' . $this->visitor->user->Firstname;
-			$this->log->createLogEntry($sMessage, $this->visitor, 'success', true);
+			$sMessage = 'You are now logged in as ' . $visitor->user->Firstname;
+			$this->log->createLogEntry($sMessage, $visitor, 'success', true);
+			echo $visitor->user_id, $this->visitor->user_id;
 			return true;
 		} else {
 			throw \Exception('Unable to register logged in user'); 
@@ -146,16 +155,19 @@ final class Recognition extends ServiceAbstract
 		if($visitor->isLoggedIn())
 		{
 			$visitor->user_id = User::GUEST_ID;
-			$this->dataMapperFactory
-				->build('visitor')
-				->store($visitor);
-			$sMessage = 'Successful sign out';
-			$this->log->createLogEntry($sMessage, $this->visitor, 'success', true);
+			if($this->registerVisitor($visitor)) {
+				$sMessage = 'Successful sign out';
+				$this->log->createLogEntry($sMessage, $this->visitor, 'success', true);
+				return true;
+			} else {
+				return false;
+			}
 		}
 		else 
 		{
 			$sMessage = 'You are already logged out';
 			$this->log->createLogEntry($sMessage, $this->visitor, 'info', true);
+			return true;
 		}
 	}
 	

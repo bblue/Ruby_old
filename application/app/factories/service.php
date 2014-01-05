@@ -8,6 +8,8 @@ final class Service extends Factory
 	private $dataMapperFactory;
 	private $entityFactory;
 	
+	private $visitor;
+	
 	public function __construct(Factory $dataMapperFactory, Factory $entityFactory)
 	{
 		$this->entityFactory = $entityFactory;
@@ -15,12 +17,16 @@ final class Service extends Factory
 	}
 	
 	protected function construct($sServiceName)
-	{
+	{	
 		// Load the logging service for injection
-		$logService = ($sServiceName == 'logging') ? null : $this->build('logging', true);
+		if($sServiceName != 'logging') {
+			$logService = $this->build('logging', true);
+		}
+		
+		// Add namespace to classname
 		$sServiceName = 'Model\Services\\' . $sServiceName;
-		
-		
+
+		// Create class and return it
 		return new $sServiceName($this->dataMapperFactory, $this->entityFactory, $logService);
 	}
 }

@@ -42,10 +42,8 @@ class MysqlAdapter implements DatabaseAdapterInterface
     {
     	if(PRINT_SQL_QUERY === true)
     	{
-    		echo '<pre>'; print_r($query); echo '</pre>';
+    		echo '<pre>'; print_r($query); echo "</pre>\n";
     	}
-    	
-    	if($_GET['sql']) { echo '<pre>'; print_r($query); echo '</pre>'; }
     	
         if (!is_string($query) || empty($query)) {
             throw new MySQLAdapterException('The specified query is not valid.');  

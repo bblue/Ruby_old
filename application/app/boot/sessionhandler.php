@@ -6,7 +6,7 @@ if(IN_CONTROLLER !== true){ die((IS_DEVELOPMENT_AREA === true) ? ('Not in contro
 final class SessionHandler
 {
 	private $_settings = array(
-		'session_expire_time'		=> 3600,
+		'session_expire_time'		=> 60, // In minutes
 		'use_only_cookies'			=> true,
 	);
 
@@ -47,21 +47,22 @@ final class SessionHandler
 	private function getRemainingSessionTime()
 	{
 		$timestamp = ($this->getVar('LAST_ACTIVITY') != null) ? $this->getVar('LAST_ACTIVITY') : $this->update_last_activity();
-		return $this->_settings['session_expire_time'] - (time() - $timestamp);
+		return (($this->_settings['session_expire_time'] * 60) - (time() - $timestamp));
 	}
 	
 	public function startSession()
 	{
 		// Initiate the session
 		session_start();
-
+		
 		// Check for session timeout
 		if($this->getRemainingSessionTime() < 0)
 		{
+			echo 'Session timeout';
 		    $this->restartSession();
 		    return true;
 		}
-		
+
 		// Attempt to prevent session fixation
 		if (!$this->getVar('created'))
 		{
@@ -102,13 +103,13 @@ final class SessionHandler
 	private function configureSession()
 	{
 		// Change the value of session expire time in php.ini
-		ini_set('session.gc_maxlifetime', $this->_settings['session_expire_time']);
+		ini_set('session.gc_maxlifetime', ($this->_settings['session_expire_time'] * 60));
 		
 		// Make sure we only use cookie sessions
 		ini_set('session.use_only_cookies', $this->_settings['use_only_cookies']);
 		
 		// Configure cookie time
-		ini_set('session.cookie_lifetime', $this->_settings['session_expire_time']);
+		//ini_set('session.cookie_lifetime', ($this->_settings['session_expire_time'] * 60));
 	}
 
 	// Disable PHP5's cloning method for session so people can't make copies of the session instance

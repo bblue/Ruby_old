@@ -80,11 +80,6 @@ abstract class AbstractView
 		$this->presentationObjectFactory
 			->build('nav_usernotifications', true)
 			->assignData($this->serviceFactory->build('recognition', true)->getCurrentVisitor());
-		
-		/** Load required scripts */
-		$this->presentationObjectFactory
-			->build('scripttags', true)
-			->assignData($sTemplateFile);
 			
 		/** Get list of all visitors */
 		$this->presentationObjectFactory

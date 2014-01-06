@@ -15,7 +15,13 @@ final class Users extends AbstractView
 	{
 		$visitor = $this->serviceFactory->build('recognition', true)->getCurrentVisitor();
 		if($visitor->isLoggedIn()) {
+			
 			$sTemplateFile = 'extras-blank';
+			
+			/** Load required scripts */
+			$this->presentationObjectFactory
+				->build('scripttags', true)
+				->assignData($sTemplateFile);
 			
 			$this->display('custom/header.htm');
 			$this->display('custom/sidebar.htm');
@@ -34,7 +40,12 @@ final class Users extends AbstractView
 		if(!$this->serviceFactory->build('recognition', true)->getCurrentVisitor()->isLoggedIn())
 		{
 			$sTemplateFile = 'extras-blank';
-			
+		
+			/** Load required scripts */
+			$this->presentationObjectFactory
+				->build('scripttags', true)
+				->assignData($sTemplateFile);
+							
 			$this->display('custom/header.htm');
 			$this->display('custom/sidebar.htm');
 			$this->display('custom/rightbar.htm');
@@ -55,6 +66,11 @@ final class Users extends AbstractView
 		
 		$sTemplateFile = 'extras-profile';
 				
+		/** Load required scripts */
+		$this->presentationObjectFactory
+			->build('scripttags', true)
+			->assignData($sTemplateFile);
+					
 		$this->display('custom/header.htm');
 		$this->display('custom/sidebar.htm');
 		$this->display('custom/rightbar.htm');
@@ -67,7 +83,12 @@ final class Users extends AbstractView
 	public function executeRegister()
 	{
 		$sTemplateFile = 'extras-signupform';
-		
+				
+		/** Load required scripts */
+		$this->presentationObjectFactory
+			->build('scripttags', true)
+			->assignData($sTemplateFile);
+			
 		$this->display('custom/' . $sTemplateFile . '.htm');
 		
 		return true;
@@ -76,7 +97,12 @@ final class Users extends AbstractView
 	public function executePasswordreset()
 	{
 		$sTemplateFile = 'extras-forgotpassword';
-		
+				
+		/** Load required scripts */
+		$this->presentationObjectFactory
+			->build('scripttags', true)
+			->assignData($sTemplateFile);
+			
 		$this->display('custom/' . $sTemplateFile . '.htm');
 		
 		return true;
@@ -85,6 +111,11 @@ final class Users extends AbstractView
 	public function executeInbox()
 	{
 		$sTemplateFile = 'extras-inbox';
+					
+		/** Load required scripts */
+		$this->presentationObjectFactory
+			->build('scripttags', true)
+			->assignData($sTemplateFile);
 					
 		$this->display('custom/header.htm');
 		$this->display('custom/sidebar.htm');
@@ -99,6 +130,11 @@ final class Users extends AbstractView
 	{
 		$sTemplateFile = 'extras-timeline';
 					
+		/** Load required scripts */
+		$this->presentationObjectFactory
+			->build('scripttags', true)
+			->assignData($sTemplateFile);
+					
 		$this->display('custom/header.htm');
 		$this->display('custom/sidebar.htm');
 		$this->display('custom/rightbar.htm');
@@ -111,6 +147,11 @@ final class Users extends AbstractView
 	public function executeAdduser()
 	{
 		$sTemplateFile = 'extras-registration';
+					
+		/** Load required scripts */
+		$this->presentationObjectFactory
+			->build('scripttags', true)
+			->assignData($sTemplateFile);
 			
 		$this->display('custom/header.htm');
 		$this->display('custom/sidebar.htm');

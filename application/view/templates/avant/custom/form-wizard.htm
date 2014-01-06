@@ -1,0 +1,79 @@
+<div id="page-content">
+    <div id='wrap'>
+        <div id="page-heading">
+            <ol class="breadcrumb">
+                <li><a href="index.htm">Dashboard</a></li>
+                <li>Development area</li>
+                <li class="active">RBAC manager</li>
+            </ol>
+
+            <h1>RBAC manager</h1>
+        </div>
+        <div class="container">
+
+
+<div class="row">
+    <div class="col-md-12">
+
+<div class="panel panel-info">
+	<div class="panel-heading panel-danger">
+		<h4><i class="fa fa-sitemap"></i> RBAC Role Control</h4>
+		<div class="options">
+			<ul class="nav nav-tabs">
+              <li class="active"><a href="#addroles" data-toggle="tab"><i class="fa fa-plus"></i> Add Roles</a></li>
+              <li><a href="#addpermissions" data-toggle="tab"><i class="fa fa-minus"></i> Delete Roles</a></li>
+            </ul>
+		</div>
+	</div>
+	<div class="panel-body">
+		<form action="#" id="wizard" class="form-horizontal">
+			<fieldset title="Step 1">
+				<legend>Register new Role</legend>
+				<div class="form-group">
+					<label for="fieldname" class="col-md-3 control-label">Role Title</label>
+					<div class="col-md-6">
+						<input id="role-title" class="form-control uppercase" name="role-title" minlength="4" type="text" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="fieldemail" class="col-md-3 control-label">Role Description</label>
+					<div class="col-md-6"><input id="fieldemail" class="form-control" type="text" name="text" required /></div>
+				</div>
+				<div class="form-group">
+
+					<div id="j"class="tree" data-tree-fieldname="parentrole">
+						{TEST}
+					</div>
+				</div>
+			</fieldset>
+			<fieldset title="Step 2">
+				<legend>Assign Permissions</legend>
+				<div class="form-group">
+					<label for="fieldname" class="col-md-3 control-label">Select permissions for your new role</label>
+					<div id="jj" class="tree" data-tree-multiselect="true" data-tree-fieldname="aPermissions[]">
+						{TEST}
+					</div>
+				</div>
+			</fieldset>
+			<fieldset title="Step 3">
+				<legend>Assign Users</legend>
+				<div class="form-group">
+					<label for="" class="col-md-3 control-label">Terms and Conditions</label>
+					<div class="col-md-9">
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, nemo, atque consequuntur officiis asperiores consectetur porro labore commodi esse error quisquam nihil illum sunt facere inventore possimus autem ab voluptates quibusdam non voluptatum suscipit architecto. Illo, facilis, corporis, veritatis dolores minus quasi iure cupiditate quis autem ducimus nisi obcaecati tenetur sed ea excepturi pariatur consequatur enim labore officia mollitia. Rerum, voluptatem numquam molestiae recusandae iusto ipsum inventore unde accusantium labore delectus? Doloremque, fugit, sunt libero laboriosam cupiditate sed sequi nostrum saepe. Mollitia, alias, expedita accusantium porro error autem dolore veniam commodi nesciunt provident vitae neque. Nostrum, sed, molestias itaque provident inventore natus animi quasi laborum laboriosam facere ratione aperiam iusto. Non ducimus facere sunt doloribus? Asperiores, natus distinctio quis iure!</p>
+					</div>
+				</div>
+			</fieldset>
+			<input type="submit" class="finish btn-success btn" value="Submit" />
+		</form>
+	</div>
+</div>
+
+
+    </div>
+</div>
+
+
+</div> <!-- container -->
+</div> <!--wrap -->
+</div> <!-- page-content -->

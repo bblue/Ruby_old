@@ -136,6 +136,11 @@ final class Recognition extends ServiceAbstract
 		$visitor->user_id = $user->id;
 		$visitor->user = $user;
 		
+		if(!$visitor->isLoggedIn())
+		{
+			// Something is very wrong... 
+			throw new \Exception ('Error in user login system');
+		}
 		//@todo: dersom jeg oppdaterer $visitor->user_id etter å ha hentet $visitor->user så blir det krøll.
 		//@todo: Det må IKKE fungerer å $entity->entity2->value = $verdi, da dette ikke vil kunne lagres som det skal. Eventuelt så må jeg lage en funksjon som faktisk vil kunne lagre de sakene, men det virker tungvint...
 		
@@ -146,25 +151,30 @@ final class Recognition extends ServiceAbstract
 			echo $visitor->user_id, $this->visitor->user_id;
 			return true;
 		} else {
-			throw \Exception('Unable to register logged in user'); 
+			throw \Exception('Registration of visitor with userID ('.$visitor->user_id.') in database failed'); 
 		}
 	}
 	
 	public function logoutVisitor(Visitor $visitor)
 	{
-		if($visitor->isLoggedIn())
-		{
+		if($visitor->isLoggedIn()) {
+			// Create a new user object
+			$user = $this->entityFactory->build('user');
+			$user->id = User::GUEST_ID;
+			$this->dataMapperFactory
+				->build('user')
+				->fetch($user);
 			$visitor->user_id = User::GUEST_ID;
+			$visitor->user = $user;
+			
 			if($this->registerVisitor($visitor)) {
-				$sMessage = 'Successful sign out';
+				$sMessage = 'You are now signed out';
 				$this->log->createLogEntry($sMessage, $this->visitor, 'success', true);
 				return true;
 			} else {
-				return false;
+				throw \Exception('Registration of visitor with userID ('.$visitor->user_id.') in database failed'); 
 			}
-		}
-		else 
-		{
+		} else {
 			$sMessage = 'You are already logged out';
 			$this->log->createLogEntry($sMessage, $this->visitor, 'info', true);
 			return true;

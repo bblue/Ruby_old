@@ -37,7 +37,7 @@ final class Users extends AbstractView
 	
 	public function executeLogout()
 	{			
-		if(!$this->serviceFactory->build('recognition', true)->getCurrentVisitor()->isLoggedIn())
+		if($this->serviceFactory->build('recognition', true)->getCurrentVisitor()->isLoggedIn())
 		{
 			$sTemplateFile = 'extras-blank';
 		

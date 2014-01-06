@@ -148,7 +148,6 @@ final class Recognition extends ServiceAbstract
 		{
 			$sMessage = 'You are now logged in as ' . $visitor->user->Firstname;
 			$this->log->createLogEntry($sMessage, $visitor, 'success', true);
-			echo $visitor->user_id, $this->visitor->user_id;
 			return true;
 		} else {
 			throw \Exception('Registration of visitor with userID ('.$visitor->user_id.') in database failed'); 

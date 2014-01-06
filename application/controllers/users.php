@@ -13,14 +13,14 @@ final class Users extends AbstractController
 	public function executeLogin()
 	{
 		$this->serviceFactory
-			->build('recognition')
+			->build('recognition', true)
 			->authenticate($this->request->username, $this->request->password);
 		return true;
 	}
 	
 	public function executeLogout()
 	{
-		$recognition = $this->serviceFactory->build('recognition');
+		$recognition = $this->serviceFactory->build('recognition', true);
 		$recognition->logoutVisitor($recognition->getCurrentVisitor());
 		return true;
 	}

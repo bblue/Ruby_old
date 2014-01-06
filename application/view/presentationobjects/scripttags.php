@@ -39,6 +39,10 @@ final class Scripttags extends AbstractPresentationObject
 		
 		// Template specific scripts
 		$aScrips = array_merge($aScrips, array(
+			/** bblue scripts */
+			'plugins/form-selectabletree/form-selectabletree.jquery'				=> array('form-wizard'),
+			'plugins/makeconstant/makeconstant.jquery'						=> array('form-wizard'),
+		
 			'plugins/jqueryui-timepicker/jquery.ui.timepicker.min' 			=> array('form-components'), // Time Picker. Requires jQuery UI
 			
 			/** Jqvmap */

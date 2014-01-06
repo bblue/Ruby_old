@@ -35,7 +35,7 @@ if(IS_DEVELOPMENT_AREA === true) {
 		ini_set('error_append_string', '</pre>'); 
 		if(PRINT_TEMPLATE_VARS === true || PRINT_SQL_QUERY === true || PRINT_CONTROLLER_COMMAND === true)
 		{
-			echo '<br /><br />'; // Ugly fix to push the <pre> tags below the floating header menu in bootstrap theme
+			echo "\n\n"; // Ugly fix to push the <pre> tags below the floating header menu in bootstrap theme
 		}
 	} else
 	{

@@ -28,7 +28,7 @@ final class Visitor extends AbstractEntity
     }
 	public function getUser_id()
 	{
-		return !empty($this->_values['user_id']) ? $this->_values['user_id'] : User::GUEST_ID; 
+		return (is_int($this->_values['user_id'])) ? $this->_values['user_id'] : User::GUEST_ID; 
 	}
 	
     public function setUser_id($id)
@@ -38,8 +38,7 @@ final class Visitor extends AbstractEntity
     	{
     		$this->_values['user'] = null;
     	}
-    	
-    	$this->_values['user_id'] = (!empty($id)) ? (int)$id : User::GUEST_ID; 
+    	$this->_values['user_id'] = (is_numeric($id) === true && (($iId = (int)$id) != 0)) ? $iId : User::GUEST_ID;
     }
     
     public function setHttp_user_agent($http_user_agent)
@@ -170,6 +169,7 @@ final class Visitor extends AbstractEntity
     ###################################### Methods ###################################### 
     public function isLoggedIn()
     {
-    	return ($this->getUser_id() != User::GUEST_ID);
+    	$id = $this->getUser_id();
+    	return ($id > 0);
     }
 }

@@ -38,22 +38,6 @@ final class FrontController
 		if($acl->visitorIsBlocked($visitor)) {
 			$route = $routing->redirect($routing::ERROR_403_URL);
 		}
-		
-		// Perform RBAC
-		if(!$acl->visitorHasAccess($visitor, $route)) {
-			if($route->isRedirect) {
-				$route = $routing->redirect($routing::ERROR_500_URL);
-			} else {
-				if($visitor->isLoggedIn())
-				{
-					$route = $routing->redirect($routing::ERROR_403_URL);
-				} 
-				else
-				{
-					$route = $routing->redirect($routing::LOGIN_URL);
-				}
-			}
-		}
 		*/
 		
 		// Dispatch to whatever route we ended up with

@@ -10,12 +10,16 @@ final class Dev extends AbstractView
 	{
 		$sTemplateFile = 'form-wizard';
 
-		$rbac = new \PhpRbac\Rbac();
 		/** Load role org chart */
 		$this->presentationObjectFactory
 			->build('rbac_role_tree', true)
-			->assignData($rbac);
+			->assignData();
 			
+		/** Load role org chart */
+		$this->presentationObjectFactory
+			->build('rbac_permission_tree', true)
+			->assignData();
+						
 		/** Load required scripts */
 		$this->presentationObjectFactory
 			->build('scripttags', true)

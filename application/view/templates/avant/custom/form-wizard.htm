@@ -30,19 +30,18 @@
 			<fieldset title="Step 1">
 				<legend>Register new Role</legend>
 				<div class="form-group">
-					<label for="fieldname" class="col-md-3 control-label">Role Title</label>
+					<label for="roleTitle" class="col-md-3 control-label">Role Title</label>
 					<div class="col-md-6">
-						<input id="role-title" class="form-control uppercase" name="role-title" minlength="4" type="text" required>
+						<input id="roleTitle" class="form-control uppercase" name="roleTitle" minlength="4" type="text" required>
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="fieldemail" class="col-md-3 control-label">Role Description</label>
-					<div class="col-md-6"><input id="fieldemail" class="form-control" type="text" name="text" required /></div>
+					<label for="roleDescription" class="col-md-3 control-label">Role Description</label>
+					<div class="col-md-6"><input id="roleDescription" class="form-control" name="roleTitle" type="text" required /></div>
 				</div>
 				<div class="form-group">
-
-					<div id="j"class="tree" data-tree-fieldname="parentrole">
-						{TEST}
+					<div class="tree" id="roleTree" data-tree-required="true" data-tree-fieldname="aPermissions[]">
+						{RBAC_ROLE_TREE}
 					</div>
 				</div>
 			</fieldset>
@@ -50,8 +49,8 @@
 				<legend>Assign Permissions</legend>
 				<div class="form-group">
 					<label for="fieldname" class="col-md-3 control-label">Select permissions for your new role</label>
-					<div id="jj" class="tree" data-tree-multiselect="true" data-tree-fieldname="aPermissions[]">
-						{TEST}
+					<div class="tree" id="permissionTree" data-tree-required="true" data-tree-multiselect="true" data-tree-fieldname="aPermissions[]">
+						{RBAC_PERMISSION_TREE}
 					</div>
 				</div>
 			</fieldset>

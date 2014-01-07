@@ -11,8 +11,8 @@ final class Visitor extends AbstractPresentationObject
 			'FIRSTNAME'			=> $visitor->user->Firstname,
 			'IS_GUEST'			=> $visitor->user->isGuest(),
 			'IS_ADMIN'			=> $visitor->user->isAdmin(),
-			'IS_LOGGED_IN'		=> $visitor->isLoggedIn(),
-			'MAIN_USERGROUP'	=> $visitor->user->MainUsergroup,
+			'USER_ID'			=> $visitor->user_id,
+			'IS_LOGGED_IN'		=> $visitor->isLoggedIn()
 		));
 		foreach($visitor->user->usergroups as $usergroup)
 		{

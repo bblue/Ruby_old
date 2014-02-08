@@ -50,6 +50,9 @@ abstract class AbstractView
 			throw new \Exception($sCommand . ' could not be called on View');
 		}
 		
+		$this->template->assign_var('CONTROLLER', get_called_class());
+		$this->template->assign_var('COMMAND', $sCommand);
+		
 		return $this->$mutator();
 	}
 	
@@ -110,24 +113,26 @@ abstract class AbstractView
 			$this->display('custom/rightbar.htm');
 			$this->display('custom/' . $sTemplateFile . '.htm');
 			$this->display('custom/footer.htm');	
+			return true;
 		}
 		else
 		{
 			$this->display('custom/full-page-error.htm');
+			return true;
 		}
 	}
 		
 	protected function display($sTemplateFile)
 	{
-		switch($this->request->getReturnDataType())
-		{
-			default: case 'template':
+		//switch($this->request->getReturnDataType())
+		//{
+		//	default: case 'template':
 				return $this->displayTemplate($sTemplateFile);
-				break;
-			case 'json':
-				return $this->displayJSON();
-				break;
-		}
+		//		break;
+		//	case 'json':
+		//		return $this->displayJSON();
+		//		break;
+		//}
 	}
 	
 	protected function displayJSON()

@@ -61,7 +61,7 @@ abstract class AbstractDataMapper
 			$entity->$aConvertedKeys[$dbKey] = $value;
 		}
 	
-		if(!isset($data['id']) && !isset($entity->id))
+		if(!isset($entity->id))
 		{	
 			return $entity;
 			//throw new \Exception('Failed to set id for entity ' . $this->_entityClass . ' with mapper ' . get_called_class());

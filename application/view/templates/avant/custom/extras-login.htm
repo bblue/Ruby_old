@@ -26,7 +26,7 @@
 							<div class="col-sm-12">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-user"></i></span>
-									<input type="text" class="form-control" name="username" id="username" placeholder="Username">
+									<input type="text" class="form-control" name="username" id="username" placeholder="E-mail" data-rule-email="true" data-rule-email="true" required>
 								</div>
 							</div>
 						</div>
@@ -34,7 +34,7 @@
 							<div class="col-sm-12">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-lock"></i></span>
-									<input type="password" class="form-control" name="password" id="password" placeholder="Password">
+									<input type="password" class="form-control" name="password" id="password" placeholder="Password" required/>
 								</div>
 							</div>
 						</div>
@@ -50,6 +50,12 @@
 				<button class="btn btn-default" type="reset" value="Reset" form="login-form" >Reset</button>
 				<button class="btn btn-primary" formmethod="post" type="submit" value="Sign In" formaction="/users/login" form="login-form" >Sign In</button>
 			</div>
+			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+			<script>!window.jQuery && document.write(unescape('%3Cscript src="/assets/js/jquery-1.10.2.min.js"%3E%3C/script%3E'))</script>
+			<!-- Autoloaded scripts -->
+			
+			<!-- BEGIN js --><script src="{js.PATH}"></script>
+			<!-- END js -->
 		</div>
 	</div>
  </div>

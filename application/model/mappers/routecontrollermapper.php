@@ -11,35 +11,32 @@ final class RouteControllerMapper extends DatabaseDataMapper
 	protected $_entityClass = 'Route';
 	
 	protected $_acceptedFields = array(
-		'bIsEnabled'	=> 'areas.bIsEnabled',
-		'id'			=> 'areas.a_id',
-		'sResourceName'	=> 'areas.name',
-		'bCanBypassForcedLogin' => 'commands.bCanBypassForcedLogin',
-		'sCommand'		=> 'commands.sName'
+		'bIsEnabled'				=> 'areas.bIsEnabled',
+		'id'						=> 'areas.a_id',
+		'sResourceName'				=> 'areas.name',
+		'bCanBypassForcedLogin' 	=> 'commands.bCanBypassForcedLogin',
+		'sCommand'                	=> 'commands.sName'
 	);
 	protected $_cascadeFields = array('commands.a_id = areas.a_id');
     
     public function fetch(AbstractEntity $route)
     {
     	// Check if ID has been set
-    	if(isset($route->id))
-    	{
+    	if(isset($route->id)) {
     		$this->findById($route->id, $route);
-    	}
-    	elseif(isset($route->sResourceName))
-    	{
+    	} elseif(!empty($route->sResourceName)) {
 	    	$aCriterias['sResourceName'] = array( 
 	    		array(
 	    			'operator' 	=> '=',
 	    			'value' 	=> $route->sResourceName
 	    		)
 	    	);
-	    	$aCriterias['sCommand'] = array( 
+	    	$aCriterias['sCommand'] = array(
 	    		array(
-	    			'operator' 	=> '=',
-	    			'value' 	=> $route->getCommand()
+	    			'operator'	=> '=',
+	    			'value'		=> $route->getCommand()
 	    		)
-			);
+	    	);
 			
 	    	$this->find($aCriterias, $route);
     	}

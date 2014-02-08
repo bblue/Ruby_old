@@ -5,7 +5,7 @@ final class Rbac_role_tree extends Rbac_tree
 {
 	protected function assign($sTree)
 	{
-		$this->template->assign_var('RBAC_ROLE_TREE', "<ul>$sTree</ul>\n");	
+		$this->template->assign_var('RBAC_ROLE_TREE', "<ul style='white-space:nowrap;'>$sTree</ul>\n");	
 	}
 	
 	protected function getElementID($sTitle)

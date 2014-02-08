@@ -3,10 +3,10 @@
 		<div id="page-heading">
 			<ol class="breadcrumb">
 				<li><a href="/">Dashboard</a></li>
-				<li>Development</li>
+				<li class="active">Development Area</li>
 			</ol>
 
-			<h1>Development output file</h1>
+			<h1>Development Area</h1>
 			<div class="options">
                     <div class="btn-toolbar">
                         <div class="btn-group hidden-xs">
@@ -25,16 +25,21 @@
 
 			<div class="row">
 				<div class="col-md-12">
-					<div class="panel panel-primary">
-						<div class="panel-heading">
-							<h4>Controller output</h4>
-							<div class="options">
-						
-							</div>
-						</div>
+					<div class="panel panel-midnightblue">
 						<div class="panel-body">
-						{LOG}
+								<div class="col-md-6">
+									<p>Perform development tasks</p>
+
+									<div class="panel">
+										<div class="list-group">
+											<a href="/dev/rbac/roles" class="list-group-item"><i class="fa fa-user"></i> Add/remove RBAC Roles </a> 
+											<a href="/dev/rbac/permissions" class="list-group-item"><i class="fa fa-eye-slash"></i> Add/remove RBAC Permissions </a>  
+											<span class="text-muted list-group-item"><i class="fa fa-bell"></i> Configure Logging </span> 
+										</div>
+									</div>
+								</div>
 						</div>
+						{LOG}
 					</div>
 				</div>
 			</div>

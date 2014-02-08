@@ -7,7 +7,7 @@ use App\ServiceAbstract;
 
 final class Logging extends ServiceAbstract
 {
-	public function createLogEntry($text, Visitor $visitor, $type = 'info', $bShowLog = true)
+	public function createLogEntry($text, Visitor $visitor, $type = 'info', $bShowLog = true, $bSaveLog = false)
 	{
 		$logEntry = $this->entityFactory->build('log');
 		
@@ -17,9 +17,11 @@ final class Logging extends ServiceAbstract
 		$logEntry->user_id 		= $visitor->user_id;
 		$logEntry->bShowLog		= $bShowLog;
 		
-		$this->dataMapperFactory
-			->build('log')
-			->insert($logEntry);
+		if($bSaveLog) {
+			$this->dataMapperFactory
+				->build('log')
+				->insert($logEntry);
+		}
 		
 		$this->_cache[] = $logEntry;
 

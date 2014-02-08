@@ -40,8 +40,11 @@ final class Scripttags extends AbstractPresentationObject
 		// Template specific scripts
 		$aScrips = array_merge($aScrips, array(
 			/** bblue scripts */
-			'plugins/form-selectabletree/form-selectabletree.jquery'				=> array('form-wizard'),
-			'plugins/makeconstant/makeconstant.jquery'						=> array('form-wizard'),
+			'plugins/form-selectabletree/form-selectabletree.jquery'		=> array(
+																				'rbac/add_role',
+																				'rbac/add_permission'
+																			),
+			'plugins/makeconstant/makeconstant.jquery'						=> array('rbac/add_role','rbac/add_permission'),
 		
 			'plugins/jqueryui-timepicker/jquery.ui.timepicker.min' 			=> array('form-components'), // Time Picker. Requires jQuery UI
 			
@@ -53,7 +56,7 @@ final class Scripttags extends AbstractPresentationObject
 			'plugins/jqvmap/maps/jquery.vmap.sampledata'					=> array('maps-vector'),
 			
 			/** Dropzone */
-			'plugins/dropzone/dropzone.min' 								=> array('form-dropzone'),
+			'plugins/dropzone/dropzone.min' 								=> array('form-dropzone', 'recipes/add'),
 			
 			/** Fullcalendar */
 			'plugins/fullcalendar/fullcalendar.min' 						=> array('index'),
@@ -62,32 +65,35 @@ final class Scripttags extends AbstractPresentationObject
 			'plugins/mixitup/jquery.mixitup.min' 							=> array('gallery'),
 			
 			/** Quicksearch */
-			'plugins/quicksearch/jquery.quicksearch.min' 					=> array('form-components'), // Quicksearch to go with Multisearch Plugin
+			'plugins/quicksearch/jquery.quicksearch.min' 					=> array('form-components', 'rbac/add_role', 'rbac/add_permission'), // Quicksearch to go with Multisearch Plugin
 		
 			/** Form */
 			'plugins/form-nestable/jquery.nestable.min' 					=> array('ui-nestable.php'),
 			'plugins/form-nestable/app.min' 								=> array('ui-nestable.php'),
 			'plugins/form-inputmask/jquery.inputmask.bundle.min' 			=> array('form-masks'),
 			'plugins/form-parsley/parsley.min' 								=> array('form-validation'),
-			'plugins/form-validation/jquery.validate' 						=> array('form-wizard'),
-			'plugins/form-stepy/jquery.stepy' 								=> array('form-wizard'),
-			'plugins/form-multiselect/js/jquery.multi-select.min' 			=> array('form-components'), // Multiselect Plugin
-			'plugins/form-typeahead/typeahead.min' 							=> array('form-components'), // Typeahead for Autocomplete
+			'plugins/form-validation/jquery.validate' 						=> array('rbac/add_role','rbac/add_permission', 'recipes/add', 'extras-login'),
+			'plugins/form-stepy/jquery.stepy' 								=> array('rbac/add_role','rbac/add_permission', 'recipes/add'),
+			'plugins/form-multiselect/js/jquery.multi-select.min' 			=> array('form-components', 'rbac/add_role', 'rbac/add_permission'), // Multiselect Plugin
+			'plugins/form-typeahead/typeahead.min' 							=> array('form-components', 'recipes/add'), // Typeahead for Autocomplete
 			'plugins/form-select2/select2.min' 								=> array('form-components'), // Advanced Select Boxes
-			'plugins/form-autosize/jquery.autosize-min' 					=> array('form-components'), // Autogrow Text Area
+			'plugins/form-autosize/jquery.autosize-min' 					=> array('form-components', 'recipes/add'), // Autogrow Text Area
 			'plugins/form-colorpicker/js/bootstrap-colorpicker.min' 		=> array('form-components'), // Color Picker
-			'plugins/form-fseditor/jquery.fseditor-min' 					=> array('form-components'), // Fullscreen Editor
-			'plugins/form-ckeditor/ckeditor' 								=> array('form-ckeditor'),	 // WYSIWYG CKEditor
+			'plugins/form-fseditor/jquery.fseditor-min' 					=> array('form-components', 'recipes/add'), // Fullscreen Editor
+			'plugins/form-ckeditor/ckeditor' 								=> array('form-ckeditor', 'recipes/add'),	 // WYSIWYG CKEditor
+			//'plugins/form-ckeditor/adapter/ckeditor' 						=> array('recipes/add'),	 // WYSIWYG CKEditor
 			'plugins/form-xeditable/bootstrap3-editable/js/bootstrap-editable.min' => array('form-xeditable'),
 			'plugins/form-daterangepicker/daterangepicker.min' 				=> array(					 // Date Range Picker
 																				'form-components',
 																				'index'
 																			),
+			'plugins/form-datepicker/js/bootstrap-datepicker'				=> array('recipes/add'),
 			'plugins/form-daterangepicker/moment.min' 						=> array(					 // Moment.js for Date Range Picker
 																				'form-components',
 																				'form-xeditable',
 																				'index'
-																			), 
+																			),
+			'plugins/form-tokenfield/bootstrap-tokenfield.min'				=> array('recipes/add'),
 
 			/** Charts */
 			'plugins/charts-flot/jquery.flot.min' 							=> array('index'),
@@ -107,7 +113,7 @@ final class Scripttags extends AbstractPresentationObject
 			'demo/demo-xeditable' 											=> array('form-xeditable'),
 			'demo/demo-datatables' 											=> array('tables-data'),
 			'demo/demo-flotgraph' 											=> array('charts-flot'),
-			'demo/demo-formwizard' 											=> array('form-wizard'),
+			'demo/demo-formwizard' 											=> array('formwizard'),
 			'demo/demo-tableeditable' 										=> array('tables-editable'),
 			'demo/demo-calendar' 											=> array('calendar'),	
 			'demo/demo-gmaps' 												=> array('maps-google'),
@@ -121,7 +127,11 @@ final class Scripttags extends AbstractPresentationObject
 			'demo/demo-dualbox' 											=> array('form-duallistbox'),
 			'demo/demo-nestable.min' 										=> array('ui-nestable.php'),
 			'demo/demo-morrisjs' 											=> array('charts-svg'),
-			'demo/demo-chatroom' 											=> array('extras-chatroom'),																			
+			'demo/demo-chatroom' 											=> array('extras-chatroom'),
+			'demo/bblue-success' 											=> array('success'),
+			'demo/bblue-rbac-add' 											=> array('rbac/add_role','rbac/add_permission'),
+			'demo/bblue-recipes-add'										=> array('recipes/add'),
+			'demo/bblue-login'												=> array('extras-login'),
 																			
 			/** Datatables */
 			'plugins/datatables/dataTables.bootstrap' 						=> array('tables-data'),
@@ -142,7 +152,7 @@ final class Scripttags extends AbstractPresentationObject
 			'plugins/fullcalendar/fullcalendar' 							=> array('calendar'),
 																			
 			/** Knob */																
-			'plugins/knob/jquery.knob.min' 									=> array('ui-sliders'),
+			'plugins/knob/jquery.knob.min' 									=> array('ui-sliders', 'recipes/add'),
 																			
 			/** Progress-skylo */	
 			'plugins/progress-skylo/skylo' 									=> array('ui-sliders'),
@@ -172,7 +182,10 @@ final class Scripttags extends AbstractPresentationObject
 			'plugins/pulsate/jQuery.pulsate.min' 							=> array(
 																				'ui-alerts',
 																				'index'
-																			)														
+																			),
+
+			/** jQuery Star Rating */
+			'plugins/jquery-star-rating/jquery.rating.pack'					=> array('recipes/add')
 		));
 		
 		// Extras that are used in all template files

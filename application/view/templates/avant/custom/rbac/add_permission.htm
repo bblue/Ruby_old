@@ -1,0 +1,83 @@
+<div id="page-content">
+    <div id='wrap'>
+        <div id="page-heading">
+            <ol class="breadcrumb">
+                <li><a href="index.htm">Dashboard</a></li>
+                <li>Development area</li>
+                <li class="active">RBAC manager</li>
+            </ol>
+
+            <h1>RBAC manager</h1>
+        </div>
+        <div class="container">
+
+
+<div class="row">
+    <div class="col-md-12">
+
+<div class="panel panel-info">
+	<div class="panel-heading panel-danger">
+		<h4><i class="fa fa-sitemap"></i> RBAC Role Control</h4>
+		<div class="options">
+			<ul class="nav nav-tabs">
+              <li class="active"><a href="#addroles" data-toggle="tab"><i class="fa fa-plus"></i> Add Roles</a></li>
+              <li><a href="#addpermissions" data-toggle="tab"><i class="fa fa-minus"></i> Delete Roles</a></li>
+            </ul>
+		</div>
+	</div>
+	<div class="panel-body">
+		<form action="/dev/addrbacroles" id="wizard" class="form-horizontal">
+			<fieldset title="Step 1">
+				<legend>Add new Permission</legend>
+				<div class="form-group">
+					<label for="permissionTitle" class="col-md-3 control-label">Permissino Title</label>
+					<div class="col-md-6">
+						<input id="roleTitle" class="form-control uppercase" name="permissionTitle" minlength="4" type="text" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="permissionDescription" class="col-md-3 control-label">Permission Description</label>
+					<div class="col-md-6"><input id="permissionDescription" class="form-control" name="permissionDescription" type="text" required /></div>
+				</div>
+				<div class="form-group">
+					<label for="permissionTree" class="col-md-3 control-label"></label>
+					<div class="tree" id="permissionTree" data-tree-required="true" data-tree-fieldname="aPermissions[]">
+						{RBAC_PERMISSION_TREE}
+					</div>
+				</div>
+			</fieldset>
+			<fieldset title="Step 2">
+				<legend>Assign Roles</legend>
+				<div class="form-group">
+					<div class="tree" id="roleTree" data-tree-required="true" data-tree-multiselect="true" data-tree-fieldname="aPermissions[]">
+						{RBAC_ROLE_TREE}
+					</div>
+				</div>
+			</fieldset>
+			<fieldset title="Step 3">
+				<legend>Assign Users</legend>
+				<div class="form-group">
+	                <label class="col-sm-3 control-label">Select users to be assigned your new role</label>
+	                <div class="col-sm-6">
+	                    <select multiple="multiple" id="multi-select">
+	                        <option>Lorem</option>
+	                        <option>Unde</option>
+	                        <option>Saepe</option>
+	                        <option>Harum</option><option>Enim</option><option>Aliquid</option><option>Recusandae</option><option>Esse</option><option>Laborum</option><option>Quo</option><option>Quo</option><option>Maiores</option><option>Architecto</option><option>Sapiente</option><option>Placeat</option><option>Officiis</option><option>Obcaecati</option><option>Aliquid</option><option>Explicabo</option><option>Aliquam</option><option>Vero</option><option>Voluptates</option><option>Similique</option><option>Minima</option><option>Ipsum</option><option>Nemo</option><option>Omnis</option><option>Fuga</option><option>Iste</option><option>Possimus</option>
+	                    </select>
+	                </div>
+				</div>
+			</fieldset>
+			<input type="submit" class="finish btn-success btn" value="Submit" />
+		</form>
+	</div>
+</div>
+
+
+    </div>
+</div>
+
+
+</div> <!-- container -->
+</div> <!--wrap -->
+</div> <!-- page-content -->

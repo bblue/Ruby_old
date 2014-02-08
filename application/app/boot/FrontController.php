@@ -31,7 +31,7 @@ final class FrontController
 		//$acl			= $this->serviceFactory->build('acl');
 		
 		// Run the requested route via the routing mechanism, and check it towards the ACL
-		$route = $routing->route($request->getResourceName(), $visitor);
+		$route = $routing->route($request, $visitor);
 		
 		/*
 		// @todo: Gjøre sjekk under i ACL, og å returnere behov for rerouting. Constants burde settes i $route, ikke $routing.
@@ -39,8 +39,11 @@ final class FrontController
 			$route = $routing->redirect($routing::ERROR_403_URL);
 		}
 		*/
-		
-		// Dispatch to whatever route we ended up with
-		$this->dispatcher->dispatch($route);
+		try {
+			// Dispatch to whatever route we ended up with
+			$this->dispatcher->dispatch($route);			
+		} catch (Exception $e) {
+			$routing->route($routing::ERROR_500_URL);
+		}
 	}
 }

@@ -31,7 +31,6 @@ abstract class Rbac_tree extends AbstractPresentationObject
 	protected function prepareElementLine($aElement)
 	{
 		return '<a href="#" data-node-id="'.$aElement['ID'].'"><span title="'.$aElement['Description'].'">'.$aElement['Title']."</span></a>";
-		//title="'.$aElement['Description'].'"
 	}
 	
 	protected function getElement($parent)

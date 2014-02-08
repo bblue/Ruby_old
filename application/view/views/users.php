@@ -14,22 +14,22 @@ final class Users extends AbstractView
 	public function executeLogin()
 	{
 		$visitor = $this->serviceFactory->build('recognition', true)->getCurrentVisitor();
+		
+		$sTemplateFile = ($visitor->isLoggedIn()) ? 'extras-blank' : 'extras-login';
+		
+		/** Load required scripts */
+		$this->presentationObjectFactory
+			->build('scripttags', true)
+			->assignData($sTemplateFile);
+		
 		if($visitor->isLoggedIn()) {
-			
-			$sTemplateFile = 'extras-blank';
-			
-			/** Load required scripts */
-			$this->presentationObjectFactory
-				->build('scripttags', true)
-				->assignData($sTemplateFile);
-			
 			$this->display('custom/header.htm');
 			$this->display('custom/sidebar.htm');
 			$this->display('custom/rightbar.htm');
 			$this->display('custom/' . $sTemplateFile . '.htm');
 			$this->display('custom/footer.htm');
 		} else {
-			$this->display('custom/extras-login.htm');
+			$this->display('custom/'.$sTemplateFile.'.htm');
 		}
 		
 		return true;

@@ -7,40 +7,16 @@ final class Request
 	private $sUrl;
 	
 	private $sCommand;
-	
-	private $sResourceName;
-	
-	const DEFAULT_RETURN_DATA_TYPE = 'template'; //@todo: flytte denne til et bedre egnet sted (view f.eks)
-	
+
 	public function __construct($sUrl)
 	{
-		$this->sUrl = $sUrl;
+		$url = trim($sUrl, '/');
+		$this->sUrl = $url;
 	}
 	
 	public function getUrl()
 	{
 		return $this->sUrl;
-	}
-	
-	public function getResourceName()
-	{
-		return $this->sResourceName = (($this->sResourceName) ? : ($this->getGetValue('a') . (($command = $this->getGetValue('sa'))? '/' . $command : '' ) ? : ''));
-	}
-	
-	public function setCommand($sCommandName)
-	{
-		$this->sCommand = strtolower($sCommandName);
-		return $this;
-	}
-	
-	public function getReturnDataType()
-	{
-		return ($returnDataType = $this->getGetValue('returnDataType')) ? strtolower($returnDataType) : $this->DEFAULT_RETURN_DATA_TYPE;
-	}
-	
-	public function getCommand()
-	{
-		return $this->sCommand = $this->sCommand ? : $this->getGetValue('sa');
 	}
 
 	private function sanitizeUri($sUri)
@@ -83,4 +59,6 @@ final class Request
 		}
 		return null;
 	}
+	
+
 }

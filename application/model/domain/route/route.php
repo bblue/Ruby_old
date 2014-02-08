@@ -20,42 +20,28 @@ final class Route extends AbstractEntity
 		'isRedirect',
 		'bCanBypassForcedLogin'
 	);
-	
 	private $aUrlElements;
+	public $iUrlLevels = 0;
+	
+	const MAX_LEVEL = 3;
 	
 	const DEFAULT_COMMAND = 'indexAction';
 	
-	public function extractControllerFromUrl($url)
+	public function extractControllerFromUrl($iLevel = 1)
 	{
-		$elements = $this->dissectUrl($url);
-		return $elements['controller'];
+		$this->dissectUrl();
+		return $this->aUrlElements[$iLevel]['sResourceName'];
 	}
 
-	public function extractCommandFromUrl($url)
+	public function extractCommandFromUrl($iLevel = 1)
 	{
-		$elements = $this->dissectUrl($url);
-		return $elements['command'];
-	}
-	
-	private function dissectUrl($url)
-	{
-		if(isset($this->aUrlElements[$url]))
-		{
-			return $this->aUrlElements[$url];
-		}
-		
-		$parts = explode('/', $url);
-		
-		$elements['controller'] = ($parts[0]) ? : null;
-		$elements['command'] = (!empty($parts[1])) ? $parts[1] : null;
-		
-		return $this->aUrlElements[$url] = $elements;
+		$this->dissectUrl();
+		return $this->aUrlElements[$iLevel]['sCommand'];
 	}
 	
 	public function getUrl()
 	{
-		if(isset($this->_values['url']))
-		{
+		if(isset($this->_values['url'])) {
 			return $this->_values['url'];
 		}
 	}
@@ -63,6 +49,23 @@ final class Route extends AbstractEntity
 	public function getCommand()
 	{
 		return (!empty($this->_values['sCommand'])) ? $this->_values['sCommand'] : self::DEFAULT_COMMAND;
+	}
+	
+	private function dissectUrl()
+	{
+		if(!empty($this->aUrlElements)) {
+			return $this->aUrlElements;
+		} else {
+			$parts = explode('/', $this->url);
+			
+			$this->iUrlLevels = count($parts);
+			
+			for($i = 1; $i<= self::MAX_LEVEL; $i++) {
+				$this->aUrlElements[$i]['sResourceName'] = implode('/', array_slice($parts, 0, $i));
+				$this->aUrlElements[$i]['sCommand'] = implode('/', array_slice($parts, $i, 1));
+				$this->aUrlElements[$i]['vars'] = array_slice($parts, $i+1);
+			}
+		}
 	}
 	
 	public function setUrl($url)

@@ -1,6 +1,10 @@
 <?php
 namespace Model\Services;
 
+use Model\Domain\Route\Route;
+
+use App\Boot\Request;
+
 use Model\Domain\Visitor\Visitor;
 use App\ServiceAbstract;
 
@@ -9,6 +13,7 @@ final class Routing extends ServiceAbstract
 	private $sOriginalUrl;
 	private $route;
 	private $visitor;
+	private $request;
 
 	const MAINTENANCE_URL 	= 'error/maintenance';
 	const ERROR_403_URL		= 'error/403';
@@ -19,9 +24,9 @@ final class Routing extends ServiceAbstract
 	
 	const FORCED_LOGIN		= FORCED_LOGIN;
 
-	public function route($sUrl, Visitor $visitor)
+	public function route(Request $request, Visitor $visitor)
 	{
-		$this->sOriginalUrl = $sUrl;
+		$this->sOriginalUrl = $request->getUrl();
 		$this->visitor = $visitor;
 		
 		$this->route = $this->buildRoute(!empty($this->sOriginalUrl) ? $this->sOriginalUrl : self::DEFAULT_URL);
@@ -88,28 +93,16 @@ final class Routing extends ServiceAbstract
 		return $this->route;
 	}
 	
-	private function buildRoute($url)
+	private function buildRoute($url, $iLevel = 1)
 	{
 		// Create the initial route entity
 		$route = $this->entityFactory->build('route');
-		
+
 		// Pre-fill the route with the url
 		$route->url = $url;
 		
-		// Load the route specific items from the database.
-		$this->dataMapperFactory
-			->build('route')
-			->fetch($route);
-
-		// Confirm route match in database
-		if(!$route->id)
-		{
-			// No route match. Attempt to load the route from the url split
-			$route->sResourceName = $route->extractControllerFromUrl($route->url);
-			$route->sCommand = $route->extractCommandFromUrl($route->url);
-			$this->dataMapperFactory
-				->build('routecontroller')
-				->fetch($route);
+		if(!$this->buildRouteFromDatabase($route)) {
+			$this->buildRouteFromPath($route, $iLevel);
 		}
 
 		// Check for entity errors
@@ -117,10 +110,51 @@ final class Routing extends ServiceAbstract
 		{
 			throw new \Exception('Route should not throw an error. Something is very wrong.');
 		}
-
+		
 		return $route;
 	}
+	
+	private function buildRouteFromDatabase(Route $route)
+	{
+		// Load the route specific items from the database.
+		$this->dataMapperFactory
+			->build('route')
+			->fetch($route);
 
+		// Test for valid route
+		if($route->id) {
+			$sMessage = 'Route build success -routeTable ('.$route->sResourceName.'/'.$route->sCommand.')';
+			$this->log->createLogEntry($sMessage, $this->visitor, 'success', SHOW_ROUTE_BUILD_MESSAGES);
+			return true;
+		} else {
+			$sMessage = 'Route build error -routeTable ('.$route->url.')';
+			$this->log->createLogEntry($sMessage, $this->visitor, 'warning', SHOW_ROUTE_BUILD_MESSAGES);	
+		}
+	}
+	
+	private function buildRouteFromPath(Route $route, $iLevel = 1)
+	{
+		$route->sResourceName = $route->extractControllerFromUrl($iLevel);
+		$route->sCommand = $route->extractCommandFromUrl($iLevel);
+
+		$this->dataMapperFactory
+			->build('routecontroller')
+			->fetch($route);
+
+		if($route->id) {
+			$sMessage = 'Route build success -path ('.$route->sResourceName.'/'.$route->sCommand.')';
+			$this->log->createLogEntry($sMessage, $this->visitor, 'success', SHOW_ROUTE_BUILD_MESSAGES);
+			return true;
+		} else {
+			$sMessage = 'Route build error -path ('.$route->sResourceName.')';
+			$this->log->createLogEntry($sMessage, $this->visitor, 'warning', SHOW_ROUTE_BUILD_MESSAGES);
+			
+			if($iLevel < $route::MAX_LEVEL && $iLevel < $route->iUrlLevels) {
+				return $this->buildRouteFromPath($route, $iLevel+1);
+			}	
+		}
+	}
+	
 	private function redirect_to_user_specific_rule()
 	{
 		/*

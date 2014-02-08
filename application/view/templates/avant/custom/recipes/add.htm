@@ -1,0 +1,233 @@
+<div id="page-content">
+    <div id='wrap'>
+		<div id="page-heading">
+			{BREADCRUMBS}
+		    <h1>Add New Recipe</h1>
+		</div>
+        <div class="container">
+		{LOG}
+			<div class="row">
+			    <div class="col-md-12">
+					<div class="panel panel-primary">
+						<div class="panel-body">
+							<form id="wizard" class="form-horizontal">
+								<fieldset title="Step 1">
+									<legend>Recipe data</legend>
+									<div class="form-group">
+										<label for="title" class="col-md-3 control-label">Recipe Title</label>
+										<div class="col-md-6">
+											<div class="input-group">
+												<input id="title" name="title" class="form-control" type="text" autofocus autocomplete="off" data-msg-remote="This recipe title is not valid" data-msg-required="You must provide a title" minlength="4" required />
+												<span class="input-group-addon"><span class="fa fa-book"></span></span>
+											</div>
+										</div>
+										<div class="col-sm-3"><p class="help-block">The recipe title must be unique</p></div>
+									</div>
+									
+
+						            <div class="form-group">
+						                <label class="col-sm-3 control-label">Abstract</label>
+						                <div class="col-sm-6">
+						                    <textarea class="form-control autosize fullscreen" name="abstract"></textarea>
+						                </div>
+						                <div class="col-sm-3"><p class="help-block">Write a few short introductionary lines about the recipe</p></div>
+									</div>
+									<div class="form-group">
+						                <label class="col-sm-3 control-label">Ingredients</label>
+						                <div class="col-sm-6">
+						                    <div id="ingredient-input-container" class="input-group">
+						                      <input id="ingredientInputField" autocomplete="off" name="ingredientInputField" type="text" class="form-control" />
+						                      <div class="input-group-btn">
+						                        <button type="button" id="ingredientInputField-button" class="btn btn-primary">Add</button>
+						                      </div>
+						                    </div>
+						               	</div>
+						               	<div class="col-sm-3"><p class="help-block"></p></div>	 
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label"></label>
+										<div class="col-sm-6">
+										    <div class="tab-container tab-left" id="ingredient-list">
+											    <ul class="nav nav-tabs"></ul>
+											    <div class="tab-content" id="ingr-panels">
+											    	<div class="tab-pane active">
+											    		0 ingredients
+										    		</div>
+											    	<div class="tab-pane ingr-panel" id="ingredient-panel-template">
+														<dl class="dl-horizontal">
+															<dt class="tooltips" title="Add a group name if you want to group different recipes together">Group</dt>
+															<dd class="form-group">
+																<input 	id="ingr-0-group" 
+																		name="ingr[]['group']"
+																		type="text"
+																		class="form-control ingr-form ingr-group capitalize"
+																		placeholder="Empty"
+																		autocomplete="off"
+																/>
+															</dd>
+															<dt class="tooltips" title="Amount can only be numbers, but the field accept decimals such as 1.5 (don't use a comma)">Amount</dt>
+															<dd class="form-group">
+																<input 	id="ingr-0-amount" 
+																		name="ingr[]['amount']"
+																		type="text"
+																		class="form-control ingr-form ingr-amount"
+																		placeholder="Empty"
+																		autocomplete="off"
+																		data-msg-number="Only numbers are allowed"
+																/>
+															</dd>
+														  
+															<dt class="tooltips" title="dl, ss, ts, kg, g....">Unit</dt>
+															<dd class="form-group">
+																<input	id="ingr-0-unit"
+																		name="ingr[]['unit']" type="text" class="form-control ingr-form ingr-unit validation-ignore" placeholder="Empty" autocomplete="off" /></dd>
+														  
+															<dt class="tooltips" title="This is the name of the ingredient">Ingredient</dt>
+															<dd class="form-group">
+																<input	id="ingr-0-name"
+																		name="ingr[]['name']"
+																		type="text"
+																		class="form-control ingr-form ingr-name validation-ignore"
+																		placeholder="Empty"
+																		autocomplete="off"
+																		value="a"
+																/>
+															</dd>
+														  
+															<dt class="tooltips" title="Tick this box to not have the ingredient scale with number of portions">Static</dt>
+															<dd><input id="ingr-0-static" name='ingr[]["static"]' value="" class="ingr-static" type="checkbox" /></dd>
+														  
+															<dt class="tooltips" title="Tick this box to highlight that the ingredient is optional. This is very useful for the recipe search function">Optional</dt>
+															<dd><input id="ingr-0-optional" name='ingr[]["optional"]' class="ingr-optional" value="" type="checkbox" /></dd>
+															
+															<dt class="tooltips" title="A tick in this box will not allow this ingredient to be replaced">Replaceable</dt>
+															<dd><input id="ingr-0-replaceable" name='ingr[]["replaceable"]' class="ingr-replaceable" value="" checked="checked" type="checkbox" /></dd>
+																														
+															<dt>Comments</dt>
+															<dd><textarea id="ingr-0-comments" name='ingr[]["comments"]' class="form-control validation-ignore" placeholder="Ingredient specific comments goes here..."></textarea></dd>
+														</dl>
+														<hr />
+														<button type="button" class="ingr-delete btn-danger btn btn-xs pull-right">Delete this ingredient</button>
+										    		</div>
+										    	</div>
+										    </div>
+										</div>
+									    <div class="col-sm-3"><p class="help-block"></p></div>	                    
+					                </div>
+						            <div class="form-group">
+						                <label class="col-sm-3 control-label">Methodology/Explanation</label>
+						                <div class="col-sm-6">
+						                    <textarea rows="10" class="form-control ckeditor" name="method" id="recipe-text"></textarea>
+						                </div>
+						                <div class="col-sm-3"><p class="help-block">This is where the actual recipe text will go </p></div>
+									</div>
+								</fieldset>
+								<fieldset title="Step 2">
+									<legend>Metadata</legend>
+									<div class="form-group">
+										<label class="col-sm-3 control-label">Difficulty Rating</label>
+										<div class="col-sm-6" style="padding-top: 10px;">
+												<input name="star" type="radio" class="star"/>
+												<input name="star" type="radio" class="star"/>
+												<input name="star" type="radio" class="star" checked="checked"/>
+												<input name="star" type="radio" class="star"/>
+												<input name="star" type="radio" class="star"/>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label">Estimated time</label>
+										<div class="col-sm-6 dial-group">
+											<div class="pull-left">
+												<div class="text-center">Hours</div>
+						                		<input name="hours" type="text" class="dial" data-width="120" data-fgColor="#4F8EDC" data-step="1" data-max="24" data-thickness=".6" data-height="120"/>
+						                	</div>
+						                	<div class="pull-left">
+						                		<div class="text-center">Minutes</div>
+												<input name="minutes" type="text" class="dial" data-width="120" data-fgColor="#4F8EDC" data-step="5" data-max="60" data-thickness=".6" data-height="120" required="true" />
+											</div>
+						                </div>
+						                <div class="col-sm-3"><p class="help-block">Scroll with the mouse, pinch your fingers or edit the number directly</p></div>
+									</div>
+									<div class="form-group">
+						                <label class="col-sm-3 control-label">Categories</label>
+						                <div class="col-sm-6">
+						                    <div class="input-group">
+												<input name="categories" type="text" autocomplete="off" class="form-control" id="tokenfield-recipe-categories"  />
+												<span class="input-group-addon"><span class="fa fa-tags"></span></span>
+						                    </div>
+						                </div>
+						                 <div class="col-sm-3"><p class="help-block">Separate different categories with a comma, or press enter</p></div>
+									</div>
+									<div class="form-group">
+						                <label class="col-sm-3 control-label">Link to other recipes</label>
+						                <div class="col-sm-6">
+						                    <div class="input-group">
+												<input name="links" type="text" autocomplete="off" class="form-control" id="tokenfield-recipe-links"  />
+												<span class="input-group-addon"><span class="fa fa-link"></span></span>
+						                    </div>
+						                </div>
+						                 <div class="col-sm-3"><p class="help-block">Create links to other recipes</p></div>
+									</div>
+									<div class="form-group">
+										<label for="author" class="col-md-3 control-label">Author</label>
+										<div class="col-md-6">
+											<select class="form-control" disabled="disabled">
+												<option value="1">Author 1</option>
+												<option value="2">Author 2</option>
+												<option value="3">Author 3</option>
+												<option value="4">Author 4</option>
+											</select>
+										</div>
+				                        <div class="col-sm-3">
+				                        	<p class="help-block">This field is only accessible to superusers</p>
+				                        </div>
+									</div>
+						            <div class="form-group">
+						                <label class="col-sm-3 control-label">When is this recipe from?</label>
+						                <div class="col-sm-6">
+						                    <div class="input-group date datepicker">
+						                        <input type="text" class="form-control" value="01/23/2014" autocomplete="off"/>
+						                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+						                    </div>
+						                </div>
+						            </div>
+						            <div class="form-group">
+						                <label class="col-sm-3 control-label">Date added to database</label>
+						                <div class="col-sm-6">
+						                    <div class="input-group date datepicker">
+						                        <input type="text" class="form-control" value="01/23/2014" autocomplete="off" disabled="disabled" />
+						                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+						                    </div>
+						                </div>
+				                        <div class="col-sm-3">
+				                        	<p class="help-block">This field is only accessible to superusers</p>
+				                        </div>
+						            </div>
+								</fieldset>
+								<fieldset title="Step 4">
+									<legend>Add Photo</legend>
+									<div class="form-group">
+										<div id="dropzone" class="dropzone"></div>
+									</div>
+								</fieldset>
+								<fieldset title="Step 5">
+									<legend>Review, save and submit</legend>
+									<div class="form-group">
+				                        <label class="col-sm-3 control-label">Make recipe private</label>
+				                        <div class="col-sm-4 control-label"> <!--  control-label needed for positioning -->
+				                            <div class="toggle"></div>
+				                        </div>
+				                        <div class="col-sm-3">
+				                        	<p class="help-block">If switched <code>on</code>, the recipe will only be visible to you</p>
+				                        </div>
+									</div>
+								</fieldset>
+								<input type="submit" class="finish btn-success btn pull-right" value="Submit" />
+							</form>
+						</div>
+					</div>  <!-- wizard -->
+			    </div>
+			</div> 
+		</div> <!-- container -->
+	</div> <!--wrap -->
+</div> <!-- page-content -->

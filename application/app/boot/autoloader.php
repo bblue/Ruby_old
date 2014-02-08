@@ -24,7 +24,6 @@
         private function load($sClassName)
         {
         	$sFilePath = strtolower($this->sBasePath .  str_replace('\\', '/', $sClassName)) . '.php';
-        	
 			return $this->hasLoadedClass($sFilePath);
         }
         

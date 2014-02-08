@@ -14,4 +14,19 @@ final class Recipes extends AbstractController
 	{
 		return true;
 	}
+	
+	public function executeAdd()
+	{
+		return true;
+	}
+	
+	public function executeValidate()
+	{
+		return true;
+	}
+	
+	protected function executeGetcategories()
+	{
+		return true;
+	}
 }

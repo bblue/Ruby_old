@@ -203,6 +203,7 @@ final class Template
 			//$this->lang = $this->registry->getObject('lang');
 			
 			// This is the function that does all the magic!
+			ob_start(function($b){return preg_replace(array('/\>[^\S ]+/s','/[^\S ]+\</s','/(\s)+/s'),array('>','<','\\1'),$b);});
 			eval(' ?>' . $this->compiled_code[$handle] . '<?php ');
 			
 			// Hack by AL: print the array for bug fixing		{

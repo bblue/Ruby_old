@@ -26,7 +26,7 @@
 		</div>
 	</div>
 	<div class="panel-body">
-		<form action="#" id="wizard" class="form-horizontal">
+		<form action="/dev/addrbacroles" id="wizard" class="form-horizontal">
 			<fieldset title="Step 1">
 				<legend>Register new Role</legend>
 				<div class="form-group">
@@ -37,10 +37,10 @@
 				</div>
 				<div class="form-group">
 					<label for="roleDescription" class="col-md-3 control-label">Role Description</label>
-					<div class="col-md-6"><input id="roleDescription" class="form-control" name="roleTitle" type="text" required /></div>
+					<div class="col-md-6"><input id="roleDescription" class="form-control" name="roleDescription" type="text" required /></div>
 				</div>
 				<div class="form-group">
-					<div class="tree" id="roleTree" data-tree-required="true" data-tree-fieldname="aPermissions[]">
+					<div class="tree" id="roleTree" data-tree-required="true" data-tree-fieldname="iRoleID">
 						{RBAC_ROLE_TREE}
 					</div>
 				</div>
@@ -48,7 +48,6 @@
 			<fieldset title="Step 2">
 				<legend>Assign Permissions</legend>
 				<div class="form-group">
-					<label for="fieldname" class="col-md-3 control-label">Select permissions for your new role</label>
 					<div class="tree" id="permissionTree" data-tree-required="true" data-tree-multiselect="true" data-tree-fieldname="aPermissions[]">
 						{RBAC_PERMISSION_TREE}
 					</div>
@@ -57,10 +56,15 @@
 			<fieldset title="Step 3">
 				<legend>Assign Users</legend>
 				<div class="form-group">
-					<label for="" class="col-md-3 control-label">Terms and Conditions</label>
-					<div class="col-md-9">
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, nemo, atque consequuntur officiis asperiores consectetur porro labore commodi esse error quisquam nihil illum sunt facere inventore possimus autem ab voluptates quibusdam non voluptatum suscipit architecto. Illo, facilis, corporis, veritatis dolores minus quasi iure cupiditate quis autem ducimus nisi obcaecati tenetur sed ea excepturi pariatur consequatur enim labore officia mollitia. Rerum, voluptatem numquam molestiae recusandae iusto ipsum inventore unde accusantium labore delectus? Doloremque, fugit, sunt libero laboriosam cupiditate sed sequi nostrum saepe. Mollitia, alias, expedita accusantium porro error autem dolore veniam commodi nesciunt provident vitae neque. Nostrum, sed, molestias itaque provident inventore natus animi quasi laborum laboriosam facere ratione aperiam iusto. Non ducimus facere sunt doloribus? Asperiores, natus distinctio quis iure!</p>
-					</div>
+	                <label class="col-sm-3 control-label">Select users to be assigned your new role</label>
+	                <div class="col-sm-6">
+	                    <select multiple="multiple" id="multi-select">
+	                        <option>Lorem</option>
+	                        <option>Unde</option>
+	                        <option>Saepe</option>
+	                        <option>Harum</option><option>Enim</option><option>Aliquid</option><option>Recusandae</option><option>Esse</option><option>Laborum</option><option>Quo</option><option>Quo</option><option>Maiores</option><option>Architecto</option><option>Sapiente</option><option>Placeat</option><option>Officiis</option><option>Obcaecati</option><option>Aliquid</option><option>Explicabo</option><option>Aliquam</option><option>Vero</option><option>Voluptates</option><option>Similique</option><option>Minima</option><option>Ipsum</option><option>Nemo</option><option>Omnis</option><option>Fuga</option><option>Iste</option><option>Possimus</option>
+	                    </select>
+	                </div>
 				</div>
 			</fieldset>
 			<input type="submit" class="finish btn-success btn" value="Submit" />

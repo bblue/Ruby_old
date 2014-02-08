@@ -28,43 +28,20 @@ final class Dispatcher
 		$this->viewFactory = $viewFactory;
 	}
 	
-	private function createController($sControllerName)
-	{
-		return $this->controllerFactory->build($sControllerName);
-	}
-	
-	private function createView($sViewName)
-	{
-		return $this->viewFactory->build($sViewName);
-	}
-	
 	public function dispatch(Route $route)
 	{
-		$controller	= $this->createController($route->getResourceName());
-		$view 		= $this->createView($route->getResourceName());
+		$controller	= $this->controllerFactory->build($route->getResourceName());
+		$view 		= $this->viewFactory->build($route->getResourceName());
 		$sCommand 	= $route->getCommand();
 		
-		try 
-		{
+		try {
 			// Execute command on controller
-			if(!$controller->execute($sCommand, $view))
-			{
-				throw new \Exception('Command on controller did not execute as expected');
-			}
-			
-			// Execute view
-			if(!$view->execute())
-			{
-				throw new \Exception('Command on view did not execute as expected');
-			}
-		}
-		catch (Exception $e)
-		{
-			// Prepare log entry
-			
-			// Dispatch to another route @TODO: Dette kan skape en loop, det må jeg fikse
+			$controller->execute($sCommand, $view);
+		} catch (Exception $e) {
+			trigger_error($e->getMessage(), E_USER_ERROR);
 		}
 
-		return true;
+		// Execute view
+		$view->execute();
 	}
 }

@@ -17,6 +17,8 @@ final class Recipes extends AbstractController
 	
 	public function executeAdd()
 	{
+	    //$event = $this->eventHandler->buildEvent(array('user' => $user));
+	    $this->eventHandler->dispatch('recipes.add' /*$event*/);
 		return true;
 	}
 	

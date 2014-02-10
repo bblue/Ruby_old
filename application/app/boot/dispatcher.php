@@ -1,7 +1,7 @@
 <?php
 namespace App\Boot;
 
-use App\Factories\Service 		as ServiceFactory,
+use
 	App\Factories\View 			as ViewFactory,
 	App\Factories\Controller	as ControllerFactory;
 
@@ -9,15 +9,9 @@ use Model\Domain\Route\Route;
 
 final class Dispatcher
 {
-	private $serviceFactory;
 	private $controllerFactory;
 	private $viewFactory;
-
-	public function setServiceFactory(ServiceFactory $serviceFactory)
-	{
-		$this->serviceFactory = $serviceFactory;
-	}
-
+	
 	public function setControllerFactory(ControllerFactory $controllerFactory)
 	{
 		$this->controllerFactory = $controllerFactory;
@@ -36,11 +30,12 @@ final class Dispatcher
 		
 		try {
 			// Execute command on controller
-			$controller->execute($sCommand, $view);
+			$controllerResponse = $controller->execute($sCommand, $view);
 		} catch (Exception $e) {
+		    // Catch error not caught by controller
 			trigger_error($e->getMessage(), E_USER_ERROR);
 		}
-
+		
 		// Execute view
 		$view->execute();
 	}

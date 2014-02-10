@@ -10,7 +10,7 @@ abstract class Factory
 		return $this->_cache;
 	}
 	
-	public function build($sClassName, $cache = false)
+	public function build($sClassName, $cache = false, $sTitle = '')
 	{
 		// Check for cached version
 		if($cache && array_key_exists($sClassName, $this->_cache))
@@ -27,7 +27,7 @@ abstract class Factory
 		
 		if($cache)
 		{
-			$this->saveToCache($sClassName, $class);
+			$this->saveToCache((!empty($sTitle) ? $sTitle : $sClassName), $class);
 		}
 
 		return $class;
@@ -38,9 +38,9 @@ abstract class Factory
 		return $this->_cache[$sClassName] = $class;
 	}
 	
-	public function store($sClassName, $class)
+	public function store($sTitle, $class)
 	{
-		if(array_key_exists($sClassName, $this->_cache) === false)
+		if(array_key_exists($sTitle, $this->_cache) === false)
 		{
 			return $this->saveToCache();
 		}

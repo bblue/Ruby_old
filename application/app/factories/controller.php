@@ -7,6 +7,7 @@ final class Controller extends Factory
 {
 	private $serviceFactory;
 	private $request;
+	private $eventHandler;
 	
 	public function __construct(Service $serviceFactory, Request $request)
 	{

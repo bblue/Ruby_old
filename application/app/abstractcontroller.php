@@ -10,7 +10,7 @@ abstract class AbstractController
 {
 	protected $serviceFactory;
 	protected $request;
-	
+	protected $eventHandler;
 	private $view;
 	
 	protected $rbac;
@@ -25,13 +25,12 @@ abstract class AbstractController
 	
 	protected function load($sCommand)
 	{
-		if(PRINT_CONTROLLER_COMMAND === true)
-		{
-	    $classname = strtolower(get_called_class());
-	
-	    if (preg_match('@\\\\([\w]+)$@', $classname, $matches)) {
-	        $classname = $matches[1];
-	    }	
+		if(PRINT_CONTROLLER_COMMAND === true) {
+    	    $classname = strtolower(get_called_class());
+    	
+    	    if (preg_match('@\\\\([\w]+)$@', $classname, $matches)) {
+    	        $classname = $matches[1];
+    	    }	
 			echo '<pre>Performing command on controller: <i>$' . $classname . '->' . $sCommand . '();</i></pre>';
 		}
 		
@@ -52,11 +51,14 @@ abstract class AbstractController
 	public function execute($sCommand, View $view)
 	{
 		// Load the RBAC at the last minute
-		require ROOT_PATH . 'lib/PhpRbac/autoload.php';
+		require ROOT_PATH . 'lib/PhpRbac/autoload.php'; //@todo: Create a service from this
 		$this->rbac = new \PhpRbac\Rbac();
 
 		// Load the logging mechanism
 		$this->log = $this->serviceFactory->build('logging', true);
+		
+		// Load the event handler
+		$this->eventHandler = $this->serviceFactory->build('eventHandler', true);
 		
 		// Preload the visitor
 		$this->visitor = $this->serviceFactory->build('recognition', true)->getCurrentVisitor();

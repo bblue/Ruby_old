@@ -42,8 +42,12 @@ final class FrontController
 		try {
 			// Dispatch to whatever route we ended up with
 			$this->dispatcher->dispatch($route);
-		} catch (Exception $e) {
-			$routing->route($routing::ERROR_500_URL);
+		} catch (\Exception $e) {
+		    $this->serviceFactory
+    		    ->build('logging', true)
+    		    ->createLogEntry($e->getMessage(), $visitor, 'danger');
+			$route = $routing->redirect($routing::ERROR_500_URL);
+			$this->dispatcher->dispatch($route);
 		}
 	}
 }

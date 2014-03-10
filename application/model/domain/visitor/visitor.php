@@ -28,14 +28,13 @@ final class Visitor extends AbstractEntity
     }
 	public function getUser_id()
 	{
-		return (is_int($this->_values['user_id'])) ? $this->_values['user_id'] : User::GUEST_ID; 
+		return (isset($this->_values['user_id']) && is_int($this->_values['user_id'])) ? $this->_values['user_id'] : User::GUEST_ID; 
 	}
 	
     public function setUser_id($id)
     {
     	// Remove the user if user ID changes
-    	if(is_object($this->_values['user']))
-    	{
+    	if(isset($this->_values['user']) && is_object($this->_values['user'])) {
     		$this->_values['user'] = null;
     	}
     	$this->_values['user_id'] = (is_numeric($id) === true && (($iId = (int)$id) != 0)) ? $iId : User::GUEST_ID;

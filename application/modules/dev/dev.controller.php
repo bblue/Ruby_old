@@ -1,9 +1,9 @@
 <?php
-namespace Controllers;
+namespace Modules;
 
 use App\AbstractController;
 
-final class Dev extends AbstractController
+final class DevController extends AbstractController
 {	
 	protected function executeIndexaction()
 	{

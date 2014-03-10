@@ -317,7 +317,7 @@ abstract class DatabaseDataMapper extends AbstractDataMapper implements DataMapp
 			}
 
 			// Compile the criteria string
-			$array[] = $sDatabaseField . $aCriteria['operator'] . ($aCriteria['tablevalue'] ? $aCriteria['value'] : '"'. $aCriteria['value'] . '"');
+			$array[] = $sDatabaseField . $aCriteria['operator'] . ((isset($aCriteria['tablevalue'])) ? $aCriteria['value'] : '"'. $aCriteria['value'] . '"');
 		}
 		// Compile all criterias into a single string
 		$string = (empty($array)) ? null : '(' . implode(' OR ', $array) . ')';

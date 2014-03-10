@@ -1,15 +1,32 @@
 <?php
-namespace View\Views;
+namespace Modules;
 
 use View\AbstractView,
 	View\Template;
 
-final class Recipes extends AbstractView
+final class RecipesView extends AbstractView
 {
 	public function executeManagemyrecipes()
 	{
 		$sTemplateFile = 'managemyrecipes';
-					
+		
+		/** Load required scripts */
+		$this->presentationObjectFactory
+		->build('scripttags', true)
+		->assignData($sTemplateFile);
+		
+		/** Load breadcrumbs */
+		$this->presentationObjectFactory
+		->build('breadcrumbs', true)
+		->assignData(array(
+		    array(
+		        'title'	=> 'Recipes',
+		    ),
+		    array(
+		        'url'	=> 'recipes/managemyrecipes',
+		        'title'	=> 'Manage recipes',
+		    )
+		));					
 		$this->display('custom/header.htm');
 		$this->display('custom/sidebar.htm');
 		$this->display('custom/rightbar.htm');
@@ -17,6 +34,35 @@ final class Recipes extends AbstractView
 		$this->display('custom/footer.htm');
 		
 		return true;
+	}
+	
+	public function executeView()
+	{
+	    $sTemplateFile = 'recipes/view';
+	    
+	    /** Load required scripts */
+	    $this->presentationObjectFactory
+	    ->build('scripttags', true)
+	    ->assignData($sTemplateFile);
+	    	
+	    /** Load breadcrumbs */
+	    $this->presentationObjectFactory
+	    ->build('breadcrumbs', true)
+	    ->assignData(array(
+	        array(
+	            'title'	=> 'Recipes',
+	        ),
+	        array(
+	            'url'	=> 'recipes/view',
+	            'title'	=> 'View Recipe',
+	        )
+	    ));
+	    
+	    $this->display('custom/header.htm');
+	    $this->display('custom/sidebar.htm');
+	    $this->display('custom/rightbar.htm');
+	    $this->display('custom/' . $sTemplateFile . '.htm');
+	    $this->display('custom/footer.htm');	    
 	}
 	
 	public function executeAdd()

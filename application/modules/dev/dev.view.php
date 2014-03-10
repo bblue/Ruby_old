@@ -1,10 +1,10 @@
 <?php
-namespace View\Views;
+namespace Modules;
 
 use View\AbstractView,
 	View\Template;
 
-final class Dev extends AbstractView
+final class DevView extends AbstractView
 {	
 	protected function executeIndexaction()
 	{

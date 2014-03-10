@@ -36,7 +36,7 @@ final class User extends AbstractEntity
 	
 	public function matchPassword($password)
 	{
-		require_once ROOT_PATH . 'lib/password_compat.php';
+		require_once ROOT_PATH . DIRECTORY_SEPARATOR  . 'lib'.DIRECTORY_SEPARATOR.'password_compat.php';
 		if (password_verify($password, $this->_values['Password'])) 
 		{
 			if (password_needs_rehash($this->_values['Password'], PASSWORD_DEFAULT, array('cost' => 12))) 
@@ -50,7 +50,7 @@ final class User extends AbstractEntity
 	
 	private function hashPassword($password)
 	{
-		require_once ROOT_PATH . 'lib/password_compat.php';
+		require_once ROOT_PATH .DIRECTORY_SEPARATOR. 'lib'.DIRECTORY_SEPARATOR.'password_compat.php';
 		return password_hash($password, PASSWORD_DEFAULT, array('cost' => 12));
 	}
 	

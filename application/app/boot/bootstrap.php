@@ -19,10 +19,10 @@ if (version_compare(PHP_VERSION, '5.3.1', '<')) {
 define('IN_CONTROLLER', true);
 
 /** Define the paths */
-define('ROOT_PATH', '../application/');
+define('ROOT_PATH', '..'. DIRECTORY_SEPARATOR . 'application');
 
 /** Load the configuration file  */
-require (ROOT_PATH . 'app/boot/config.php'); //@todo: Load this into a class 
+require (ROOT_PATH . DIRECTORY_SEPARATOR . 'app'. DIRECTORY_SEPARATOR . 'boot'. DIRECTORY_SEPARATOR . 'config.php'); //@todo: Load this into a class 
 
 /** Configure error reporting */
 if(IS_DEVELOPMENT_AREA === true) {
@@ -42,8 +42,8 @@ if(IS_DEVELOPMENT_AREA === true) {
 }
 
 /** Set up autoloader class */
-require ROOT_PATH . 'app/boot/autoloader.php';
-new Autoloader(ROOT_PATH);
+require ROOT_PATH . DIRECTORY_SEPARATOR .'app'. DIRECTORY_SEPARATOR . 'boot'. DIRECTORY_SEPARATOR . 'autoloaders' . DIRECTORY_SEPARATOR . 'autoloader.php';
+new Autoloaders\Autoloader(ROOT_PATH);
 
 /** Get the current system load */
 if(CALCULATE_CPU_LOAD === true) {

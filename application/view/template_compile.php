@@ -54,8 +54,7 @@ final class Template_compile
 	function _tpl_load_file($handle, $store_in_db = false)
 	{
 		// Try and open template for read
-		if (!file_exists($this->template->files[$handle]))
-		{
+		if (!file_exists($this->template->files[$handle])) {
 			// Hack by AL @ 29/12/2012
 			//trigger_error("template->_tpl_load_file(): File {$this->template->files[$handle]} does not exist or is empty", E_USER_ERROR);
 			throw new \Exception(__METHOD__."(): File {$this->template->files[$handle]} does not exist or is empty");

@@ -17,11 +17,9 @@ final class Service extends Factory
 	}
 	
 	protected function construct($sServiceName)
-	{	
+	{
 		// Load the logging service for injection
-		if($sServiceName != 'logging') {
-			$logService = $this->build('logging', true);
-		}
+		$logService = ($sServiceName != 'logging') ? $this->build('logging', true) : null;
 		
 		// Add namespace to classname
 		$sServiceName = 'Model\Services\\' . $sServiceName;

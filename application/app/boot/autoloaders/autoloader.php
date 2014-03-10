@@ -1,5 +1,5 @@
 <?php
-    namespace App\Boot;
+    namespace App\Boot\Autoloaders;
 
     final class Autoloader
     {
@@ -23,7 +23,7 @@
 
         private function load($sClassName)
         {
-        	$sFilePath = strtolower($this->sBasePath .  str_replace('\\', '/', $sClassName)) . '.php';
+        	$sFilePath = strtolower($this->sBasePath . DIRECTORY_SEPARATOR .  str_replace('\\', DIRECTORY_SEPARATOR, $sClassName)) . '.php';
 			return $this->hasLoadedClass($sFilePath);
         }
         

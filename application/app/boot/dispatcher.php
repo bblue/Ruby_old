@@ -28,13 +28,8 @@ final class Dispatcher
 		$view 		= $this->viewFactory->build($route->getResourceName());
 		$sCommand 	= $route->getCommand();
 		
-		try {
-			// Execute command on controller
-			$controllerResponse = $controller->execute($sCommand, $view);
-		} catch (Exception $e) {
-		    // Catch error not caught by controller
-			trigger_error($e->getMessage(), E_USER_ERROR);
-		}
+		// Execute command on controller
+		$controllerResponse = $controller->execute($sCommand, $view);
 		
 		// Execute view
 		$view->execute();

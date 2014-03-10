@@ -1,9 +1,11 @@
 <?php
-namespace Controllers\Dev\Rbac;
+namespace Modules\Dev\Rbac;
+
+use Modules\Dev\RbacController;
 
 use App\AbstractController;
 
-final class Roles extends Rbac
+final class RolesController extends RbacController
 {	
 	protected function executeAddrbacroles()
 	{

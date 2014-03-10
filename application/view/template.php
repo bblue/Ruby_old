@@ -334,14 +334,14 @@ final class Template
 			{
 				foreach ($rows as $row)
 				{
-					$file = $this->root . '/' . $row['template_filename'];
+					$file = $this->root . DIRECTORY_SEPARATOR . $row['template_filename'];
 					$force_reload = false;
 					if ($row['template_id'] != $user->theme['template_id'])
 					{
 						// make sure that we are not overlooking a file not in the db yet
 						if (isset($user->theme['template_inherits_id']) && $user->theme['template_inherits_id'] && !file_exists($file))
 						{
-							$file = $this->inherit_root . '/' . $row['template_filename'];
+							$file = $this->inherit_root . DIRECTORY_SEPARATOR . $row['template_filename'];
 							$this->files[$row['template_filename']] = $file;
 							$this->files_inherit[$row['template_filename']] = $file;
 							$this->files_template[$row['template_filename']] = $user->theme['template_inherits_id'];
@@ -394,11 +394,11 @@ final class Template
 			}
 			else
 			{
-				$file = $this->root . '/' . $row['template_filename'];
+				$file = $this->root . DIRECTORY_SEPARATOR . $row['template_filename'];
 
 				if (isset($user->theme['template_inherits_id']) && $user->theme['template_inherits_id'] && !file_exists($file))
 				{
-					$file = $this->inherit_root . '/' . $row['template_filename'];
+					$file = $this->inherit_root . DIRECTORY_SEPARATOR . $row['template_filename'];
 					$this->files[$row['template_filename']] = $file;
 					$this->files_inherit[$row['template_filename']] = $file;
 					$this->files_template[$row['template_filename']] = $user->theme['template_inherits_id'];

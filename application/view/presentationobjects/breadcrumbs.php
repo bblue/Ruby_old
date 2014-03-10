@@ -14,8 +14,8 @@ final class Breadcrumbs extends AbstractPresentationObject
 		
 		foreach($aPath as $aPathElement) {
 			$this->template->assign_block_vars('breadcrumbs', array(
-				'URL'		=> $aPathElement['url'],
-				'TITLE'		=> $aPathElement['title'],
+				'URL'		=> isset($aPathElement['url']) ? $aPathElement['url'] : '',
+				'TITLE'		=> isset($aPathElement['title']) ? $aPathElement['title'] : 'UNDEFINED',
 				'IS_ACTIVE'	=> ($aPathElement['title'] == $aLastElement['title']) 
 			));	
 		}

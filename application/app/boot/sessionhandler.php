@@ -6,7 +6,7 @@ if(IN_CONTROLLER !== true){ die((IS_DEVELOPMENT_AREA === true) ? ('Not in contro
 final class SessionHandler
 {
 	private $_settings = array(
-		'session_expire_time'		=> 60, // In minutes
+		'session_expire_time'		=> SESSION_EXPIRE_TIME, // In minutes
 		'use_only_cookies'			=> true,
 	);
 

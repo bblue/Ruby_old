@@ -1,9 +1,9 @@
 <?php
-namespace Controllers;
+namespace Modules;
 
 use App\AbstractController;
 
-final class Recipes extends AbstractController
+final class RecipesController extends AbstractController
 {
 	public function executeIndexaction()
 	{
@@ -13,6 +13,11 @@ final class Recipes extends AbstractController
 	public function executeManagemyrecipes()
 	{
 		return true;
+	}
+	
+	public function executeView()
+	{
+	    return true;
 	}
 	
 	public function executeAdd()

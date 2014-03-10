@@ -23,7 +23,7 @@ final class Routing extends ServiceAbstract
 	const DEFAULT_URL		= 'index';
 	
 	const FORCED_LOGIN		= FORCED_LOGIN;
-
+	
 	public function route(Request $request, Visitor $visitor)
 	{
 		$this->sOriginalUrl = $request->getUrl();
@@ -102,34 +102,48 @@ final class Routing extends ServiceAbstract
 		$route->url = $url;
 		
 		if(!$this->buildRouteFromDatabase($route)) {
-			$this->buildRouteFromPath($route, $iLevel);
+		    if(ALLOW_PATH_ROUTE_BUILD === true) {
+		        $this->buildRouteFromPath($route, $iLevel);
+		    }
 		}
 
 		// Check for entity errors
-		if($route->hasError())
-		{
+		if($route->hasError()) {
 			throw new \Exception('Route should not throw an error. Something is very wrong.');
 		}
 		
 		return $route;
 	}
 	
-	private function buildRouteFromDatabase(Route $route)
+	private function buildRouteFromDatabase(Route $route, $iLevel = 1)
 	{
-		// Load the route specific items from the database.
-		$this->dataMapperFactory
-			->build('route')
-			->fetch($route);
+	    // We build backwards, so recalc the level
+	    $iTier = $route->iUrlLevels - ($iLevel - 1);
 
-		// Test for valid route
-		if($route->id) {
-			$sMessage = 'Route build success -routeTable ('.$route->sResourceName.'/'.$route->sCommand.')';
-			$this->log->createLogEntry($sMessage, $this->visitor, 'success', SHOW_ROUTE_BUILD_MESSAGES);
-			return true;
-		} else {
-			$sMessage = 'Route build error -routeTable ('.$route->url.')';
-			$this->log->createLogEntry($sMessage, $this->visitor, 'warning', SHOW_ROUTE_BUILD_MESSAGES);	
-		}
+	    if($iTier > $route::MAX_LEVEL || $iTier > $route->iUrlLevels || $iTier == 0) {
+	        // No route was found
+	        return false;
+	    } else {
+    	    $route->sResourceName = $route->extractControllerFromUrl($iTier);
+    	    $route->sCommand = $route->extractCommandFromUrl($iTier);
+    
+    		// Load the route specific items from the database.
+    		$this->dataMapperFactory
+    			->build('route')
+    			->fetch($route);
+    
+    		// Test for valid route
+    		if(!empty($route->id)) {
+    			$sMessage = 'Route build success -routeTable ('.$route->sResourceName.'->'.$route->sCommand.')';
+    			$this->log->createLogEntry($sMessage, $this->visitor, 'success', SHOW_ROUTE_BUILD_MESSAGES);
+    			return true;
+    		} else {
+    			$sMessage = 'Route build error -routeTable ('.$route->sResourceName.'->'.$route->sCommand.') on level ' . $iTier;
+    			$this->log->createLogEntry($sMessage, $this->visitor, 'warning', SHOW_ROUTE_BUILD_MESSAGES);
+    
+    			return $this->buildRouteFromDatabase($route, $iLevel + 1);
+    		}
+	    }
 	}
 	
 	private function buildRouteFromPath(Route $route, $iLevel = 1)
@@ -137,16 +151,17 @@ final class Routing extends ServiceAbstract
 		$route->sResourceName = $route->extractControllerFromUrl($iLevel);
 		$route->sCommand = $route->extractCommandFromUrl($iLevel);
 
+		// Check module list
 		$this->dataMapperFactory
 			->build('routecontroller')
 			->fetch($route);
 
-		if($route->id) {
-			$sMessage = 'Route build success -path ('.$route->sResourceName.'/'.$route->sCommand.')';
+		if(!empty($route->id)) {
+			$sMessage = 'Route build success -path ('.$route->sResourceName.'->'.$route->sCommand.')';
 			$this->log->createLogEntry($sMessage, $this->visitor, 'success', SHOW_ROUTE_BUILD_MESSAGES);
 			return true;
 		} else {
-			$sMessage = 'Route build error -path ('.$route->sResourceName.')';
+			$sMessage = 'Route build error -path ('.$route->sResourceName.'->'.$route->sCommand.')';
 			$this->log->createLogEntry($sMessage, $this->visitor, 'warning', SHOW_ROUTE_BUILD_MESSAGES);
 			
 			if($iLevel < $route::MAX_LEVEL && $iLevel < $route->iUrlLevels) {

@@ -1,9 +1,9 @@
 <?php
-namespace Controllers\Dev\Rbac;
+namespace Modules\Dev;
 
 use App\AbstractController;
 
-class Rbac extends AbstractController
+class RbacController extends AbstractController
 {	
 	protected function executeIndexaction()
 	{

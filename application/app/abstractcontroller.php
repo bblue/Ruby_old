@@ -51,7 +51,7 @@ abstract class AbstractController
 	public function execute($sCommand, View $view)
 	{
 		// Load the RBAC at the last minute
-		require ROOT_PATH . 'lib/PhpRbac/autoload.php'; //@todo: Create a service from this
+		require_once ROOT_PATH . DIRECTORY_SEPARATOR . 'lib'. DIRECTORY_SEPARATOR . 'PhpRbac'. DIRECTORY_SEPARATOR . 'autoload.php'; //@todo: Create a service from this
 		$this->rbac = new \PhpRbac\Rbac();
 
 		// Load the logging mechanism

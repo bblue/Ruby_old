@@ -1,8 +1,8 @@
 <?php
-namespace View\Views;
+namespace Modules;
 use View\AbstractView, View\Template;
 
-final class Error extends AbstractView
+final class ErrorView extends AbstractView
 {
 	public function executeSet404error()
 	{
@@ -13,19 +13,23 @@ final class Error extends AbstractView
 			->setTemplatePrefix('http_error')
 			->assignData(404, 'Page Not Found', 'The page you requested could not be found');
 		
-		if($this->serviceFactory->build('recognition', true)->getCurrentVisitor()->isLoggedIn() || FORCED_LOGIN === false)
-		{
-			$sTemplateFile = 'extras-404';
+		$sTemplateFile = 'error/extras-404';
+		
+		/** Load required scripts */
+		$this->presentationObjectFactory
+		->build('scripttags', true)
+		->assignData($sTemplateFile);
+			
+		if($this->serviceFactory->build('recognition', true)->getCurrentVisitor()->isLoggedIn() || FORCED_LOGIN === false) {
+			
 					
 			$this->display('custom/header.htm');
 			$this->display('custom/sidebar.htm');
 			$this->display('custom/rightbar.htm');
 			$this->display('custom/' . $sTemplateFile . '.htm');
 			$this->display('custom/footer.htm');	
-		}
-		else
-		{
-			$this->display('custom/full-page-error.htm');
+		} else {
+			$this->display('custom/error/full-page-error.htm');
 		}
 		
 		return true;
@@ -39,20 +43,24 @@ final class Error extends AbstractView
 			->build('errormessage', true)
 			->setTemplatePrefix('http_error')
 			->assignData(500, 'Internal Server Error', 'An internal server error occured');
+
+		$sTemplateFile = 'error/extras-500';
 		
-		if($this->serviceFactory->build('recognition', true)->getCurrentVisitor()->isLoggedIn() || FORCED_LOGIN === false)
-		{
-			$sTemplateFile = 'extras-500';
+		/** Load required scripts */
+		$this->presentationObjectFactory
+		->build('scripttags', true)
+		->assignData($sTemplateFile);
+					
+		if($this->serviceFactory->build('recognition', true)->getCurrentVisitor()->isLoggedIn() || FORCED_LOGIN === false) {
+			
 					
 			$this->display('custom/header.htm');
 			$this->display('custom/sidebar.htm');
 			$this->display('custom/rightbar.htm');
 			$this->display('custom/' . $sTemplateFile . '.htm');
 			$this->display('custom/footer.htm');	
-		}
-		else
-		{
-			$this->display('custom/full-page-error.htm');
+		} else {
+			$this->display('custom/error/full-page-error.htm');
 		}
 		
 		return true;

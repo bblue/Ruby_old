@@ -1,10 +1,10 @@
 <?php
-namespace View\Views;
+namespace Modules;
 
 use View\AbstractView,
 	View\Template;
 
-final class Users extends AbstractView
+final class UsersView extends AbstractView
 {
 	public function executeIndexAction()
 	{

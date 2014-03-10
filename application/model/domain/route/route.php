@@ -27,6 +27,15 @@ final class Route extends AbstractEntity
 	
 	const DEFAULT_COMMAND = 'indexAction';
 	
+	public function getId()
+	{
+		if(isset($this->_values['id'])) {
+	       return $this->_values['id'];
+		} else {
+		    return 0;
+		}
+	}
+	
 	public function extractControllerFromUrl($iLevel = 1)
 	{
 		$this->dissectUrl();
@@ -70,13 +79,17 @@ final class Route extends AbstractEntity
 	
 	public function setUrl($url)
 	{
-		// save the url
+		// Save the url
 		$this->_values['url'] = $url;
+		
+		// Dissect the url
+		$this->dissectUrl();
 	}
 	
 	public function isEnabled()
 	{
-		return $this->_values['bIsEnabled'];
+	    return true;
+		//return isset($this->_values['bIsEnabled']) ? $this->_values['bIsEnabled'] : false;
 	}
 	
 	public function getResourceName()

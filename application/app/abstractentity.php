@@ -73,9 +73,11 @@ abstract class AbstractEntity
 		if (method_exists($this, $accessor) && is_callable(array($this, $accessor))) {
 			return $this->$accessor();   
 		}
-		if (isset($this->_values[$name]) || is_null($this->_values[$name])) {
-			return $this->_values[$name];  
+		
+		if(isset($this->_values[$name])) {
+	       return $this->_values[$name];
 		}
+
 		throw new \Exception('The field ' . $name . ' has not been set for this entity yet ('.get_called_class().').');
 	}
 

@@ -26,7 +26,7 @@ abstract class AbstractView
 		if(!defined('WEBSITE')) { throw new \Exception('WEBSITE constant has not been set'); }
 		if(!defined('SITE_TEMPLATE')) { throw new \Exception('SITE_TEMPLATE constant has not been set'); } //@todo: hente template fra databasen
 		
-		$this->template->set_custom_template(ROOT_PATH . 'view/templates/' . SITE_TEMPLATE, 'templateName');
+		$this->template->set_custom_template(ROOT_PATH . DIRECTORY_SEPARATOR . 'view'.DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR . SITE_TEMPLATE, 'templateName');
 	}
 	
 	public function setCommand($sCommand)

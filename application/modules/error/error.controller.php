@@ -1,9 +1,9 @@
 <?php
-namespace Controllers;
+namespace Modules;
 
 use App\AbstractController;
 
-final class Error extends AbstractController
+final class ErrorController extends AbstractController
 {
 	public function executeSet404error()
 	{

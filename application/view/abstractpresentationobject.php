@@ -2,6 +2,7 @@
 namespace View;
 
 use App\ServiceFactory;
+use App\Template;
 
 abstract class AbstractPresentationObject
 {

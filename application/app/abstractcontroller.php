@@ -4,7 +4,7 @@ namespace App;
 use App\Boot\Request;
 
 use App\Factory;
-use View\AbstractView as View;
+use App\AbstractView as View;
 
 abstract class AbstractController
 {
@@ -39,7 +39,7 @@ abstract class AbstractController
 		$mutator = 'execute' . $sCommand;
 
 		if (!method_exists($this, $mutator) || !is_callable(array($this, $mutator))) {
-			throw new \Exception($sCommand . ' could not be called on ' . get_called_class());
+			throw new \BadMethodCallException($sCommand . ' could not be called on ' . get_called_class());
 		}
 
 		// Inform the view of what command we are performing

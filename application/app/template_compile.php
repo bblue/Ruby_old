@@ -1,5 +1,5 @@
 <?php
-namespace View;
+namespace App;
 /**
 *
 * @package phpBB3

@@ -89,8 +89,14 @@ final class Route extends AbstractEntity
 	public function isEnabled()
 	{
 	    return true;
-		//return isset($this->_values['bIsEnabled']) ? $this->_values['bIsEnabled'] : false;
+		//return isset($this->_values['bIsEnabled']) ? $this->_values['bIsEnabled'] : false; //@todo: Fix this
 	}
+	
+	public function canBypassForcedLogin()
+	{
+	    return true;
+	    //return isset($this->_values['bCanBypassForcedLogin']) ? $this->_values['bCanBypassForcedLogin'] : false; //@todo: fix this
+	}	
 	
 	public function getResourceName()
 	{
@@ -133,6 +139,8 @@ final class Route extends AbstractEntity
    		}
    		return $this->_values['aUsergroupAccessList'];
    	}
+   	
+
    	
    	private function buildUserAccessList()
    	{

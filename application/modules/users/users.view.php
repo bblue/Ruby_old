@@ -1,8 +1,8 @@
 <?php
 namespace Modules;
 
-use View\AbstractView,
-	View\Template;
+use App\AbstractView,
+	App\Template;
 
 final class UsersView extends AbstractView
 {

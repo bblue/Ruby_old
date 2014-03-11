@@ -103,7 +103,13 @@ final class Routing extends ServiceAbstract
 		
 		if(!$this->buildRouteFromDatabase($route)) {
 		    if(ALLOW_PATH_ROUTE_BUILD === true) {
-		        $this->buildRouteFromPath($route, $iLevel);
+		        if(!$this->buildRouteFromPath($route, $iLevel)) {
+		            $sMessage = 'Failed to build any route';
+		            $this->log->createLogEntry($sMessage, $this->visitor, 'warning', SHOW_ROUTE_BUILD_MESSAGES);        
+		        }
+		    } else {
+		        $sMessage = 'Failed to build any route';
+		        $this->log->createLogEntry($sMessage, $this->visitor, 'warning', SHOW_ROUTE_BUILD_MESSAGES);
 		    }
 		}
 
@@ -125,20 +131,20 @@ final class Routing extends ServiceAbstract
 	        return false;
 	    } else {
     	    $route->sResourceName = $route->extractControllerFromUrl($iTier);
-    	    $route->sCommand = $route->extractCommandFromUrl($iTier);
+    	    $sCommand = $route->extractCommandFromUrl($iTier);
     
     		// Load the route specific items from the database.
     		$this->dataMapperFactory
     			->build('route')
     			->fetch($route);
-    
+
     		// Test for valid route
     		if(!empty($route->id)) {
-    			$sMessage = 'Route build success -routeTable ('.$route->sResourceName.'->'.$route->sCommand.')';
+    			$sMessage = 'Route build success -routeTable ('.$route->sResourceName.'->'.$sCommand.')';
     			$this->log->createLogEntry($sMessage, $this->visitor, 'success', SHOW_ROUTE_BUILD_MESSAGES);
     			return true;
     		} else {
-    			$sMessage = 'Route build error -routeTable ('.$route->sResourceName.'->'.$route->sCommand.') on level ' . $iTier;
+    			$sMessage = 'Route build error -routeTable ('.$route->sResourceName.'->'.$sCommand.') on level ' . $iTier;
     			$this->log->createLogEntry($sMessage, $this->visitor, 'warning', SHOW_ROUTE_BUILD_MESSAGES);
     
     			return $this->buildRouteFromDatabase($route, $iLevel + 1);
@@ -187,21 +193,23 @@ final class Routing extends ServiceAbstract
 	
 	private function redirect_to_404()
 	{
-		// Check if the route is enabled. This will also verify if the route exists
-		if($this->route->isEnabled())
-		{
+	    // Check if we have a route id
+	    if(empty($this->route->id)) {
+	        return true;
+	    }
+	    
+		// Check if the route is enabled
+		if($this->route->isEnabled()) {
 			return false; 
 		}
 		
 		// Route does not exists, check if we should still attempt to load it
-		if(!defined('BYPASS_IS_ENABLED_CHECK') || BYPASS_IS_ENABLED_CHECK === false)
-		{
+		if(defined('DEV_AREA_CONFIRMED') && (DEV_AREA_CONFIRMED === true) && (!defined('BYPASS_IS_ENABLED_CHECK') || BYPASS_IS_ENABLED_CHECK === false)) {
 			return true;
 		}
 		
 		// We are in dev mode and can attempt to load the route. Check if we have permission
-		if($this->visitor->user->isAdmin())
-		{
+		if($this->visitor->user->isAdmin()) 	{
 			trigger_error('Now bypassing route verification. Fatal errors could be triggered', E_USER_NOTICE);
 			return false;
 		}
@@ -242,20 +250,16 @@ final class Routing extends ServiceAbstract
 
 	private function redirect_to_login_page()
 	{
-		if($this->route->url == self::LOGIN_URL )
-		{
+		if($this->route->url == self::LOGIN_URL) {
 			return false;
 		}
 		
-		if($this->visitor->isLoggedIn())
-		{
+		if($this->visitor->isLoggedIn()) {
 			return false;
 		}
 
-		if($this->is_forced_login())
-		{
-			if($this->route->bCanBypassForcedLogin)
-			{
+		if($this->is_forced_login()) {
+			if($this->route->canBypassForcedLogin()) {
 				return false;
 			}
 

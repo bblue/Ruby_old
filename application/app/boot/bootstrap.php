@@ -17,7 +17,7 @@ if (version_compare(PHP_VERSION, '5.3.1', '<')) {
 	
 /** Confirm that we have initiated the script as intended for security */
 define('IN_CONTROLLER', true);
-
++
 /** Define the paths */
 define('ROOT_PATH', '..'. DIRECTORY_SEPARATOR . 'application');
 
@@ -28,7 +28,7 @@ require (ROOT_PATH . DIRECTORY_SEPARATOR . 'app'. DIRECTORY_SEPARATOR . 'boot'. 
 if(IS_DEVELOPMENT_AREA === true) {
     if (!isset($_SERVER['HTTP_CLIENT_IP']) && !isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
         $whitelist = array('127.0.0.1', 'fe80::1', '::1');
-        if(in_array(@$_SERVER['REMOTE_ADDR'], $whitelist)) {
+        if(in_array($_SERVER['REMOTE_ADDR'], $whitelist)) {
             // Show errors
             ini_set('display_errors', 1);
             ini_set('html_errors', 1);
@@ -37,6 +37,9 @@ if(IS_DEVELOPMENT_AREA === true) {
             // Make errors pretty
             ini_set('error_prepend_string', '<pre>');
             ini_set('error_append_string', '</pre>');
+            
+            // Create constant for use in rest of script
+            define('DEV_AREA_CONFIRMED', true);
         }
     }
 }

@@ -1,8 +1,7 @@
 <?php
 namespace App\Factories;
 
-use View\Template;
-
+use App\Template;
 use App\Factory;
 
 final class PresentationObject extends Factory

@@ -1,5 +1,5 @@
 <?php
-namespace View;
+namespace App;
 
 use App\Factories\Service as ServiceFactory,
 	App\Factories\PresentationObject as PresentationObjectFactory;

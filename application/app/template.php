@@ -1,6 +1,6 @@
 <?php
-namespace View;
-use View\Template_compile;
+namespace App;
+
 if(IN_CONTROLLER !== true){ die((IS_DEVELOPMENT_AREA === true) ? ('Not in controller. Error at ' . __FILE__ . '.') : ''); }
 /*
 		NOTE!!!

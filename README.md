@@ -1,4 +1,4 @@
-# _Ruby CMS_
+# _Project Name_ (codename: Ruby)
 
 _Description: CMS framework built with a domain driven design approach and a proper MVC pattern_
 

@@ -132,6 +132,7 @@ final class Scripttags extends AbstractPresentationObject
 			'demo/bblue-rbac-add' 											=> array('rbac/add_role','rbac/add_permission'),
 			'demo/bblue-recipes-add'										=> array('recipes/add'),
 			'demo/bblue-login'												=> array('extras-login'),
+			'demo/bblue-recipes-view'										=> array('recipes/view'),
 																			
 			/** Datatables */
 			'plugins/datatables/dataTables.bootstrap' 						=> array('tables-data'),

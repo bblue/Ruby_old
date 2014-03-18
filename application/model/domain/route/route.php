@@ -94,7 +94,7 @@ final class Route extends AbstractEntity
 	
 	public function canBypassForcedLogin()
 	{
-	    return true;
+	    return false;
 	    //return isset($this->_values['bCanBypassForcedLogin']) ? $this->_values['bCanBypassForcedLogin'] : false; //@todo: fix this
 	}	
 	

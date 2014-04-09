@@ -4,88 +4,87 @@ use App\AbstractEntity;
 use App\CollectionProxy;
 
 final class User extends AbstractEntity
-{  
+{
 	protected $_allowedFields = array(
-		'id', 
-		'Firstname', 
-		'Lastname', 
-		'Email', 
-		'IsActivated', 
-		'Password', 
-		'NeedsRevalidation', 
-		'Username', 
-		'recipes', 
-		'SecretAnswer', 
-		'SecretQuestion', 
-		'MainUsergroup', 
-		'VerificationCodeExpireTime', 
-		'VerificationCode', 
-		'RegistrationKey', 
-		'VerificationDate', 
-		'RegistrationDate', 
-		'RevalidationCode', 
-		'RevalidationCodeExpireTime', 
-		'RevalidationDate', 
-		'IsLocked', 
-		'isAdmin', 
+		'id',
+		'Firstname',
+		'Lastname',
+		'Email',
+		'IsActivated',
+		'Password',
+		'NeedsRevalidation',
+		'Username',
+		'recipes',
+		'SecretAnswer',
+		'SecretQuestion',
+		'MainUsergroup',
+		'VerificationCodeExpireTime',
+		'VerificationCode',
+		'RegistrationKey',
+		'VerificationDate',
+		'RegistrationDate',
+		'RevalidationCode',
+		'RevalidationCodeExpireTime',
+		'RevalidationDate',
+		'IsLocked',
+		'isAdmin',
 		'usergroups',
 		'GUEST_ID'
 	);
 
 	const GUEST_ID = 0;
-	
+	const PASSWORD_HASH_COMPLEXITY = PASSWORD_HASH_COMPLEXITY;
+
 	public function matchPassword($password)
 	{
 		require_once ROOT_PATH . DIRECTORY_SEPARATOR  . 'lib'.DIRECTORY_SEPARATOR.'password_compat.php';
-		if (password_verify($password, $this->_values['Password'])) 
-		{
-			if (password_needs_rehash($this->_values['Password'], PASSWORD_DEFAULT, array('cost' => 12))) 
-			{
+		if (password_verify($password, $this->_values['Password'])) {
+			if (password_needs_rehash($this->_values['Password'], PASSWORD_DEFAULT, array('cost' => self::PASSWORD_HASH_COMPLEXITY))) {
 				$this->setPassword($this->hashPassword($password));
 			}
 			return true;
 		}
 		return false;
 	}
-	
+
 	private function hashPassword($password)
 	{
 		require_once ROOT_PATH .DIRECTORY_SEPARATOR. 'lib'.DIRECTORY_SEPARATOR.'password_compat.php';
-		return password_hash($password, PASSWORD_DEFAULT, array('cost' => 12));
+		return password_hash($password, PASSWORD_DEFAULT, array('cost' => self::PASSWORD_HASH_COMPLEXITY));
 	}
-	
+
 	public function setPassword($password)
 	{
 		$this->_values['Password'] = $password;
 	}
-	
+
 	public function getPassword()
 	{
 		throw new \Exception('Password may not be extracted');
 	}
-	
+
 	public function getUsergroups()
 	{
-		return ($this->_values['usergroups']) ? : array(); 
+		return ($this->_values['usergroups']) ? : array();
 	}
-	
+
 	public function isGuest()
 	{
 		return ((self::GUEST_ID === $this->id) ? true : false);
 	}
-	
+
 	public function isAdmin()
 	{
 		if($this->isGuest())
 		{
 			return false;
 		}
-		
+
 		if(isset($this->_values['isAdmin']))
 		{
 			return $this->_values['isAdmin'];
 		}
-		
+
    		foreach($this->usergroups as $usergroup)
    		{
    			if($usergroup->isAdmin())
@@ -93,10 +92,10 @@ final class User extends AbstractEntity
    				return $this->_values['isAdmin'] = true;
    			}
    		}
-   		
+
 		return $this->_values['isAdmin'] = false;
 	}
-	
+
 	/**
 	 * Set the user's ID
 	 */
@@ -106,10 +105,10 @@ final class User extends AbstractEntity
 		settype($id, 'int');
 		$this->_values['id'] = $id;
 	}
-   
+
 	/**
 	 * Set the user's first name
-	 */ 
+	 */
 	public function setFirstname($fname)
 	{
 		if (strlen($fname) < 2 || strlen($fname) > 32) {
@@ -117,7 +116,7 @@ final class User extends AbstractEntity
 		}
 		$this->_values['Firstname'] = $fname;
 	}
-	   
+
 	/**
 	 * Set the user's last name
 	 */
@@ -128,7 +127,7 @@ final class User extends AbstractEntity
 		}
 		$this->_values['Lastname'] = $lname;
 	}
-	
+
 	/**
 	 * Set the user's username
 	 */
@@ -138,8 +137,8 @@ final class User extends AbstractEntity
 			throw new \Exception('The specified last name is invalid.');
 		}
 		$this->_values['Username'] = $uname;
-	}  
-	
+	}
+
 	/**
 	 * Set the user's email address
 	 */
@@ -150,7 +149,7 @@ final class User extends AbstractEntity
 			if (!filter_var($email, FILTER_VALIDATE_EMAIL))
 			{
 				throw new \Exception('The specified email address is invalid.');
-			}   		
+			}
 		}
 		$this->_values['Email'] = $email;
 	}
@@ -167,10 +166,10 @@ final class User extends AbstractEntity
 	{
 		$this->_values['usergroups'] = $usergroups;
 	}
-	
+
 	public function setIsAdmin($bIsAdmin)
 	{
 		$this->_values['isAdmin'] = $bIsAdmin;
 	}
-	
+
 }

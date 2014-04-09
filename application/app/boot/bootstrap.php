@@ -10,11 +10,11 @@ use App\Factories\DataMapper 	as DataMapperFactory,
     App\Factories\Listener      as ListenerFactory;
 
 use Lib\Db\MysqlAdapter;
-	
+
 if (version_compare(PHP_VERSION, '5.3.1', '<')) {
 	die('Your host needs to use PHP 5.3.1 or higher to run this version of Ruby!');
 }
-	
+
 /** Confirm that we have initiated the script as intended for security */
 define('IN_CONTROLLER', true);
 +
@@ -22,12 +22,12 @@ define('IN_CONTROLLER', true);
 define('ROOT_PATH', '..'. DIRECTORY_SEPARATOR . 'application');
 
 /** Load the configuration file  */
-require (ROOT_PATH . DIRECTORY_SEPARATOR . 'app'. DIRECTORY_SEPARATOR . 'boot'. DIRECTORY_SEPARATOR . 'config.php'); //@todo: Load this into a class 
+require (ROOT_PATH . DIRECTORY_SEPARATOR . 'app'. DIRECTORY_SEPARATOR . 'boot'. DIRECTORY_SEPARATOR . 'config.php'); //@todo: Load this into a class
 
 /** Configure error reporting */
 if(IS_DEVELOPMENT_AREA === true) {
     if (!isset($_SERVER['HTTP_CLIENT_IP']) && !isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-        $whitelist = array('127.0.0.1', 'fe80::1', '::1');
+        $whitelist = array('127.0.0.1', 'fe80::1', '::1', '192.168.1.20');
         if(in_array($_SERVER['REMOTE_ADDR'], $whitelist)) {
             // Show errors
             ini_set('display_errors', 1);
@@ -37,7 +37,7 @@ if(IS_DEVELOPMENT_AREA === true) {
             // Make errors pretty
             ini_set('error_prepend_string', '<pre>');
             ini_set('error_append_string', '</pre>');
-            
+
             // Create constant for use in rest of script
             define('DEV_AREA_CONFIRMED', true);
         }

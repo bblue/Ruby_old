@@ -6,9 +6,8 @@
 	}
 
  	/** Load the root website */
-	if(is_readable($filename = 'websites/self/index.php')){
+	if(is_readable($filename = 'websites'.DIRECTORY_SEPARATOR.'self'.DIRECTORY_SEPARATOR.'index.php')){
 		require $filename;
 	} else {
 		die('Unable to load root website');
 	}
-	

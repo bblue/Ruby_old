@@ -1,4 +1,4 @@
-    <footer role="contentinfo">
+    <footer role="contentinfo" style="overflow: visible !important;">
         <div class="clearfix">
             <ul class="list-unstyled list-inline pull-left">
                 <li>Powered by Ruby &copy; Aleksander Lanes, 2014</li>
@@ -7,6 +7,10 @@
             </ul>
             <button class="pull-right btn btn-inverse-alt btn-xs hidden-print" id="back-to-top"><i class="fa fa-arrow-up"></i></button>
             <ul class="list-unstyled list-inline pull-right">
+            	<li><em><!-- PHP -->echo round((microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']), 2), ' ms ';<!-- ENDPHP --></em></li>
+            	<li>|</li>
+            	<li><em><!-- PHP -->global $iQueries; echo $iQueries, ' queries';<!-- ENDPHP --></em></li>
+            	<li>|</li>
             	<li><em>Connected to {VISITOR_SERVER_NAME} from {VISITOR_REMOTE_ADDR}</em></li>
             	<li></li>
             </ul>

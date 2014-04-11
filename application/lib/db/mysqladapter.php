@@ -6,18 +6,18 @@ class MysqlAdapter implements DatabaseAdapterInterface
     protected $_config = array();
     protected $_link;
     protected $_result;
-   
+
     /**
      * Constructor
      */
     public function __construct(array $config)
     {
         if (count($config) !== 4) {
-            throw new MysqlAdapterException('Invalid number of connection parameters.');  
+            throw new MysqlAdapterException('Invalid number of connection parameters.');
         }
         $this->_config = $config;
     }
-   
+
     /**
      * Connect to MySQL
      */
@@ -40,13 +40,17 @@ class MysqlAdapter implements DatabaseAdapterInterface
      */
     public function query($query)
     {
+    	// Count queries to db
+    	global $iQueries;
+    	$iQueries++;
+
     	if(PRINT_SQL_QUERY === true)
     	{
     		echo '<pre>'; print_r($query); echo "</pre>\n";
     	}
-    	
+
         if (!is_string($query) || empty($query)) {
-            throw new MySQLAdapterException('The specified query is not valid.');  
+            throw new MySQLAdapterException('The specified query is not valid.');
         }
         // lazy connect to MySQL
         $this->connect();
@@ -55,7 +59,7 @@ class MysqlAdapter implements DatabaseAdapterInterface
         }
         throw new MySQLAdapterException('Error executing the specified query ' . $query . mysqli_error($this->_link));
     }
-   
+
     /**
      * Perform a SELECT statement
      */
@@ -69,10 +73,10 @@ class MysqlAdapter implements DatabaseAdapterInterface
         $this->query($query);
         return $this->countRows();
     }
-   
+
     /**
      * Perform an INSERT statement
-     */ 
+     */
     public function insert(array $aTables, array $data)
     {
         $fields = implode(', ', array_keys($data));
@@ -81,7 +85,7 @@ class MysqlAdapter implements DatabaseAdapterInterface
         $this->query($query);
         return $this->getInsertId();
     }
-   
+
     /**
      * Perform an UPDATE statement
      */
@@ -99,7 +103,7 @@ class MysqlAdapter implements DatabaseAdapterInterface
 
         return $this->getAffectedRows();
     }
-   
+
     /**
      * Perform a DELETE statement
      */
@@ -110,7 +114,7 @@ class MysqlAdapter implements DatabaseAdapterInterface
         $this->query($query);
         return $this->getAffectedRows();
     }
-   
+
     /**
      * Escape the specified value
      */
@@ -125,7 +129,7 @@ class MysqlAdapter implements DatabaseAdapterInterface
         }
         return $value;
     }
-   
+
     /**
      * Fetch a single row from the current result set (as an associative array)
      */
@@ -150,17 +154,17 @@ class MysqlAdapter implements DatabaseAdapterInterface
                mysqli_insert_id($this->_link) :
                null;
     }
-   
+
     /**
      * Get the number of rows returned by the current result set
-     */ 
+     */
     public function countRows()
     {
         return $this->_result !== null ?
                mysqli_num_rows($this->_result) :
                0;
     }
-   
+
     /**
      * Get the number of affected rows
      */
@@ -168,7 +172,7 @@ class MysqlAdapter implements DatabaseAdapterInterface
     {
         return ($this->_link !== null) ? mysqli_affected_rows($this->_link) : 0;
     }
-   
+
     /**
      * Free up the current result set
      */
@@ -180,7 +184,7 @@ class MysqlAdapter implements DatabaseAdapterInterface
         }
         return false;
     }
-   
+
     /**
      * Close explicitly the database connection
      */
@@ -193,7 +197,7 @@ class MysqlAdapter implements DatabaseAdapterInterface
         }
         return false;
     }
-   
+
     /**
      * Close automatically the database connection when the instance of the class is destroyed
      */

@@ -91,6 +91,9 @@ final class Template_compile
 	{
 		global $config;
 
+		//Hack by AL 11.4: Enable php
+		$config['tpl_allow_php'] = true;
+
 		if ($echo_var)
 		{
 			global $$echo_var;
@@ -274,16 +277,16 @@ final class Template_compile
 		// transform vars prefixed by L_ into their language variable pendant if nothing is set within the tpldata array
 		if (strpos($text_blocks, '{L_') !== false)
 		{
-			
+
 			// Hack by AL:
 			$text_blocks = preg_replace('#\{L_([A-Z0-9\-_]+)\}#', "<?php echo ((isset(\$this->_rootref['L_\\1'])) ? \$this->_rootref['L_\\1'] :  \$this->lang->lang('\\1')); ?>", $text_blocks);
-	
+
 		}
 
 		// Handle remaining varrefs
 		$text_blocks = preg_replace('#\{([A-Z0-9\-_]+)\}#', "<?php echo (isset(\$this->_rootref['\\1'])) ? \$this->_rootref['\\1'] : ''; ?>", $text_blocks);
 		$text_blocks = preg_replace('#\{\$([A-Z0-9\-_]+)\}#', "<?php echo (isset(\$this->_tpldata['DEFINE']['.']['\\1'])) ? \$this->_tpldata['DEFINE']['.']['\\1'] : ''; ?>", $text_blocks);
-		
+
 		return;
 	}
 

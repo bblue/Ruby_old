@@ -5,27 +5,27 @@ abstract class AbstractEntity
 {
 	protected $_values = array();
 	protected $_allowedFields = array();
-	
+
 	/* Error handling */
 	private $_errors = array();
-	
+
 	protected $sName;
-	
+
 	public function hasError()
 	{
 		return sizeof($this->_errors > 0) ? $this->getErrors() : false;
 	}
-	
+
 	public function getErrors()
 	{
 		return $this->_errors;
-	}	
-	
+	}
+
 	protected function setError($errorText)
 	{
 		$this->_errors[] = $errorText;
 	}
-	
+
 	/**
 	 * Assign a value to the specified field via the corresponding mutator (if it exists);
 	 * otherwise, assign the value directly to the '$_values' protected array
@@ -33,18 +33,25 @@ abstract class AbstractEntity
 	public function __set($name, $value)
 	{
 		if (!in_array($name, $this->_allowedFields)) {
-			throw new \Exception('The field ' . $name . ' is not allowed for this entity ('.get_called_class().').'); 
+			throw new \Exception('The field ' . $name . ' is not allowed for this entity ('.get_called_class().').');
 		}
 		$mutator = 'set' . ucfirst($name);
 
 		if (method_exists($this, $mutator) && is_callable(array($this, $mutator))) {
-			$this->$mutator($value);		  
+			$this->$mutator($value);
 		}
 		else {
 			$this->_values[$name] = $value;
 		}
 	}
-	
+
+	/** Function to set Id of entity, ensuring it is an integer */
+	public function setId($id)
+	{
+		settype($id, 'int');
+		$this->_values['id'] = $id;
+	}
+
 	public function getName()
 	{
 		if(!isset($this->sName))
@@ -54,12 +61,12 @@ abstract class AbstractEntity
 		}
 		return $this->sName;
 	}
-	   
+
 	public function getAllowedFields()
 	{
 		return $this->_allowedFields;
 	}
-	
+
 	/**
 	 * Get the value assigned to the specified field via the corresponding getter (if it exists);
 	otherwise, get the value directly from the '$_values' protected array
@@ -71,9 +78,9 @@ abstract class AbstractEntity
 		}
 		$accessor = 'get' . ucfirst($name);
 		if (method_exists($this, $accessor) && is_callable(array($this, $accessor))) {
-			return $this->$accessor();   
+			return $this->$accessor();
 		}
-		
+
 		if(isset($this->_values[$name])) {
 	       return $this->_values[$name];
 		}

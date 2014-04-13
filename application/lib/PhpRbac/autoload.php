@@ -1,7 +1,6 @@
 <?php
+spl_autoload_register(function ($class) {
 
-function rbac_autoloader($class) 
-{
     // a partial filename
     $part = str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
 
@@ -13,11 +12,11 @@ function rbac_autoloader($class)
 
     // go through the directories to find classes
     foreach ($dirs as $dir) {
+        
         $file = $dir . DIRECTORY_SEPARATOR . $part;
         if (is_readable($file)) {
             require $file;
             return;
         }
     }
-}
-spl_autoload_register('rbac_autoloader');
+});

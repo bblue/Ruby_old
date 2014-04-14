@@ -6,12 +6,12 @@ use View\AbstractPresentationObject;
 abstract class Rbac_tree extends AbstractPresentationObject
 {
 	protected $rbac;
-	
+
 	public function assignData($iStartID = 1)
 	{
 		// Save the rbac object
 		$this->rbac = new \PhpRbac\Rbac();
-		
+
 		// Get the title ID if we start at root
 		if($iStartID == 1) {
 			$iStartID = $this->getElementID('root');
@@ -19,23 +19,25 @@ abstract class Rbac_tree extends AbstractPresentationObject
 
 		// Get the children of the start ID
 		$aElements = $this->getChildren($iStartID);
-		
+
 		// Create the nested roles
-		foreach($aElements as $aElement) {
-			$sTree .= $this->getElement($aElement);
+		if(!empty($aElements)) {
+			foreach($aElements as $aElement) {
+				$sTree .= $this->getElement($aElement);
+			}
 		}
-		
+
 		return $this->assign($sTree);
 	}
-	
+
 	protected function prepareElementLine($aElement)
 	{
 		return '<a href="#" data-node-id="'.$aElement['ID'].'"><span title="'.$aElement['Description'].'">'.$aElement['Title']."</span></a>";
 	}
-	
+
 	protected function getElement($parent)
 	{
-			$str = "<li>".$this->prepareElementLine($parent);		
+			$str = "<li>".$this->prepareElementLine($parent);
 			$children = $this->getChildren($parent['ID']);
 			if(!empty($children)) {
 				$str .= "<ul>\n";
@@ -46,7 +48,7 @@ abstract class Rbac_tree extends AbstractPresentationObject
 			}
 			return $str .= "</li>\n";
 	}
-	
+
 	protected abstract function assign($sTree);
 	protected abstract function getElementID($sTitle);
 	protected abstract function getChildren($id);

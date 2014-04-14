@@ -5,7 +5,7 @@ use App\CollectionProxy,
 	App\AbstractEntity;
 
 final class Route extends AbstractEntity
-{  
+{
 	protected $_allowedFields = array(
 		'id',
 		'aUserAccessList',
@@ -22,11 +22,11 @@ final class Route extends AbstractEntity
 	);
 	private $aUrlElements;
 	public $iUrlLevels = 0;
-	
+
 	const MAX_LEVEL = 3;
-	
+
 	const DEFAULT_COMMAND = 'indexAction';
-	
+
 	public function getId()
 	{
 		if(isset($this->_values['id'])) {
@@ -35,7 +35,7 @@ final class Route extends AbstractEntity
 		    return 0;
 		}
 	}
-	
+
 	public function extractControllerFromUrl($iLevel = 1)
 	{
 		$this->dissectUrl();
@@ -47,28 +47,28 @@ final class Route extends AbstractEntity
 		$this->dissectUrl();
 		return $this->aUrlElements[$iLevel]['sCommand'];
 	}
-	
+
 	public function getUrl()
 	{
 		if(isset($this->_values['url'])) {
 			return $this->_values['url'];
 		}
 	}
-	
+
 	public function getCommand()
 	{
 		return (!empty($this->_values['sCommand'])) ? $this->_values['sCommand'] : self::DEFAULT_COMMAND;
 	}
-	
+
 	private function dissectUrl()
 	{
 		if(!empty($this->aUrlElements)) {
 			return $this->aUrlElements;
 		} else {
 			$parts = explode('/', $this->url);
-			
+
 			$this->iUrlLevels = count($parts);
-			
+
 			for($i = 1; $i<= self::MAX_LEVEL; $i++) {
 				$this->aUrlElements[$i]['sResourceName'] = implode('/', array_slice($parts, 0, $i));
 				$this->aUrlElements[$i]['sCommand'] = implode('/', array_slice($parts, $i, 1));
@@ -76,28 +76,29 @@ final class Route extends AbstractEntity
 			}
 		}
 	}
-	
+
 	public function setUrl($url)
 	{
 		// Save the url
 		$this->_values['url'] = $url;
-		
+
 		// Dissect the url
 		$this->dissectUrl();
 	}
-	
+
 	public function isEnabled()
 	{
 	    return true;
 		//return isset($this->_values['bIsEnabled']) ? $this->_values['bIsEnabled'] : false; //@todo: Fix this
 	}
-	
+
 	public function canBypassForcedLogin()
 	{
-	    return false;
-	    //return isset($this->_values['bCanBypassForcedLogin']) ? $this->_values['bCanBypassForcedLogin'] : false; //@todo: fix this
-	}	
-	
+		if(isset($this->_values['bCanBypassForcedLogin'])) {
+			return (intval($this->_values['bCanBypassForcedLogin']) === 1);
+		}
+	}
+
 	public function getResourceName()
 	{
 		if(!empty($this->_values['sResourceName']))
@@ -106,14 +107,14 @@ final class Route extends AbstractEntity
 		}
 		throw new \Exception('Resource name is unset');
 	}
-	
+
 	public function setResourceName($sResourceName)
 	{
 		$this->_values['sResourceName'] = $sResourceName;
 	}
-	
+
 	public function userHasAccess($userID)
-	{	
+	{
 		return in_array($userID, $this->getUserAccessList());
 	}
 
@@ -121,7 +122,7 @@ final class Route extends AbstractEntity
    	{
 		return in_array($usergroupID, $this->getUsergroupAccessList());
    	}
-   	
+
    	private function getUserAccessList()
    	{
    		if(!isset($this->_values['aUserAccessList']))
@@ -130,7 +131,7 @@ final class Route extends AbstractEntity
    		}
    		return $this->_values['aUserAccessList'];
    	}
-   	  	
+
    	private function getUsergroupAccessList()
    	{
    		if(!isset($this->_values['aUsergroupAccessList']))
@@ -139,9 +140,9 @@ final class Route extends AbstractEntity
    		}
    		return $this->_values['aUsergroupAccessList'];
    	}
-   	
 
-   	
+
+
    	private function buildUserAccessList()
    	{
 		$users = $this->getUsers();
@@ -152,7 +153,7 @@ final class Route extends AbstractEntity
 	   	}
 	   	return $array;
    	}
-   	
+
    	private function buildUsergroupAccessList()
    	{
 		$usergroups = $this->getUsergroups();
@@ -163,23 +164,23 @@ final class Route extends AbstractEntity
 	   	}
 	   	return $array;
    	}
-   	  	
+
    	private function getUsergroups()
    	{
 		return ($this->_values['usergroups']) ? : array();
    	}
-   	
+
    	private function getUsers()
    	{
    		return ($this->_values['users']) ? : array();
    	}
 
-   	public function setUsergroups(CollectionProxy $usergroups)	
+   	public function setUsergroups(CollectionProxy $usergroups)
 	{
 		$this->_values['usergroups'] = $usergroups;
 	}
-	
-	public function setUsers(CollectionProxy $users)	
+
+	public function setUsers(CollectionProxy $users)
 	{
 		$this->_values['users'] = $users;
 	}

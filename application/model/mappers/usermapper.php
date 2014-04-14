@@ -1,6 +1,6 @@
 <?php
 namespace Model\Mappers;
-use 
+use
 	Model\Domain\User\User,
 	App\DatabaseDataMapper,
 	App\AbstractEntity,
@@ -31,7 +31,7 @@ final class UserMapper extends DatabaseDataMapper
 		'IsLocked'					=> 'users.IsLocked',
 	);
 	protected $_cascadeFields = array();
-    
+
     public function fetch(AbstractEntity $user)
     {
     	// Check if ID has been set
@@ -39,29 +39,22 @@ final class UserMapper extends DatabaseDataMapper
     	{
     		$this->findById($user->id, $user);
     	}
-    	else 
+    	else
     	{
 	    	// Find by other search options
 	    	$aCriterias = ($user->Username) ? array('Username' => array(array('operator' => '=', 'value' => $user->Username))) : array();
-	
+
 	    	$this->find($aCriterias, $user);
-	    	
+
     	}
     	return $user;
     }
-    
+
     protected function setEntitySpecificData(AbstractEntity $user)
     {
 		$user->recipes = new CollectionProxy(
 			$this->_dataMapperFactory->build('recipe'),
 			array('author_id' => array(array('operator' => '=', 'value' => $user->id)
 		)));
-		$user->usergroups = new CollectionProxy(
-			$this->_dataMapperFactory->build('usergroup'),
-			null,
-			array(
-				'cascade_usergroups_users.u_id' => array(array('operator' => '=','value' => $user->id)),
-				'id' 							=> array(array('operator' => '=','value' => 'cascade_usergroups_users.g_id', 'tablevalue' => true)),
-		));
     }
 }

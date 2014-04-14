@@ -28,7 +28,6 @@ final class User extends AbstractEntity
 		'RevalidationDate',
 		'IsLocked',
 		'isAdmin',
-		'usergroups',
 		'GUEST_ID'
 	);
 
@@ -63,11 +62,6 @@ final class User extends AbstractEntity
 		throw new \Exception('Password may not be extracted');
 	}
 
-	public function getUsergroups()
-	{
-		return ($this->_values['usergroups']) ? : array();
-	}
-
 	public function isGuest()
 	{
 		return ((self::GUEST_ID === $this->id) ? true : false);
@@ -84,14 +78,6 @@ final class User extends AbstractEntity
 		{
 			return $this->_values['isAdmin'];
 		}
-
-   		foreach($this->usergroups as $usergroup)
-   		{
-   			if($usergroup->isAdmin())
-   			{
-   				return $this->_values['isAdmin'] = true;
-   			}
-   		}
 
 		return $this->_values['isAdmin'] = false;
 	}

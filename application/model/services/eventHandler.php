@@ -7,40 +7,38 @@ use App\Event as Event;
 final class EventHandler extends ServiceAbstract
 {
     private $aListeners = array();
-    
+
     public function addListener($sEvent, $callback)
     {
         $this->aListeners[$sEvent][] = $callback;
     }
-    
+
     public function dispatch($sEvent, Event $event = null)
     {
         if($event === null) {
             $event = $this->buildEvent();
         }
-        
-        $event->setDispatcher($this);
-        
-        $this->doDispatch($this->getListeners($sEvent), $sEvent, $event);
-        
-        return $event;
-        
 
+        $event->setDispatcher($this);
+
+        $this->doDispatch($this->getListeners($sEvent), $sEvent, $event);
+
+        return $event;
     }
-    
+
     private function getListeners($sEvent)
     {
         if(empty($this->aListeners)) {
             return array();
         }
-        
+
         if(!array_key_exists($sEvent, $this->aListeners)) {
             return array();
         }
-        
+
         return $this->aListeners[$sEvent];
     }
-    
+
     public function buildEvent(array $aDependencies = array())
     {
         $event = new Event();
@@ -49,8 +47,8 @@ final class EventHandler extends ServiceAbstract
         }
         return $event;
     }
-    
-    
+
+
     /**
      * Triggers the listeners of an event.
      *

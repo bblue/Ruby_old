@@ -7,12 +7,12 @@ if(IN_CONTROLLER !== true){ die((IS_DEVELOPMENT_AREA === true) ? ('Not in contro
 		This file contains the code that allows you to use phpBB's Template Engine outside
 		of the phpBB framework in your own site. This is allowed because the phpBB code is
 		released under the GPL license.
-		
+
 		This was not my idea, all I have done is consolidated all of the code into one file
 		to make it easier on everyone else.
 		The original creator of this idea was nanothree on phpBB.com
 		Here's the topic: http://www.phpbb.com/community/viewtopic.php?f=71&t=1557455
-		
+
 		This file was downloaded in October 2010 by Aleksander Lanes and has been redesigned to fit in with the Ruby CMS
 */
 
@@ -41,13 +41,13 @@ final class Template
 	var $inherit_root = '';
 	var $orig_tpl_storedb;
 	var $orig_tpl_inherits_id;
-	
+
 	// Hack by AL 20.12
 	private $bHasShownTemplateVars;
 
 	// this will hash handle names to the compiled/uncompiled code for that handle.
 	var $compiled_code = array();
-	
+
 	/**
 	* Set template location
 	* @access public
@@ -96,7 +96,7 @@ final class Template
 	{
 
 		// Make sure $template_path has no ending slash
-		if (substr($template_path, -1) == '/')
+		if (substr($template_path, -1) == DIRECTORY_SEPARATOR)
 		{
 			$template_path = substr($template_path, 0, -1);
 		}
@@ -110,7 +110,7 @@ final class Template
 			$user->theme['template_inherits_id'] = false;
 		}
 
-		//Hack by AL: Commented the line below. Only requried for rev2...  
+		//Hack by AL: Commented the line below. Only requried for rev2...
 		//$this->_rootref = &$this->_tpldata['.'][0];
 
 		return true;
@@ -136,11 +136,11 @@ final class Template
 
 			$this->filename[$handle] = $filename;
 
-			$this->files[$handle] = $this->root . '/' . $filename;
+			$this->files[$handle] = $this->root . DIRECTORY_SEPARATOR . $filename;
 
 			if ($this->inherit_root)
 			{
-				$this->files_inherit[$handle] = $this->inherit_root . '/' . $filename;
+				$this->files_inherit[$handle] = $this->inherit_root . DIRECTORY_SEPARATOR . $filename;
 			}
 		}
 
@@ -201,11 +201,11 @@ final class Template
 		{
 			//Hack by AL
 			//$this->lang = $this->registry->getObject('lang');
-			
+
 			// This is the function that does all the magic!
 			ob_start(function($b){return preg_replace(array('/\>[^\S ]+/s','/[^\S ]+\</s','/(\s)+/s'),array('>','<','\\1'),$b);});
 			eval(' ?>' . $this->compiled_code[$handle] . '<?php ');
-			
+
 			// Hack by AL: print the array for bug fixing		{
 			if(PRINT_TEMPLATE_VARS === true && !$this->bHasShownTemplateVars)
 			{
@@ -436,7 +436,7 @@ final class Template
 	function assign_var($varname, $varval)
 	{
 		$this->_rootref[$varname] = $varval;
-		
+
 		return true;
 	}
 
@@ -630,7 +630,7 @@ final class Template
 		{
 			$this->files_inherit[$handle] = $this->inherit_root . '/' . $filename;
 		}
-		
+
 		$filename = $this->_tpl_load($handle);
 
 		if ($include)

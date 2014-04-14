@@ -2,6 +2,7 @@
 namespace App\Factories;
 
 use App\Factory;
+use App\ListenerProxy;
 
 final class Listener extends Factory
 {
@@ -14,7 +15,12 @@ final class Listener extends Factory
 
     protected function construct($sListener)
     {
-        $sListener = 'listeners\\' . $sListener;
-        return ((!class_exists($sListener)) ? false : new $sListener($this->serviceFactory));
+    	return new ListenerProxy($this, $sListener);
+    }
+
+    public function createObject($sListener)
+    {
+    	$sListener = 'listeners\\' . $sListener;
+    	return new $sListener($this->serviceFactory);
     }
 }

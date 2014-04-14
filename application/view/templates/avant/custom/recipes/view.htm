@@ -77,15 +77,13 @@
 											<div class="panel panel-default recipe recipe-ingr-panel">
 												<div class="panel-heading">
 													<span class="pull-left">Ingredienser</span>
-													<div class="options">
-														<code>
-															<input type="text" value="4"/>
-															<span>
-																<strong>portions </strong>
-																<i style="color: #C7254E" class="fa fa-sort"></i>
-															</span>
-														</code>
-													</div>
+														<div class="input-group ingr-portions-group">
+															<div class="ingr-portions-inner-container">
+															<button type="button" class="btn btn-inverse ingr-portions-button" data-ingr-portions="minus"><i class="fa fa-minus"></i></button>
+															<input type="text" class="form-control ingr-portions-input" placeholder="1">
+															<button type="button" class="btn btn-inverse ingr-portions-button" data-ingr-portions="plus"><i class="fa fa-plus"></i></button>
+															</div>
+														</div>
 												</div>
 											  <div class="panel-body">
 											  	<span><strong>Tittel</strong></span>

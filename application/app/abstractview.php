@@ -105,18 +105,18 @@ abstract class AbstractView
 
 		if($this->serviceFactory->build('recognition', true)->getCurrentVisitor()->isLoggedIn() || FORCED_LOGIN === false)
 		{
-			$sTemplateFile = 'extras-403';
+			$sTemplateFile = 'error'.DIRECTORY_SEPARATOR.'extras-403';
 
-			$this->display('custom/header.htm');
-			$this->display('custom/sidebar.htm');
-			$this->display('custom/rightbar.htm');
-			$this->display('custom/' . $sTemplateFile . '.htm');
-			$this->display('custom/footer.htm');
+			$this->display('custom'.DIRECTORY_SEPARATOR.'header.htm');
+			$this->display('custom'.DIRECTORY_SEPARATOR.'sidebar.htm');
+			$this->display('custom'.DIRECTORY_SEPARATOR.'rightbar.htm');
+			$this->display('custom'.DIRECTORY_SEPARATOR. $sTemplateFile . '.htm');
+			$this->display('custom'.DIRECTORY_SEPARATOR.'footer.htm');
 			return true;
 		}
 		else
 		{
-			$this->display('custom/full-page-error.htm');
+			$this->display('custom'.DIRECTORY_SEPARATOR.'error'.DIRECTORY_SEPARATOR.'full-page-error.htm');
 			return true;
 		}
 	}

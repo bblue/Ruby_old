@@ -2,9 +2,23 @@
 namespace App;
 use App\Entity\Collection as EntityCollection;
 
-final class CollectionProxy extends Proxy implements LoadableInterface, \Countable, \IteratorAggregate
+final class CollectionProxy implements LoadableInterface, \Countable, \IteratorAggregate
 {
+	protected $_mapper;
+	protected $_aCriterias;
+	protected $_aInjectedClauses;
+
 	protected $_collection;
+
+	/**
+	 * Constructor
+	 */
+	public function __construct(AbstractDataMapper $mapper, $aCriterias, $aInjectedClauses = array())
+	{
+		$this->_mapper = $mapper;
+		$this->_aCriterias = $aCriterias;
+		$this->_aInjectedClauses = $aInjectedClauses;
+	}
 
 	/**
 	 * Load explicitly a collection of entities via the 'find()' method of the injected mapper
@@ -14,9 +28,8 @@ final class CollectionProxy extends Proxy implements LoadableInterface, \Countab
 		if($this->_collection === null)
 		{
 			$this->_collection = $this->_mapper->find($this->_aCriterias, null, $this->_aInjectedClauses);
-			
-			if (!$this->_collection instanceof EntityCollection)
-			{
+
+			if (!$this->_collection instanceof EntityCollection) {
 				throw new \Exception('Unable to load the specified collection.');
 			}
 		}
@@ -29,7 +42,7 @@ final class CollectionProxy extends Proxy implements LoadableInterface, \Countab
 	public function count()
 	{
 		return count($this->load());
-	} 
+	}
 
 	/**
 	 * Load a collection of entities via the 'find()' method of the injected mapper
@@ -47,22 +60,19 @@ final class CollectionProxy extends Proxy implements LoadableInterface, \Countab
 	public function getEntity()
 	{
 		$collection = $this->load();
-		
+
 		$count = $collection->count();
 
-		if($count === 1)
-		{
+		if($count === 1) {
 			return $collection->get(0);
 		}
-		
-		if($count > 1)
-		{
-			throw new \Exception('EntityCollection contains more than 1 entity (' . $count . ')'); 
+
+		if($count > 1) {
+			throw new \Exception('EntityCollection contains more than 1 entity (' . $count . ')');
 		}
-		
-		if($count === 0)
-		{
-			throw new \Exception('EntityCollection contains 0 entites'); 
+
+		if($count === 0) {
+			throw new \Exception('EntityCollection contains 0 entites');
 		}
 	}
 }

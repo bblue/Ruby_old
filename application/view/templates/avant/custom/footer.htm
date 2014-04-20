@@ -7,7 +7,7 @@
             </ul>
             <button class="pull-right btn btn-inverse-alt btn-xs hidden-print" id="back-to-top"><i class="fa fa-arrow-up"></i></button>
             <ul class="list-unstyled list-inline pull-right">
-            	<li><em><!-- PHP -->echo round((microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']), 2), ' ms ';<!-- ENDPHP --></em></li>
+            	<li><em><!-- PHP -->echo round((microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'])*1000, 0), ' ms ';<!-- ENDPHP --></em></li>
             	<li>|</li>
             	<li><em><!-- PHP -->global $iQueries; echo $iQueries, ' queries';<!-- ENDPHP --></em></li>
             	<li>|</li>

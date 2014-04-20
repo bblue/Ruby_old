@@ -14,7 +14,6 @@ final class Visitor extends AbstractPresentationObject
 			'USER_ID'			=> $visitor->user_id,
 			'IS_LOGGED_IN'		=> $visitor->isLoggedIn(),
 		    'REMOTE_ADDR'		=> $visitor->remote_addr,
-			'SERVER_NAME'		=> gethostname() // i.e. name of server running the script, for identification purposes
 		));
 	}
 }

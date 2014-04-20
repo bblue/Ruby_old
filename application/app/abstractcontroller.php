@@ -13,7 +13,6 @@ abstract class AbstractController
 	protected $eventHandler;
 	private $view;
 
-	protected $rbac;
 	protected $visitor;
 	protected $log;
 

@@ -12,6 +12,8 @@ abstract class AbstractView
 	protected $presentationObjectFactory;
 	protected $request;
 
+	protected $mControllerResponse;
+
 	private $sCommand = '';
 
 	protected $template;
@@ -27,6 +29,12 @@ abstract class AbstractView
 		if(!defined('SITE_TEMPLATE')) { throw new \Exception('SITE_TEMPLATE constant has not been set'); } //@todo: hente template fra databasen
 
 		$this->template->set_custom_template(ROOT_PATH . DIRECTORY_SEPARATOR . 'view'.DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR . SITE_TEMPLATE, 'templateName');
+	}
+
+	public function setControllerResponse($mControllerResponse)
+	{
+		$this->mControllerResponse = $mControllerResponse;
+		return $this;
 	}
 
 	public function setCommand($sCommand)
@@ -90,6 +98,11 @@ abstract class AbstractView
 
 		// $sCommand should take priority over $this->sCommand
 		$this->sCommand = !empty($sCommand) ? $sCommand : $this->sCommand;
+
+		// Set meta tag
+		if(!headers_sent()) {
+			header('Content-Type: text/html; charset=utf-8');
+		}
 
 		return $this->load($this->sCommand);
 	}

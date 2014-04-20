@@ -32,6 +32,7 @@ final class Dispatcher
 		$controllerResponse = $controller->execute($sCommand, $view);
 
 		// Execute view
+		$view->setControllerResponse($controllerResponse);
 		$view->execute();
 	}
 }

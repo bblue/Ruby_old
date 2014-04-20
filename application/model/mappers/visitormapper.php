@@ -10,7 +10,7 @@ use
 final class VisitorMapper extends DatabaseDataMapper
 {
 	protected $_entityClass = 'Visitor';
-	
+
 	protected $_acceptedFields = array(
 		'id'					=> 'visitors.id',
 		'timestamp'				=> 'visitors.timestamp',
@@ -23,20 +23,20 @@ final class VisitorMapper extends DatabaseDataMapper
 		'device'				=> 'visitors.device',
 		'platform'				=> 'visitors.platform',
 		'browser'				=> 'visitors.browser'
-		
+
 	);
 	protected $_cascadeFields = array();
-    
+
     public function fetch(AbstractEntity $visitor)
     {
     	// Check if ID has been set
-    	if(isset($visitor->id))
-    	{
+    	if(isset($visitor->id)) {
     		$this->findById($visitor->id, $visitor);
     		return $visitor;
     	}
     	throw new \Exception('Visitor entity requires ID to be fetched');
     }
+
     protected function setEntitySpecificData(AbstractEntity $visitor)
     {
 		$visitor->user = new CollectionProxy(

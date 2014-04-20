@@ -5,27 +5,27 @@ class Event
 {
     protected $_data = array();
     private $dispatcher;
-    
-    public function inject($sParam, $mParam)
+
+    public function __set($sParam, $mValue)
     {
-        $this->_data[$sParam] = $mParam;
+        $this->_data[$sParam] = $mValue;
         return $this;
     }
-    
+
     public function __get($sParam)
     {
-        if(isset($_data[$sParam])) {
-            return $_data[$sParam]; 
+        if(isset($this->_data[$sParam])) {
+            return $this->_data[$sParam];
         } else {
             throw new \Exception($sParam . ' is unset');
         }
     }
-    
+
     public function setDispatcher($dispatcher)
     {
         $this->dispatcher = $dispatcher;
     }
-    
+
     public function getDispatcher()
     {
         if(isset($this->dispatcher)) {

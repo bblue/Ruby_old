@@ -12,25 +12,9 @@ final class Recognition extends ServiceAbstract
 {
 	private $visitor;
 
-	public function getAppropriateHashCost()
-	{
-		require_once ROOT_PATH . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . 'password_compat.php';
-		$timeTarget = 0.2;
-		$cost = 9;
-		do {
-		    $cost++;
-		    $start = microtime(true);
-		    password_hash("test", PASSWORD_DEFAULT, array('cost' => $cost));
-		    $end = microtime(true);
-		} while (($end - $start) < $timeTarget);
-
-		echo "Appropriate Cost Found: " . $cost . "\n";
-	}
-
 	public function getCurrentVisitor()
 	{
-		if(is_object($this->visitor))
-		{
+		if(is_object($this->visitor)) {
 			return $this->visitor;
 		} else {
 			$visitor = $this->entityFactory->build('visitor');
@@ -65,6 +49,18 @@ final class Recognition extends ServiceAbstract
 		return $this->dataMapperFactory
 			->build('visitor')
 			->delete($visitor);
+	}
+
+	public function getUser($iUserID)
+	{
+		return $this->dataMapperFactory->build('user')->findByID($iUserID);
+	}
+
+	public function getUsers($aCriterias = array())
+	{
+		return $this->dataMapperFactory
+			->build('user')
+			->find($aCriterias);
 	}
 
 	public function getActiveVisitors()

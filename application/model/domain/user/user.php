@@ -69,13 +69,11 @@ final class User extends AbstractEntity
 
 	public function isAdmin()
 	{
-		if($this->isGuest())
-		{
+		if($this->isGuest()) {
 			return false;
 		}
 
-		if(isset($this->_values['isAdmin']))
-		{
+		if(isset($this->_values['isAdmin'])) {
 			return $this->_values['isAdmin'];
 		}
 
@@ -108,9 +106,6 @@ final class User extends AbstractEntity
 	 */
 	public function setLastname($lname)
 	{
-		if ((strlen($lname) < 2 || strlen($lname) > 32) && $lname !== null) {
-			throw new \Exception('The specified last name is invalid.');
-		}
 		$this->_values['Lastname'] = $lname;
 	}
 

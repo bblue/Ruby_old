@@ -6,7 +6,7 @@ use App\AbstractEntity;
 use App\CollectionProxy;
 
 final class Visitor extends AbstractEntity
-{  
+{
     protected $_allowedFields = array(
 	    'id',
 	    'timestamp',
@@ -21,16 +21,17 @@ final class Visitor extends AbstractEntity
     	'platform',
     	'browser'
     );
-    
+
     public function setId($id)
     {
         $this->_values['id'] = $id;
     }
+
 	public function getUser_id()
 	{
-		return (isset($this->_values['user_id']) && is_int($this->_values['user_id'])) ? $this->_values['user_id'] : User::GUEST_ID; 
+		return (isset($this->_values['user_id']) && is_int($this->_values['user_id'])) ? $this->_values['user_id'] : User::GUEST_ID;
 	}
-	
+
     public function setUser_id($id)
     {
     	// Remove the user if user ID changes
@@ -39,39 +40,39 @@ final class Visitor extends AbstractEntity
     	}
     	$this->_values['user_id'] = (is_numeric($id) === true && (($iId = (int)$id) != 0)) ? $iId : User::GUEST_ID;
     }
-    
+
     public function setHttp_user_agent($http_user_agent)
     {
     	$this->_values['http_user_agent'] = $http_user_agent;
     }
-    
+
     public function setRemote_addr($remote_addr)
     {
     	$this->_values['remote_addr'] = $remote_addr;
     }
-    
+
     public function setController($sController)
     {
     	$this->_values['sController'] = $sController;
     }
-    
+
     public function setMethod($sMethod)
     {
     	$this->_values['sMethod'] = $sMethod;
     }
-    
+
     public function setTimestamp($timestamp = null)
     {
     	$this->_values['timestamp'] = ($timestamp)?:time();
     }
-    
+
     public function setUser($user)
     {
     	if($user instanceof CollectionProxy || $user instanceof User) {
     		$this->_values['user'] = $user;
     	}
     }
-    
+
     public function getUser()
     {
     	if(is_object($this->_values['user']))
@@ -81,19 +82,19 @@ final class Visitor extends AbstractEntity
     		throw new \Exception('User is not set for userID=' . $this->user_id);
     	}
     }
-    
+
     public function getDevice($recalc = false)
     {
-    	if(!isset($this->_values['device']) || $recalc) 
+    	if(!isset($this->_values['device']) || $recalc)
     	{
     		$this->setDevice(null);
     	}
     	return $this->_values['device'];
     }
-    
+
     protected function setDevice($device)
     {
-     	if($device) 
+     	if($device)
     	{
     		$this->_values['device'] = $device;
     	} else {
@@ -102,50 +103,50 @@ final class Visitor extends AbstractEntity
     	}
     	return $this->_values['device'];
     }
-    
+
     public function getPlatform($recalc = false)
     {
-    	if(isset($this->_values['platform']) || $recalc) 
+    	if(isset($this->_values['platform']) || $recalc)
     	{
     		$this->setPlatform(null);
-    	} 
+    	}
     	return $this->_values['platform'];
     }
-    
+
     protected function setPlatform($platform)
     {
-     	if($platform) 
+     	if($platform)
     	{
     		$this->_values['platform'] = $platform;
     	}
-    	else 
+    	else
     	{
-	    	$this->_values['platform'] = $this->getMobileDetect()->getPlatform() ? : 'Unknown OS';  
+	    	$this->_values['platform'] = $this->getMobileDetect()->getPlatform() ? : 'Unknown OS';
     	}
     	return $this->_values['platform'];
     }
-    
+
     public function getBrowser($recalc = false)
     {
-    	if(isset($this->_values['browser']) || $recalc) 
+    	if(isset($this->_values['browser']) || $recalc)
     	{
     		$this->setBrowser(null);
     	}
     	return $this->_values['browser'];
     }
-    
+
 	protected function setBrowser($browser)
 	{
-		if($browser) 
+		if($browser)
     	{
     		$this->_values['browser'] = $browser;
     	}
-    	else {	
-	    	$this->_values['browser'] = $this->getMobileDetect()->getBrowser() ? : 'Unknown browser';   	
+    	else {
+	    	$this->_values['browser'] = $this->getMobileDetect()->getBrowser() ? : 'Unknown browser';
     	}
     	return $this->_values['browser'];
-	} 
-    
+	}
+
     private function getMobileDetect()
     {
      	if(!$this->http_user_agent)
@@ -157,18 +158,18 @@ final class Visitor extends AbstractEntity
     		throw new \Exception('HTTP vars not set for visitor');
     	}
     	$mobileDetect = new Mobile_Detect();
-    	
+
     	$mobileDetect->setUserAgent($this->http_user_agent);
-    	
+
     	$mobileDetect->setHttpHeaders(unserialize($this->http_vars));
-    	
+
     	return $mobileDetect;
-    } 
-    
-    ###################################### Methods ###################################### 
+    }
+
+    ###################################### Methods ######################################
     public function isLoggedIn()
     {
     	$id = $this->getUser_id();
-    	return ($id > 0);
+    	return ($id > 0 && $id != User::GUEST_ID);
     }
 }

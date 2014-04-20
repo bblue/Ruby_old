@@ -56,24 +56,21 @@
             </div>
         </div>
 
-
         <div id="chatbar" class="widget">
             <div class="widget-heading">
-                <a href="javascript:;" data-toggle="collapse" data-target="#chatbody"><h4>Online Contacts <small>(5)</small></h4></a>
+                <a href="javascript:;" data-toggle="collapse" data-target="#chatbody"><h4>Online Users <small>({VISITORS_MEMBERCOUNT})</small></h4></a>
             </div>
             <div class="widget-body collapse in" id="chatbody">
                 <ul class="chat-users">
-                    <li data-stats="online"><a href="javascript:;"><img src="/assets/demo/avatar/potter.png" alt=""><span>Jeremy Potter</span></a></li>
-                    <li data-stats="online"><a href="javascript:;"><img src="/assets/demo/avatar/tennant.png" alt=""><span>David Tennant</span></a></li>
-                    <li data-stats="online"><a href="javascript:;"><img src="/assets/demo/avatar/johansson.png" alt=""><span>Anna Johansson</span></a></li>
-                    <li data-stats="busy"><a href="javascript:;"><img src="/assets/demo/avatar/jackson.png" alt=""><span>Eric Jackson</span></a></li>
-                    <li data-stats="away"><a href="javascript:;"><img src="/assets/demo/avatar/jobs.png" alt=""><span>Howard Jobs</span></a></li>
-                    <!--li data-stats="offline"><a href="javascript:;"><img src="/assets/demo/avatar/watson.png" alt=""><span>Annie Watson</span></a></li>
-                    <li data-stats="offline"><a href="javascript:;"><img src="/assets/demo/avatar/doyle.png" alt=""><span>Alan Doyle</span></a></li>
-                    <li data-stats="offline"><a href="javascript:;"><img src="/assets/demo/avatar/corbett.png" alt=""><span>Simon Corbett</span></a></li>
-                    <li data-stats="offline"><a href="javascript:;"><img src="/assets/demo/avatar/paton.png" alt=""><span>Polly Paton</span></a></li-->
+					<!-- BEGIN visitors -->
+					 <li data-stats="online" class="tooltips" data-toggle="tooltip" title="Connected from {visitors.IP} &#149; {visitors.DEVICE} &#149; {visitors.PLATFORM} &#149; {visitors.BROWSER}">
+					 	<a href="/users/{visitors.USER_ID}">
+					 		<img src="/assets/demo/avatar/dangerfield.png" alt="" />
+					 		<span>{visitors.FIRSTNAME} {visitors.LASTNAME}</span>
+					 	</a>
+					<!-- END visitors -->
                 </ul>
-                <span class="more"><a href="#">See all</a></span>
+                <!-- IF VISITORS_GUESTCOUNT > 0 --><span class="more"><a href="#">{VISITORS_GUESTCOUNT} guest<!-- IF VISITORS_GUESTCOUNT > 1 -->s<!-- ENDIF --></a></span><!-- ENDIF -->
             </div>
         </div>
 

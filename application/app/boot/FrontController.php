@@ -11,48 +11,41 @@ final class FrontController
 {
 	private $serviceFactory;
 	private $dispatcher;
-	private $listenerFactory;
+	private $routingService;
 
-	public function __construct(Dispatcher $dispatcher, ServiceFactory $serviceFactory, ListenerFactory $listenerFactory)
+	public function __construct(Dispatcher $dispatcher, Routing $routingService, ServiceFactory $serviceFactory)
 	{
 		$this->dispatcher = $dispatcher;
+		$this->routingService = $routingService;
 		$this->serviceFactory = $serviceFactory;
-		$this->listenerFactory = $listenerFactory;
 	}
 
 	public function run(Request $request)
 	{
-	    // Get hold of the current visitor and register in visitor database
-		$recognition = $this->serviceFactory->build('recognition', true);
-		$visitor = $recognition->getCurrentVisitor();
-		$recognition->registerVisitor($visitor);
-
-		// Run the requested route via the routing mechanism
-		$routing = $this->serviceFactory->build('routing');
-
 		try {
-    		$route = $routing->route($request, $visitor);
+			// Perform routing
+			$this->routingService->route($request);
 
-    		// Create event handler
-    		$eventHandler = $this->serviceFactory->build('eventHandler', true);
-
-    		/** Create event listeners */
-    		$listener = $this->listenerFactory->build('RecipeLoggerListener');
-    		$eventHandler->addListener('recipes.add', array($listener, 'onAddRecipe'));
-    		$eventHandler->addListener('recipes.delete', array($listener, 'onDeleteRecipe'));
+			// Authorize user for selected route
+			$recognition = $this->serviceFactory->build('recognition', true);
 
 			// Dispatch to whatever route we ended up with
-			$this->dispatcher->dispatch($route);
+			$this->dispatcher->dispatch($this->routingService->route);
+
 		} catch (\Exception $e) {
+
+			$sMessage = $e->getMessage();
+			if(defined('DEV_AREA_CONFIRMED') && DEV_AREA_CONFIRMED === true && PRINT_EXCEPTIONS_TRACE === true) {
+			    $sMessage .= '<pre>'.$e->getTraceAsString().'</pre>';
+			}
+
 		    $this->serviceFactory
     		    ->build('logging', true)
-    		    ->createLogEntry($e->getMessage(), $visitor, 'danger');
-			$route = $routing->redirect($routing::ERROR_500_URL);
-			$this->dispatcher->dispatch($route);
+    		    ->createLogEntry($sMessage, $recognition->getCurrentVisitor(), 'danger');
 
-			if(defined('DEV_AREA_CONFIRMED') && DEV_AREA_CONFIRMED === true && PRINT_EXCEPTIONS_TRACE === true) {
-			    echo '<pre>', '<strong>',$e->getMessage(),'</strong><br />';print_r($e->getTraceAsString()); echo'</pre>';
-			}
+		    $router = $this->routingService;
+		    $router->redirect($router::ERROR_500_URL);
+			$this->dispatcher->dispatch($router->route);
 		}
 	}
 }

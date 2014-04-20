@@ -39,11 +39,11 @@ final class EventHandler extends ServiceAbstract
         return $this->aListeners[$sEvent];
     }
 
-    public function buildEvent(array $aDependencies = array())
+    public function buildEvent(array $aParameters = array())
     {
         $event = new Event();
-        foreach($aDependencies as $sDependency => $dependency) {
-            $event->inject($sDependency, $dependency);
+        foreach($aParameters as $sParameterName => $mValue) {
+            $event->$sParameterName = $mValue;
         }
         return $event;
     }

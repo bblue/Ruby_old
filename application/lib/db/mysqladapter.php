@@ -44,8 +44,7 @@ class MysqlAdapter implements DatabaseAdapterInterface
     	global $iQueries;
     	$iQueries++;
 
-    	if(PRINT_SQL_QUERY === true)
-    	{
+    	if(PRINT_SQL_QUERY === true) {
     		echo '<pre>'; print_r($query); echo "</pre>\n";
     	}
 

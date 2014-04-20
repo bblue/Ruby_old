@@ -42,6 +42,14 @@ class Jf
 	 */
 	static function sql($Query)
 	{
+		// Count queries to db
+		global $iQueries;
+		$iQueries++;
+
+		if(PRINT_SQL_QUERY === true) {
+			echo '<pre>'; print_r($Query); echo "</pre>\n";
+		}
+
 		$args = func_get_args ();
 		if (get_class ( self::$Db ) == "PDO")
 			return call_user_func_array ( "self::sqlPdo", $args );

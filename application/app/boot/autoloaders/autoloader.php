@@ -10,12 +10,12 @@
 			$this->register();
 			$this->setBasePath($path);
 		}
-		
+
         public function setBasePath($sBasePath)
         {
         	$this->sBasePath = $sBasePath;
         }
-        
+
         private function register()
         {
             spl_autoload_register( array($this, 'load'));
@@ -26,11 +26,10 @@
         	$sFilePath = strtolower($this->sBasePath . DIRECTORY_SEPARATOR .  str_replace('\\', DIRECTORY_SEPARATOR, $sClassName)) . '.php';
 			return $this->hasLoadedClass($sFilePath);
         }
-        
+
         private function hasLoadedClass($sFilePath)
         {
-            if(is_readable($sFilePath))
-			{
+            if(is_readable($sFilePath)) {
 				include($sFilePath);
 				return true;
 			}

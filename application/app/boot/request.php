@@ -5,7 +5,7 @@ use Lib\Validation;
 final class Request
 {
 	private $sUrl;
-	
+	public $aUrlParams = array();
 	private $sCommand;
 
 	public function __construct($sUrl)
@@ -13,7 +13,7 @@ final class Request
 		$url = trim($sUrl, '/');
 		$this->sUrl = $url;
 	}
-	
+
 	public function getUrl()
 	{
 		return $this->sUrl;
@@ -27,12 +27,12 @@ final class Request
 		$validation->validate();
 		return $validation->sanitized['uri'];
 	}
-	
+
 	public function __get($key)
 	{
 		return $this->getPostValue($key);
 	}
-	
+
 	public function getPostValue($key)
 	{
 		if(empty($_POST[$key]) === false)
@@ -41,16 +41,23 @@ final class Request
 		}
 		return null;
 	}
-	
-	private function getGetValue($key)
+
+	public function _get($key)
 	{
-		if(empty($_GET[$key]) === false)
-		{
+		if(empty($_GET[$key]) === false) {
 			return $_GET[$key];
 		}
 		return null;
 	}
-		
+
+	public function _post($key)
+	{
+		if(empty($_POST[$key]) === false) {
+			return $_POST[$key];
+		}
+		return null;
+	}
+
 	private function getServerValue($key)
 	{
 		if(array_key_exists($key, $_SERVER))
@@ -59,6 +66,6 @@ final class Request
 		}
 		return null;
 	}
-	
+
 
 }

@@ -12,42 +12,72 @@ final class RecipesController extends AbstractController
 
 	public function executeManagemyrecipes()
 	{
-		return true;
+		$recipeService = $this->serviceFactory->build('recipe', true);
+
+		// Check for search parameters
+		$aCriterias = array(
+		/**	'title'						=> $this->request->_get('title'), /** recipe title */
+		);
+
+		// Only get recipes for this user
+		$aCriterias['author_id'][] = array(
+			'value'		=> $this->visitor->user_id,
+			'operator'	=> '='
+		);
+
+		// Request RecipeService to fetch a collection
+		$recipeService->find($aCriterias, $this->request->_get('order'), $this->request->_get('show'), $this->request->_get('offset'));
+
+		// Return the collection
+		return $recipeService->collection;
 	}
 
 	public function executeView()
 	{
-	    return true;
+		$recipeService = $this->serviceFactory->build('recipe');
+
+		if(!empty($this->request->aUrlParams[0]) && is_numeric($this->request->aUrlParams[0])) {
+			$aCriterias['id'][] = array(
+				'value'		=> intval($this->request->aUrlParams[0]),
+				'operator'	=> '='
+			);
+			$recipeService->find($aCriterias);
+		} else {
+			$recipeService->build();
+		}
+		return $recipeService->recipe;
 	}
 
 	public function executeAdd()
 	{
 		$recipeService = $this->serviceFactory->build('recipe');
+		$recipeService->setAuthor($this->visitor->user);
 
 		if(isset($this->request->aFormData)) {
-			// Build the recipe object
-			$recipe = $recipeService->build($this->request->aFormData);
-
-			// Trigger event
-			$this->eventHandler->dispatch('controllers.recipes.beforeAdd', $this->eventHandler->buildEvent(array('recipe' => $recipe)));
-
-			$recipeService->add($recipe);
-
-			// Trigger event
-			$this->eventHandler->dispatch('controllers.recipes.afterAdd', $this->eventHandler->buildEvent(array('recipe' => $recipe)));
-
-		//} elseif($aParams = $this->serviceFactory->build('session')->getVar('recipes.add')) {
-		//	$recipeService->build($aParams);
+			$recipeService->build($this->request->aFormData);
+			$recipeService->add();
 		} else {
-			$aRecipeData = array(
-				'AUTHOR_ID'			=> $this->visitor->user_id,
-			);
-			$recipe = $recipeService->build($aRecipeData);
+			$recipeService->build();
 		}
-		return $recipe;
+
+		return $recipeService->recipe;
 	}
 
-	public function executeValidate()
+	public function executeEdit()
+	{
+		$recipeService = $this->serviceFactory->build('recipe');
+
+		if(isset($this->request->aFormData)) {
+			$recipeService->build($this->request->aFormData);
+			$recipeService->edit();
+		} else {
+			$recipeService->build();
+		}
+
+		return $recipeService->recipe;
+	}
+
+	public function executeCheckTitleIsAvailable()
 	{
 		return true;
 	}

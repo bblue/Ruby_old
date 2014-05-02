@@ -27,8 +27,7 @@ final class UsersController extends AbstractController
 
 	public function executeView()
 	{
-		if(!empty($this->request->u_id))
-		{
+		if(!empty($this->request->u_id)) {
 			// Get user ID
 		} else {
 			// Get all users based on filter and search criteria

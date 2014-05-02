@@ -18,7 +18,8 @@ final class Route extends AbstractEntity
 		'sCommand',
 		'a_id',
 		'isRedirect',
-		'bCanBypassForcedLogin'
+		'bCanBypassForcedLogin',
+		'aUrlParams'
 	);
 	private $aUrlElements;
 	public $iUrlLevels = 0;
@@ -27,13 +28,24 @@ final class Route extends AbstractEntity
 
 	const DEFAULT_COMMAND = 'indexAction';
 
-	public function getId()
+	public function getId() //@todo: sjekk behov for denne
 	{
 		if(isset($this->_values['id'])) {
 	       return $this->_values['id'];
 		} else {
 		    return 0;
 		}
+	}
+
+	public function getIsRedirect()
+	{
+		return (isset($this->_values['isRedirect'])) ? $this->_values['isRedirect'] : false;
+	}
+
+	public function extractUrlParameters($iLevel = 1)
+	{
+		$this->dissectUrl();
+		return $this->aUrlElements[$iLevel]['aUrlParams'];
 	}
 
 	public function extractControllerFromUrl($iLevel = 1)
@@ -72,7 +84,7 @@ final class Route extends AbstractEntity
 			for($i = 1; $i<= self::MAX_LEVEL; $i++) {
 				$this->aUrlElements[$i]['sResourceName'] = implode('/', array_slice($parts, 0, $i));
 				$this->aUrlElements[$i]['sCommand'] = implode('/', array_slice($parts, $i, 1));
-				$this->aUrlElements[$i]['vars'] = array_slice($parts, $i+1);
+				$this->aUrlElements[$i]['aUrlParams'] = array_slice($parts, $i+1);
 			}
 		}
 	}

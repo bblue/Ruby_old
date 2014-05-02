@@ -12,7 +12,7 @@ abstract class AbstractView
 	protected $presentationObjectFactory;
 	protected $request;
 
-	protected $mControllerResponse;
+	private $mControllerResponse;
 
 	private $sCommand = '';
 
@@ -45,8 +45,7 @@ abstract class AbstractView
 
 	protected function load($sCommand = '')
 	{
-		if(empty($sCommand))
-		{
+		if(empty($sCommand)) {
 			throw new \Exception('Command is empty. Unable to load'); // @todo: Consider if indexAction should be loaded by default.
 		}
 
@@ -58,9 +57,21 @@ abstract class AbstractView
 			throw new \Exception($sCommand . ' could not be called on View');
 		}
 
-		$this->template->assign_var('COMMAND', $sCommand);
+		// Assign global template vars
+		$this->template->assign_var('GLOBAL_COMMAND', $sCommand);
 
-		return $this->$mutator();
+		// Check redirection var
+		$routing = $this->serviceFactory->build('routing', true);
+		$route = $routing->route;
+		$this->template->assign_var('GLOBAL_TARGET_URL', ($route->isRedirect) ? urlencode(base64_encode('/'.$routing->getOriginalUrl())) : false);
+
+		return $this->$mutator($this->mControllerResponse);
+	}
+
+	protected function redirect($sUrl, $bPermanent = false)
+	{
+		header('Location:'.$sUrl, true, $bPermanent ? 301 : 302);
+		exit();
 	}
 
 	public function execute($sCommand = '')

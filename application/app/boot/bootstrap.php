@@ -75,6 +75,9 @@ $listenerFactory    = new ListenerFactory($serviceFactory);
 $viewFactory		= new ViewFactory($serviceFactory, $request);
 $controllerFactory	= new ControllerFactory($serviceFactory, $request);
 
+/** Register session as service */
+$serviceFactory->register($session, 'session');
+
 /** Authenticate user */
 $recognition = $serviceFactory->build('recognition', true);
 $recognition->registerVisitor($recognition->getCurrentVisitor());
@@ -92,7 +95,7 @@ $eventHandler->addListener('recipes.delete', array($listener, 'onDeleteRecipe'))
 //$diskLogger->setLogFilePath('/logs/test.log');
 
 /** Set up the routing method */
-$routingService = $serviceFactory->build('routing');
+$routingService = $serviceFactory->build('routing', true);
 $routingService->setVisitor($recognition->getCurrentVisitor());
 
 /** Set up the dispatch method */

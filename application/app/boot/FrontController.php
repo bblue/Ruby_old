@@ -41,7 +41,7 @@ final class FrontController
 
 		    $this->serviceFactory
     		    ->build('logging', true)
-    		    ->createLogEntry($sMessage, $recognition->getCurrentVisitor(), 'danger');
+    		    ->createLogEntry($sMessage, $this->serviceFactory->build('recognition', true)->getCurrentVisitor(), 'danger');
 
 		    $router = $this->routingService;
 		    $router->redirect($router::ERROR_500_URL);

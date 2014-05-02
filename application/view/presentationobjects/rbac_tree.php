@@ -21,6 +21,7 @@ abstract class Rbac_tree extends AbstractPresentationObject
 		$aElements = $this->getChildren($iStartID);
 
 		// Create the nested roles
+		$sTree = '';
 		if(!empty($aElements)) {
 			foreach($aElements as $aElement) {
 				$sTree .= $this->getElement($aElement);

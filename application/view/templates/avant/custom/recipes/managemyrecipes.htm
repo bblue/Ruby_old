@@ -18,19 +18,15 @@
 							<li><a href="#">PDF File (*.pdf)</a></li>
 						</ul>
 					</div>
-					<a href="#" class="btn btn-default"><i class="fa fa-cog"></i></a>
+					<a href="#" class="btn btn-primary"><i class="fa fa-cog"></i>Create New</a>
 				</div>
 			</div>
 		</div>
 		<div class="container">
-{LOG}
-
+		{LOG}
 
 			<div class="row">
 				<div class="col-md-3">
-					<div class="panel">
-						<a href="#" class="btn btn-primary col-xs-12">Create New</a>
-					</div>
 					<div class="panel">
 						<div class="list-group"> 
 							<a href="#" class="list-group-item"><span class="badge badge-primary">27</span>All</a>
@@ -44,7 +40,7 @@
 
 					<div class="panel panel-gray">
 						<div class="panel-heading">
-							<h4>All recipes by {VISITOR_FIRSTNAME}</h4>
+							<h4>All recipes by {VISITOR_FIRSTNAME} {VISITOR_LASTNAME} (#)</h4>
 							<div class="options">
 
 							</div>
@@ -79,7 +75,7 @@
 										</th>
 										<th colspan="4">
 											<div class="pull-right">
-												<span class="pagination-info" style="margin-right:5px">1-30 of 789</span>
+												<span class="pagination-info" style="margin-right:5px">1-{RECIPES_COUNT_SHOWN} of {RECIPES_COUNT_TOTAL}</span>
 												<a class="btn btn-sm btn-default"><i class="fa fa-angle-left"></i></a>
 												<a class="btn btn-sm btn-default"><i class="fa fa-angle-right"></i></a>
 											</div>
@@ -87,118 +83,14 @@
 									</tr>
 								</thead>
 								<tbody>
+									<!-- BEGIN recipes -->
 									<tr class="unread">
 										<td><span><input type="checkbox"></span></td>
-										<td class="hidden-xs">Posiedon Web</td>
-										<td>Server undergoing maintainence</td>
+										<td><a style="display: block;" href="/recipes/view/{recipes.ID}">{recipes.TITLE}</a></td>
 										<td><i class="fa fa-paperclip"></i></td>
-										<td class="text-right">16:30 PM</td>
+										<td class="text-right">{recipes.TIMESTAMP}</td>
 									</tr>
-									<tr class="unread">
-										<td><span><input type="checkbox"></span></td>
-										<td class="hidden-xs">Douglas Adams</td>
-										<td>Waiting for documentation</td>
-										<td></td>
-										<td class="text-right">May 5</td>
-									</tr>
-									<tr>
-										<td><span><input type="checkbox"></span></td>
-										<td class="hidden-xs">The Doctor</td>
-										<td>Lorem ipsum dolor sit amet</td>
-										<td></td>
-										<td class="text-right">May 5</td>
-									</tr>
-									<tr>
-										<td><span><input type="checkbox"></span></td>
-										<td class="hidden-xs">Nero</td>
-										<td>Rilate niro lakem, consectetuer adipiscing</td>
-										<td></td>
-										<td class="text-right">May 4</td>
-									</tr>
-									<tr>
-										<td><span><input type="checkbox"></span></td>
-										<td class="hidden-xs">Envato</td>
-										<td>Lorem ipsum dolor sit amet</td>
-										<td></td>
-										<td class="text-right">May 5</td>
-									</tr>
-									<tr>
-										<td><span><input type="checkbox"></span></td>
-										<td class="hidden-xs">mPower</td>
-										<td>Rilate niro lakem, consectetuer adipiscing</td>
-										<td><i class="fa fa-paperclip"></i></td>
-										<td class="text-right">May 4</td>
-									</tr>
-									<tr>
-										<td><span><input type="checkbox"></span></td>
-										<td class="hidden-xs">Facebook</td>
-										<td>Lorem ipsum dolor sit amet</td>
-										<td><i class="fa fa-paperclip"></i></td>
-										<td class="text-right">May 5</td>
-									</tr>
-									<tr>
-										<td><span><input type="checkbox"></span></td>
-										<td class="hidden-xs">Twitter</td>
-										<td>Rilate niro lakem, consectetuer adipiscing</td>
-										<td></td>
-										<td class="text-right">May 4</td>
-									</tr>
-									<tr>
-										<td><span><input type="checkbox"></span></td>
-										<td class="hidden-xs">Emma Watson</td>
-										<td>Lorem ipsum dolor sit amet</td>
-										<td></td>
-										<td class="text-right">May 5</td>
-									</tr>
-									<tr>
-										<td><span><input type="checkbox"></span></td>
-										<td class="hidden-xs">Life</td>
-										<td>Lemons for sale</td>
-										<td></td>
-										<td class="text-right">May 4</td>
-									</tr>
-									<tr>
-										<td><span><input type="checkbox"></span></td>
-										<td class="hidden-xs">John Doe</td>
-										<td>Lorem ipsum dolor sit amet</td>
-										<td></td>
-										<td class="text-right">May 5</td>
-									</tr>
-									<tr>
-										<td><span><input type="checkbox"></span></td>
-										<td class="hidden-xs">Jack Smith</td>
-										<td>Rilate niro lakem, consectetuer adipiscing</td>
-										<td><i class="fa fa-paperclip"></i></td>
-										<td class="text-right">May 4</td>
-									</tr>
-									<tr>
-										<td><span><input type="checkbox"></span></td>
-										<td class="hidden-xs">Indiana Jones</td>
-										<td>Lorem ipsum dolor sit amet</td>
-										<td><i class="fa fa-paperclip"></i></td>
-										<td class="text-right">May 5</td>
-									</tr>
-									<tr>
-										<td><span><input type="checkbox"></span></td>
-										<td class="hidden-xs">Sherlock</td>
-										<td>Rilate niro lakem, consectetuer adipiscing</td>
-										<td></td>
-										<td class="text-right">May 4</td>
-									</tr>
-									<tr>
-										<td><span><input type="checkbox"></span></td>
-										<td class="hidden-xs">Facebook</td>
-										<td>Rilate niro lakem, consectetuer adipiscing</td>
-										<td><i class="fa fa-paperclip"></i></td>
-										<td class="text-right">May 4</td>
-									</tr>
-									<tr>
-										<td><span><input type="checkbox"></span></td>
-										<td class="hidden-xs">Jane Smith</td>
-										<td>Lorem ipsum dolor sit amet</td>
-										<td><i class="fa fa-paperclip"></i></td>
-										<td class="text-right">May 5</td>
-									</tr>
+									<!-- END recipes -->
 								</tbody>
 								<tfoot>
 									<tr>

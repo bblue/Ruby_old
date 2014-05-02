@@ -35,12 +35,9 @@ final class UserMapper extends DatabaseDataMapper
     public function fetch(AbstractEntity $user)
     {
     	// Check if ID has been set
-    	if(isset($user->id))
-    	{
+    	if(isset($user->id)) {
     		$this->findById($user->id, $user);
-    	}
-    	else
-    	{
+    	} else {
 	    	// Find by other search options
 	    	$aCriterias = ($user->Username) ? array('Username' => array(array('operator' => '=', 'value' => $user->Username))) : array();
 

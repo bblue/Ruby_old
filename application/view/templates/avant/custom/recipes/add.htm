@@ -18,7 +18,7 @@
 										<label for="title" class="col-md-2 control-label">Recipe Title</label>
 										<div class="col-md-7">
 											<div class="input-group">
-												<input id="title" name="title" class="form-control" type="text" autofocus autocomplete="off" data-msg-remote="This recipe title is not valid" data-msg-required="You must provide a title" minlength="4" required />
+												<input value="{RECIPE_TITLE}" id="title" name="title" class="form-control" type="text" autofocus autocomplete="off" data-msg-remote="This recipe title is not valid" data-msg-required="You must provide a title" minlength="4" required />
 												<span class="input-group-addon"><span class="fa fa-book"></span></span>
 											</div>
 										</div>
@@ -28,7 +28,7 @@
 						            <div class="form-group">
 						                <label class="col-sm-2 control-label">Abstract</label>
 						                <div class="col-sm-7">
-						                    <textarea class="form-control autosize fullscreen" name="abstract"></textarea>
+						                    <textarea class="form-control autosize fullscreen" name="abstract">{RECIPE_ABSTRACT}</textarea>
 						                </div>
 						                <div class="col-sm-3"><p class="help-block">Write a few short introductionary lines about the recipe</p></div>
 									</div>
@@ -155,7 +155,7 @@
 						            <div class="form-group">
 						                <label class="col-sm-2 control-label">Methodology/Explanation</label>
 						                <div class="col-sm-7">
-						                    <textarea rows="10" class="form-control ckeditor" name="method" id="recipe-text"></textarea>
+						                    <textarea rows="10" class="form-control ckeditor" name="method" id="recipe-text">{RECIPE_METHOD}</textarea>
 						                </div>
 						                <div class="col-sm-3"><p class="help-block">This is where the actual recipe text will go. Remember to include oven temperature,  cooking time and other required details.</p></div>
 									</div>
@@ -229,7 +229,7 @@
 										<label for="author" class="col-md-2 control-label">Author</label>
 										<div class="col-md-7">
 											<select class="form-control" disabled="disabled">
-												<option value="1">Author 1</option>
+												<option selected="selected" value="{RECIPE_AUTHOR_ID}">{RECIPE_AUTHOR_FIRSTNAME} {RECIPE_AUTHOR_LASTNAME}</option>
 												<option value="2">Author 2</option>
 												<option value="3">Author 3</option>
 												<option value="4">Author 4</option>

@@ -1,7 +1,7 @@
 <?php
 namespace App;
 
-abstract class AbstractEntity
+abstract class AbstractEntity implements \Iterator
 {
 	protected $_values = array();
 	protected $_allowedFields = array();
@@ -73,11 +73,11 @@ abstract class AbstractEntity
 	 */
 	public function __get($name)
 	{
-		if (!in_array($name, $this->_allowedFields)) {
+		if(!in_array($name, $this->_allowedFields)) {
 			return null;
 		}
 		$accessor = 'get' . ucfirst($name);
-		if (method_exists($this, $accessor) && is_callable(array($this, $accessor))) {
+		if(method_exists($this, $accessor) && is_callable(array($this, $accessor))) {
 			return $this->$accessor();
 		}
 
@@ -118,5 +118,36 @@ abstract class AbstractEntity
 	public function toArray()
 	{
 		return $this->_values;
+	}
+
+	public function rewind()
+	{
+		reset($this->_values);
+	}
+
+	public function current()
+	{
+		$key = key($this->_values);
+		return $this->__get($key);
+	}
+
+	public function key()
+	{
+		$key = key($this->_values);
+		return $key;
+	}
+
+	public function next()
+	{
+		next($this->_values);
+		$key = key($this->_values);
+		return $this->__get($key);
+	}
+
+	public function valid()
+	{
+		$key = key($this->_values);
+		$var = ($key !== null && $key !== false);
+		return $var;
 	}
 }

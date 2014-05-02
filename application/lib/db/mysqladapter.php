@@ -165,6 +165,19 @@ class MysqlAdapter implements DatabaseAdapterInterface
     }
 
     /**
+     * Count the total number of rows for a specified query
+     */
+    public function countTableRows(array $aTables, $where = '')
+    {
+    	$query = 'SELECT COUNT(*) as number FROM ' . implode(', ', $aTables)
+    	. (($where) ? ' WHERE ' . $where : '');
+    	$this->query($query);
+    	$row = $this->fetch();
+    	$this->freeResult();
+    	return $row['number'];
+    }
+
+    /**
      * Get the number of affected rows
      */
     public function getAffectedRows()

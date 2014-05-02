@@ -52,6 +52,32 @@ abstract class DatabaseDataMapper extends AbstractDataMapper implements DataMapp
 		return null;
 	}
 
+	/** Find all the entities that match the specified criteria */
+	public function count($aCriterias = array(), array $aInjectedClauses = array())
+	{
+		$aTableSource = array_merge($this->_acceptedFields, $this->_cascadeFields, array_keys($aInjectedClauses));
+
+		$aTables	= $this->extractTables($aTableSource);
+		$sWhere		= $this->compileClauseStrings(array(
+			$this->getClauseStrings($aCriterias),
+			$this->getClauseStrings($aInjectedClauses, true),
+			$this->compileClauseStrings($this->_cascadeFields)
+		));
+
+		return $this->_adapter->countTableRows($aTables, $sWhere);
+	}
+
+	/** Count number of rows */
+	public function countAll()
+	{
+		$aTableSource = array_merge($this->_acceptedFields, $this->_cascadeFields);
+
+		$aTables	= $this->extractTables($aTableSource);
+		$sWhere 	= $this->compileClauseStrings($this->_cascadeFields);
+
+		return $this->_adapter->countTableRows($aTables, $sWhere);
+	}
+
 	/** Find all the entities */
 	public function findAll()
 	{
@@ -65,8 +91,7 @@ abstract class DatabaseDataMapper extends AbstractDataMapper implements DataMapp
 
 		$collection = $this->buildCollection();
 
-		while($data = $this->_adapter->fetch())
-		{
+		while($data = $this->_adapter->fetch()) {
 			$collection->add(null, $this->buildEntity($data));
 		}
 
@@ -74,7 +99,7 @@ abstract class DatabaseDataMapper extends AbstractDataMapper implements DataMapp
 	}
 
 	/** Find all the entities that match the specified criteria */
-	public function find($aCriterias = array(), $entity = null, $aInjectedClauses = array())
+	public function find($aCriterias = array(), $entity = null, array $aInjectedClauses = array(), $order = '', $limit = null, $offset = null)
 	{
 		$aTableSource = array_merge($this->_acceptedFields, $this->_cascadeFields, array_keys($aInjectedClauses));
 
@@ -86,14 +111,14 @@ abstract class DatabaseDataMapper extends AbstractDataMapper implements DataMapp
 					));
 		$sSelect	= implode(', ', $this->_acceptedFields);
 
-		$this->_adapter->select($aTables, $sWhere, $sSelect);
+		$this->_adapter->select($aTables, $sWhere, $sSelect, $order, $limit, $offset);
 
 		$collection = $this->buildCollection();
 
-		while($data = $this->_adapter->fetch())
-		{
-			if($entity instanceof AbstractEntity)
-			{
+		$bSingleReturn = ($entity instanceof AbstractEntity);
+
+		while($data = $this->_adapter->fetch()) {
+			if($bSingleReturn) {
 				return $this->buildEntity($data, $entity);
 			}
 			$collection->add(null, $this->buildEntity($data));
@@ -104,8 +129,7 @@ abstract class DatabaseDataMapper extends AbstractDataMapper implements DataMapp
 	/** Insert a new row in the table corresponding to the specified entity */
 	public function insert(AbstractEntity $entity)
 	{
-		if(!$this->isValidEntity($entity))
-		{
+		if(!$this->isValidEntity($entity)) {
 			throw new \Exception('The specified entity ('. get_class($entity) .') is not allowed for this mapper ('. get_called_class() .')');
 		}
 
@@ -116,13 +140,11 @@ abstract class DatabaseDataMapper extends AbstractDataMapper implements DataMapp
 
 		$insertId = $this->_adapter->insert($aTables, $aData);
 
-		if($insertId)
-		{
+		if($insertId) {
 			$entity->id = $insertId;
 		}
 
-		if($this->_adapter->getAffectedRows() > 0)
-		{
+		if($this->_adapter->getAffectedRows() > 0) {
 			return $entity;
 		} else {
 			throw new \Exception('Insertion to database for entity ('. get_class($entity) . ') failed');
@@ -132,16 +154,14 @@ abstract class DatabaseDataMapper extends AbstractDataMapper implements DataMapp
 	/** Update the row in the table corresponding to the specified entity */
 	public function update(AbstractEntity $entity)
 	{
-		if(!$this->isValidEntity($entity))
-		{
+		if(!$this->isValidEntity($entity)) {
 			throw new \Exception('The specified entity ('. get_class($entity) .') is not allowed for this mapper ('. get_called_class() .')');
 		}
 
 		$aData = $this->filterOnlyAcceptedFields($entity->toArray());
 		unset($aData['id']);
 
-		if(empty($aData))
-		{
+		if(empty($aData)) {
 			throw new \Exception('No fields to update. Data array is empty.');
 		}
 
@@ -165,8 +185,7 @@ abstract class DatabaseDataMapper extends AbstractDataMapper implements DataMapp
 	/** Delete the row in the table corresponding to the specified entity or ID */
 	public function delete(AbstractEntity $entity)
 	{
-		if(!$this->isValidEntity($entity))
-		{
+		if(!$this->isValidEntity($entity)) {
 			throw new \Exception('The specified entity is not allowed for this mapper. (' . get_class($entity) . ')');
 		}
 
@@ -193,10 +212,8 @@ abstract class DatabaseDataMapper extends AbstractDataMapper implements DataMapp
 		}
 
 		// Make sure we cannot find this specific entity before inserting
-		if($this->findById($entity->id, $entity))
-		{
-			if($this->_adapter->getAffectedRows())
-			{
+		if($this->findById($entity->id, $entity)) {
+			if($this->_adapter->getAffectedRows()) {
 				return $entity;
 			}
 		}
@@ -219,12 +236,10 @@ abstract class DatabaseDataMapper extends AbstractDataMapper implements DataMapp
 	{
 		$aTables = array();
 		$pattern = "/([\w]+)\./";
-		foreach($aTablesSource as $sTableSource)
-		{
+		foreach($aTablesSource as $sTableSource) {
 			preg_match_all($pattern, $sTableSource, $matches);
 
-			foreach($matches[1] as $match)
-			{
+			foreach($matches[1] as $match) {
 				$aTables[] = $match;
 			}
 		}
@@ -252,8 +267,7 @@ abstract class DatabaseDataMapper extends AbstractDataMapper implements DataMapp
 
 	private function getClauseStrings($aClauses, $bIsInjected = false)
 	{
-		if(empty($aClauses) || !is_array($aClauses))
-		{
+		if(empty($aClauses) || !is_array($aClauses)) {
 			return null;
 		}
 
@@ -262,34 +276,28 @@ abstract class DatabaseDataMapper extends AbstractDataMapper implements DataMapp
 		// Prepare the criterias
 		foreach($aClauses as $sField => $aCriterias)
 		{
-			if(!is_array($aCriterias) || empty($aCriterias))
-			{
+			if(!is_array($aCriterias) || empty($aCriterias)) {
 				throw new \Exception('Error in ' . __METHOD__  . ': Error in parsing the criterias');
 			}
 
-			if(!$bIsInjected)
-			{
+			if(!$bIsInjected) {
 				// Confirm the field can be handled by the datamapper
-				if(!isset($this->_acceptedFields[$sField]))
-				{
+				if(!isset($this->_acceptedFields[$sField])) {
 					throw new \Exception('Error in ' . __METHOD__  . ': ' . $sField . ' is not accepted by this datamapper');
 				}
 			}
 
-			if(array_key_exists($sField, $this->_acceptedFields))
-			{
+			if(array_key_exists($sField, $this->_acceptedFields)) {
 				// Get the database field from fieldname
 				$sField = $this->_acceptedFields[$sField];
 			}
 
-			if($sCriteriaStrings = $this->compileCriteriaStrings($aCriterias, $sField, $bIsInjected))
-			{
+			if($sCriteriaStrings = $this->compileCriteriaStrings($aCriterias, $sField, $bIsInjected)) {
 				$aClauseStrings[] = $sCriteriaStrings;
 			}
 		}
 
-		if(empty($aClauseStrings))
-		{
+		if(empty($aClauseStrings)) {
 			throw new \Exception('Error in ' . __METHOD__  . ': can not return empty clause string');
 		}
 
@@ -303,16 +311,13 @@ abstract class DatabaseDataMapper extends AbstractDataMapper implements DataMapp
 		$array = array();
 
 		// Handle each criteria
-		foreach($aCriterias as $aCriteria)
-		{
-			if(!is_array($aCriteria) || empty($aCriteria))
-			{
+		foreach($aCriterias as $aCriteria) {
+			if(!is_array($aCriteria) || empty($aCriteria)) {
 				throw new \Exception('Error in ' . __METHOD__  . ': Error in parsing the criteria');
 			}
 
 			// Check the operator is valid
-			if(!$this->operatorIsValid($aCriteria['operator']))
-			{
+			if(!$this->operatorIsValid($aCriteria['operator'])) {
 				throw new \Exception('Error in ' . __METHOD__  . ': Criteria operator is invalid (' . $aCriteria['operator'] . ')');
 			}
 

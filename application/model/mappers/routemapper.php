@@ -34,7 +34,7 @@ final class RouteMapper extends DatabaseDataMapper
     	    $aCriterias['url'] = array(
     	        array(
     	            'operator'   => '=',
-    	            'value'      => $route->sResourceName
+    	            'value'      => $route->sResourceName .'/'. $route->getCommand()
     	        )
     	    );
 	    	$this->find($aCriterias, $route);

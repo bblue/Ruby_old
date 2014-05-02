@@ -30,7 +30,9 @@ final class Routing extends ServiceAbstract
 			throw new \Exception('Routing mechanism requires a valid visitor object');
 		}
 
-		$this->sOriginalUrl = $request->getUrl();
+		$this->request = $request;
+
+		$this->sOriginalUrl = $this->request->getUrl();
 
 		$this->route = $this->buildRoute(!empty($this->sOriginalUrl) ? $this->sOriginalUrl : self::DEFAULT_URL);
 
@@ -39,6 +41,11 @@ final class Routing extends ServiceAbstract
 		}
 
 		return $this->route;
+	}
+
+	public function getOriginalUrl()
+	{
+		return $this->sOriginalUrl;
 	}
 
 	public function setVisitor(Visitor $visitor)
@@ -114,6 +121,8 @@ final class Routing extends ServiceAbstract
 			throw new \Exception('Route should not throw an error. Something is very wrong.');
 		}
 
+		$this->request->aUrlParams = $route->aUrlParams;
+
 		// Return route
 		return $route;
 	}
@@ -131,6 +140,9 @@ final class Routing extends ServiceAbstract
 		// Get the resource and command from current tier
 		$route->sResourceName = $route->extractControllerFromUrl($iTier);
 		$route->sCommand = $route->extractCommandFromUrl($iTier);
+		$route->aUrlParams = $route->extractUrlParameters($iTier);
+
+		$this->request->aUrlParams = $route->aUrlParams;
 
 		return $route;
 	}

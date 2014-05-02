@@ -2,6 +2,7 @@
 namespace Model\Domain\Recipe;
 use App\AbstractEntity;
 use App\CollectionProxy;
+use Model\Domain\User\User;
 
 final class Recipe extends AbstractEntity
 {
@@ -14,6 +15,7 @@ final class Recipe extends AbstractEntity
 		'r_id',
 		'status',
 		'time_estimate',
+		'timestamp',
 		'rating',
 		'updateTime',
 		'submitTime',
@@ -42,7 +44,7 @@ final class Recipe extends AbstractEntity
 
 	public function setAuthor($author)
 	{
-		if(!$author instanceof CollectionProxy || !$author instanceof User) {
+		if(!$author instanceof CollectionProxy && !$author instanceof User) {
 			throw new \Exception('Author object is of wrong class');
 		}
 		$this->_values['author'] = $author;

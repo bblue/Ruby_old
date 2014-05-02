@@ -7,8 +7,6 @@ use App\Template;
 abstract class AbstractPresentationObject
 {
 	protected $sTemplatePrefix;
-
-	protected $serviceFactory;
 	protected $template;
 
 	public function __construct(Template $template)
@@ -33,7 +31,9 @@ abstract class AbstractPresentationObject
 	    	$aNewVars[$this->getTemplatePrefix().$key] = $val;
 		}
 
-		$this->template->assign_vars($aNewVars);
+		if(!empty($aNewVars)) {
+			$this->template->assign_vars($aNewVars);
+		}
 	}
 
 	protected function assign_var($key, $value)

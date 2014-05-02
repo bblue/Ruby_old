@@ -12,26 +12,17 @@ final class RecipeMapper extends DatabaseDataMapper
 	protected $_entityClass = 'Recipe';
 
 	protected $_acceptedFields = array(
-		'id'					=> 'visitors.id',
-		'timestamp'				=> 'visitors.timestamp',
-		'controller'			=> 'visitors.controller',
-		'method'				=> 'visitors.method',
-		'author_id'				=> 'visitors.user_id',
-		'remote_addr'			=> 'visitors.remote_addr',
-		'http_user_agent'		=> 'visitors.http_user_agent',
-		'http_vars'				=> 'visitors.http_vars',
-		'device'				=> 'visitors.device',
-		'platform'				=> 'visitors.platform',
-		'browser'				=> 'visitors.browser'
-
+		'id'		=> 'recipes_old.r_id',
+		'title'		=> 'recipes_old.title',
+		'author_id'	=> 'recipes_old.author_id',
+		'timestamp'	=> 'recipes_old.updateTime'
 	);
 	protected $_cascadeFields = array();
 
     public function fetch(AbstractEntity $recipe)
     {
     	// Check if ID has been set
-    	if(isset($recipe->id))
-    	{
+    	if(isset($recipe->id)) {
     		$this->findById($recipe->id, $recipe);
     		return $recipe;
     	}

@@ -15,7 +15,6 @@ final class Recipe extends AbstractEntity
 		'r_id',
 		'status',
 		'time_estimate',
-		'timestamp',
 		'rating',
 		'updateTime',
 		'submitTime',
@@ -25,7 +24,11 @@ final class Recipe extends AbstractEntity
 		'source',
 		'source_type',
 		'recipe-source-input',
-		'iRecipeID'
+		'iRecipeID',
+		'method',
+		'ingredients',
+		'portions',
+		'relevance'
    	);
 
 	/**
@@ -54,9 +57,25 @@ final class Recipe extends AbstractEntity
 	public function getAuthor()
 	{
 		if(is_object($this->_values['author'])) {
-			return ($this->_values['author'] instanceof User) ? $this->_values['author'] : $this->_values['author']->getEntity();
+			return ($this->_values['author'] instanceof User) ? $this->_values['author'] : $this->_values['author']->getEntity($this->_values['author_id']);
 		} else {
 			throw new \Exception('Author is not set for authorID=' . $this->author_id);
 		}
+	}
+
+	public function setMethod($sMethod)
+	{
+		require_once (ROOT_PATH.DIRECTORY_SEPARATOR.'lib'.DIRECTORY_SEPARATOR.'HTMLPurifier'.DIRECTORY_SEPARATOR.'HTMLPurifier'.DIRECTORY_SEPARATOR.'Bootstrap.php');
+		require_once (ROOT_PATH.DIRECTORY_SEPARATOR.'lib'.DIRECTORY_SEPARATOR.'HTMLPurifier'.DIRECTORY_SEPARATOR.'HTMLPurifier.autoload.php');
+
+		$config = \HTMLPurifier_Config::createDefault();
+		$config->set('HTML.TargetBlank', true);
+		$config->set('HTML.Allowed', 'p,strong,em,s,ol,li,ul,blockquote,table,tbody,tr,td,a[href],i,iframe[width|height|src|frameborder]');
+		$config->set('HTML.SafeIframe', true);
+		$config->set('URI.SafeIframeRegexp','%^(https?:)?//(www\.youtube(?:-nocookie)?\.com/embed/)%'); //allow YouTube
+		$purifier = new \HTMLPurifier($config);
+
+		$this->_values['method'] = $purifier->purify($sMethod);
+		return $this;
 	}
 }

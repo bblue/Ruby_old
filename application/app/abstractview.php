@@ -57,19 +57,14 @@ abstract class AbstractView
 			throw new \Exception($sCommand . ' could not be called on View');
 		}
 
-		// Assign global template vars
-		$this->template->assign_var('GLOBAL_COMMAND', $sCommand);
-
-		// Check redirection var
-		$routing = $this->serviceFactory->build('routing', true);
-		$route = $routing->route;
-		$this->template->assign_var('GLOBAL_TARGET_URL', ($route->isRedirect) ? urlencode(base64_encode('/'.$routing->getOriginalUrl())) : false);
-
 		return $this->$mutator($this->mControllerResponse);
 	}
 
 	protected function redirect($sUrl, $bPermanent = false)
 	{
+		if(headers_sent($filename, $linenum)) {
+			throw new \Exception('Cannot modify header information - headers already sent in '.$filename.' on line '.$linenum);
+		}
 		header('Location:'.$sUrl, true, $bPermanent ? 301 : 302);
 		exit();
 	}
@@ -107,6 +102,16 @@ abstract class AbstractView
 			->build('activeVisitors', true)
 			->assignData($this->serviceFactory->build('recognition', true)->getActiveVisitors());
 
+		// Assign global template vars
+		$this->template->assign_var('GLOBAL_SERVER_NAME', $_SERVER['SERVER_NAME']);
+		$this->template->assign_var('GLOBAL_HOST_NAME', gethostname());
+		$this->template->assign_var('GLOBAL_QUERY_STRING', $_SERVER['QUERY_STRING']);
+
+		// Check redirection var
+		$routing = $this->serviceFactory->build('routing', true);
+		$route = $routing->route;
+		$this->template->assign_var('GLOBAL_TARGET_URL', ($route->isRedirect) ? urlencode(base64_encode('/'.$routing->getOriginalUrl() .'?'. $this->request->_server('QUERY_STRING'))) : false);
+
 		// $sCommand should take priority over $this->sCommand
 		$this->sCommand = !empty($sCommand) ? $sCommand : $this->sCommand;
 
@@ -137,34 +142,44 @@ abstract class AbstractView
 			$this->display('custom'.DIRECTORY_SEPARATOR. $sTemplateFile . '.htm');
 			$this->display('custom'.DIRECTORY_SEPARATOR.'footer.htm');
 			return true;
-		}
-		else
-		{
+		} else {
 			$this->display('custom'.DIRECTORY_SEPARATOR.'error'.DIRECTORY_SEPARATOR.'full-page-error.htm');
 			return true;
 		}
 	}
 
-	protected function display($sTemplateFile)
+	public function executeSet404error()
 	{
-		//switch($this->request->getReturnDataType())
-		//{
-		//	default: case 'template':
-				return $this->displayTemplate($sTemplateFile);
-		//		break;
-		//	case 'json':
-		//		return $this->displayJSON();
-		//		break;
-		//}
+		http_response_code(404);
+
+		$this->presentationObjectFactory
+			->build('errormessage', true)
+			->setTemplatePrefix('http_error')
+			->assignData(404, 'Page Not Found', 'The page you requested could not be found');
+
+		$sTemplateFile = 'error/extras-404';
+
+		/** Load required scripts */
+		$this->presentationObjectFactory
+		->build('scripttags', true)
+		->assignData($sTemplateFile);
+
+		if($this->serviceFactory->build('recognition', true)->getCurrentVisitor()->isLoggedIn() || FORCED_LOGIN === false) {
+			$this->display('custom/header.htm');
+			$this->display('custom/sidebar.htm');
+			$this->display('custom/rightbar.htm');
+			$this->display('custom/' . $sTemplateFile . '.htm');
+			$this->display('custom/footer.htm');
+		} else {
+			$this->display('custom/error/full-page-error.htm');
+		}
+
+		return true;
 	}
 
-	protected function displayJSON()
+	protected function display($sTemplateFile)
 	{
-		foreach($this->presentationObjectFactory->getCache() as $presentationObject)
-		{
-			echo json_encode($presentationObject->getAllVars());
-			return true;
-		}
+		return ($this->request->isAjaxRequest()) ? : $this->displayTemplate($sTemplateFile);
 	}
 
 	protected function displayTemplate($sTemplateFile)

@@ -1,0 +1,78 @@
+<div id="page-content">
+	<div id='wrap'>
+		<div id="page-heading">
+			{BREADCRUMBS}
+			<h1>Search Page</h1>
+			<div class="options">
+                    <div class="btn-toolbar">
+                        <div class="btn-group hidden-xs">
+                            <a href='#' class="btn btn-default dropdown-toggle" data-toggle='dropdown'><i class="fa fa-cloud-download"></i><span class="hidden-sm"> Export as  </span><span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Text File (*.txt)</a></li>
+                                <li><a href="#">Excel File (*.xlsx)</a></li>
+                                <li><a href="#">PDF File (*.pdf)</a></li>
+                            </ul>
+                        </div>
+                        <a href="#" class="btn btn-default"><i class="fa fa-cog"></i></a>
+                    </div>
+                </div>
+		</div>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+
+					<div class="panel">
+						<div class="panel-heading">
+							<h4>Search Results</h4>
+						</div>
+						<div class="panel-body">
+							<div class="search-classic">
+		                        <form class="form-inline" action="/recipes/search">
+		                           <div class="input-group well">
+		                              <input type="text" name="search" placeholder="Search..." value="{SEARCH_QUERY_STRING}" class="form-control">
+		                              <span class="input-group-btn">
+		                              	<button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Search</button>
+		                              </span>
+		                           </div>
+		                        </form>
+		                        <!-- IF SEARCH_QUERY_STRING -->
+		                        <h3>Displaying results for <em>{SEARCH_QUERY_STRING}</em></h3>
+		                        <span class="small-text text-muted">Search completed in {SEARCH_TIME} seconds</span>
+		                        <hr>
+	                        	<div class="search-result">
+	                        	   <!-- IF .recipes -->
+	                        	   <!-- BEGIN recipes -->
+	                        	   		<h4><a href="/recipes/view/{recipes.ID}">{recipes.TITLE}</a></h4>
+	                        	   		<a href="http://{GLOBAL_SERVER_NAME}/recipes/view/{recipes.ID}">http://{GLOBAL_SERVER_NAME}/recipes/view/{recipes.ID}</a>
+	                        	   		<small>
+		                        	   		<span class="text-muted">#{recipes.ID}</span> |
+		                        	   		<span class="text-muted">{recipes.RELEVANCE}%</span>
+	                        	   		</small> 
+	                        	   		<p>{recipes.ABSTRACT_TRUNCATED}</p>
+	                        	   <!-- END recipes -->
+	                        	   <!-- ELSE -->
+	                        	   		Query returned 0 results
+	                        	   <!-- ENDIF -->
+	                        	</div>
+		                        <hr />
+		                        <!-- IF SEARCH_COUNT_RES_CURRENT -->
+		                        <div class="pagination-info pull-right" style="margin-right:5px">Showing {SEARCH_COUNT_RES_CURRENT} results | {SEARCH_COUNT_RES_CURRENT_FROM}-{SEARCH_COUNT_RES_CURRENT_TO} of {SEARCH_COUNT_RES_TOTAL}</div>
+		                        <!-- ENDIF -->
+		                        <!-- IF SEARCH_PAGES_CURRENT_ID -->
+		                        <div class="clearfix"></div>
+	                        	<ol class="pagination text-center pull-right">
+	                        		<li class="prev <!-- IF not SEARCH_PAGES_PREV_ID -->disabled<!-- ENDIF -->"><a href="<!-- IF not SEARCH_PAGES_PREV_ID -->#<!-- ELSE -->/recipes/search?{GLOBAL_QUERY_STRING}&p={SEARCH_PAGES_PREV_ID}<!-- ENDIF -->"><i class="fa fa-long-arrow-left"></i> Previous</a></li>
+	                        		<li class="active"><a href="/recipes/search?{GLOBAL_QUERY_STRING}&p={SEARCH_PAGES_CURRENT_ID}">{SEARCH_PAGES_CURRENT_ID}</a></li>
+	                        		<li class="next <!-- IF not SEARCH_PAGES_NEXT_ID -->disabled<!-- ENDIF -->"><a href="<!-- IF not SEARCH_PAGES_NEXT_ID -->#<!-- ELSE -->/recipes/search?{GLOBAL_QUERY_STRING}&p={SEARCH_PAGES_NEXT_ID}<!-- ENDIF -->">Next <i class="fa fa-long-arrow-right"></i></a></li>
+	                        	</ol>
+	                        	<!-- ENDIF -->
+	                        	<!-- ENDIF -->
+	                        </div>
+						</div>
+					</div>
+
+				</div> <!-- col-md-12 -->
+			</div> <!-- row -->
+		</div> <!-- container -->
+	</div> <!--wrap -->
+</div> <!-- page-content -->

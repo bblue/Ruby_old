@@ -10,6 +10,12 @@ abstract class AbstractEntity implements \Iterator
 	private $_errors = array();
 
 	protected $sName;
+	protected $validation;
+
+	public function __construct()
+	{
+		$this->validation = new \Lib\Validation();
+	}
 
 	public function hasError()
 	{
@@ -21,7 +27,7 @@ abstract class AbstractEntity implements \Iterator
 		return $this->_errors;
 	}
 
-	protected function setError($errorText)
+	public function setError($errorText)
 	{
 		$this->_errors[] = $errorText;
 	}
@@ -32,7 +38,7 @@ abstract class AbstractEntity implements \Iterator
 	 */
 	public function __set($name, $value)
 	{
-		if (!in_array($name, $this->_allowedFields)) {
+		if (!in_array($name, $this->_allowedFields) && $name != 'relevance') {
 			throw new \Exception('The field ' . $name . ' is not allowed for this entity ('.get_called_class().').');
 		}
 		$mutator = 'set' . ucfirst($name);
@@ -73,7 +79,7 @@ abstract class AbstractEntity implements \Iterator
 	 */
 	public function __get($name)
 	{
-		if(!in_array($name, $this->_allowedFields)) {
+		if(!in_array($name, $this->_allowedFields) && $name != 'relevance') {
 			return null;
 		}
 		$accessor = 'get' . ucfirst($name);
@@ -85,6 +91,7 @@ abstract class AbstractEntity implements \Iterator
 	       return $this->_values[$name];
 		}
 
+		return null; //@todo: Rydde opp i dette
 		throw new \Exception('The field ' . $name . ' has not been set for this entity yet ('.get_called_class().').');
 	}
 
@@ -122,31 +129,31 @@ abstract class AbstractEntity implements \Iterator
 
 	public function rewind()
 	{
-		reset($this->_values);
+		reset($this->_allowedFields);
 	}
 
 	public function current()
 	{
-		$key = key($this->_values);
+		$key = current($this->_allowedFields);
 		return $this->__get($key);
 	}
 
 	public function key()
 	{
-		$key = key($this->_values);
+		$key = current($this->_allowedFields);
 		return $key;
 	}
 
 	public function next()
 	{
-		next($this->_values);
-		$key = key($this->_values);
+		next($this->_allowedFields);
+		$key = current($this->_allowedFields);
 		return $this->__get($key);
 	}
 
 	public function valid()
 	{
-		$key = key($this->_values);
+		$key = current($this->_allowedFields);
 		$var = ($key !== null && $key !== false);
 		return $var;
 	}

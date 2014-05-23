@@ -5,9 +5,10 @@
 		die('You must complete the installation and delete the install folder before you can continue. Click <a href="websites/install/">here</a> to go to the installation page.');
 	}
 
- 	/** Load the root website */
-	if(is_readable($filename = 'websites'.DIRECTORY_SEPARATOR.'self'.DIRECTORY_SEPARATOR.'index.php')){
-		require $filename;
+	$bootfile = '..'.DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'boot'.DIRECTORY_SEPARATOR.'bootstrap.php';
+	if(is_readable($bootfile)) {
+		define('WEBSITE', 'self');
+		require $bootfile;
 	} else {
-		die('Unable to load root website');
+		throw new \RuntimeException('Unable to load Ruby system boot file (' . $bootfile . ')');
 	}

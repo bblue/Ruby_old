@@ -65,13 +65,9 @@ final class Recognition extends ServiceAbstract
 
 	public function getActiveVisitors()
 	{
-        $aCriterias['timestamp'][] = array(
-        	'operator'	=> '>',
-        	'value'		=> time() - (60*5)
-        );
-		return $this->dataMapperFactory
-			->build('visitor')
-			->find($aCriterias);
+		$mapper = $this->dataMapperFactory->build('visitor');
+		$mapper->addFilter('timestamp', time() - (60*5), '>');
+		return $mapper->find($mapper->getFilters());
 	}
 
 	/* Function to log in a user */

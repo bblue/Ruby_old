@@ -9,7 +9,6 @@ final class ErrorController extends AbstractController
 	{
 		return true;
 	}
-	
 	public function executeSet500error()
 	{
 		return true;

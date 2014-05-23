@@ -6,6 +6,7 @@ use Model\Services\Routing;
 
 use App\Factories\Service as ServiceFactory;
 use App\Factories\Listener as ListenerFactory;
+use App\Exceptions\UnexpectedValueException;
 
 final class FrontController
 {
@@ -31,11 +32,13 @@ final class FrontController
 
 			// Dispatch to whatever route we ended up with
 			$this->dispatcher->dispatch($this->routingService->route);
-
 		} catch (\Exception $e) {
-
 			$sMessage = $e->getMessage();
 			if(defined('DEV_AREA_CONFIRMED') && DEV_AREA_CONFIRMED === true && PRINT_EXCEPTIONS_TRACE === true) {
+				$sMessage .= '<br /><br />';
+				if($e instanceof UnexpectedValueException) {
+					$sMessage .= '<pre>Variable is of type: '.$e->getType().'</pre>';
+				}
 			    $sMessage .= '<pre>'.$e->getTraceAsString().'</pre>';
 			}
 

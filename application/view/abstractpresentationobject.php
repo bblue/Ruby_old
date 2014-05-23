@@ -14,7 +14,7 @@ abstract class AbstractPresentationObject
 		$this->template = $template;
 	}
 
-	private function getTemplatePrefix($toLower = false)
+	protected function getTemplatePrefix($toLower = false)
 	{
 		return (empty($this->sTemplatePrefix)) ? '' : ((($toLower) ? strtolower($this->sTemplatePrefix) : $this->sTemplatePrefix) . '_');
 	}

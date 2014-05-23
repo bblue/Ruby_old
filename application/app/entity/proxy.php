@@ -5,12 +5,12 @@ use App\Proxy;
 class Entity extends Proxy implements LoadableInterface
 {
     protected $_entity;
-   
+
     /**
      * Load an entity via the 'findById()' method of the injected mapper
      */
     public function load()
-    {
+    {die('test');
         if ($this->_entity === null) {
             $this->_entity = $this->_mapper->findById($this->_aCriterias);
             if (!$this->_entity instanceof Model\AbstractEntity) {
@@ -18,5 +18,5 @@ class Entity extends Proxy implements LoadableInterface
             }
         }
         return $this->_entity;
-    }  
+    }
 }

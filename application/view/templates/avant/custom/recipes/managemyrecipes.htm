@@ -1,12 +1,7 @@
 <div id="page-content">
 	<div id='wrap'>
 		<div id="page-heading">
-			<ol class="breadcrumb">
-				<li><a href="/">Dashboard</a></li>
-				<li>Recipes</li>
-				<li class="active">My Recipes</li>
-			</ol>
-
+			{BREADCRUMBS}
 			<h1>My Recipes</h1>
 			<div class="options">
 				<div class="btn-toolbar">
@@ -29,7 +24,7 @@
 				<div class="col-md-3">
 					<div class="panel">
 						<div class="list-group"> 
-							<a href="#" class="list-group-item"><span class="badge badge-primary">27</span>All</a>
+							<a href="#" class="list-group-item"><span class="badge badge-primary">{RECIPES_COUNT_TOTAL}</span>All</a>
 							<a href="#" class="list-group-item"><span class="badge badge-success">5</span>Draft</a> 
 							<a href="#" class="list-group-item"><span class="badge badge-inverse">14</span>Deleted</a> 
 							<a href="#" class="list-group-item"><span class="badge badge-success">5</span>Favourites</a> 
@@ -40,12 +35,10 @@
 
 					<div class="panel panel-gray">
 						<div class="panel-heading">
-							<h4>All recipes by {VISITOR_FIRSTNAME} {VISITOR_LASTNAME} (#)</h4>
-							<div class="options">
-
-							</div>
+							<h4>All recipes by {VISITOR_FIRSTNAME} {VISITOR_LASTNAME}</h4>
 						</div>
 						<div class="panel-body">
+							<!-- IF .recipes -->
 							<form class="form-inline" action="#">
 			                    <div class="input-group">
 				                    <input type="text" placeholder="Search messages..." class="form-control">
@@ -75,7 +68,7 @@
 										</th>
 										<th colspan="4">
 											<div class="pull-right">
-												<span class="pagination-info" style="margin-right:5px">1-{RECIPES_COUNT_SHOWN} of {RECIPES_COUNT_TOTAL}</span>
+												<span class="pagination-info" style="margin-right:5px">Showing {SEARCH_COUNT_RES_CURRENT} results | {SEARCH_COUNT_RES_CURRENT_FROM}-{SEARCH_COUNT_RES_CURRENT_TO} of {SEARCH_COUNT_RES_TOTAL}</span>
 												<a class="btn btn-sm btn-default"><i class="fa fa-angle-left"></i></a>
 												<a class="btn btn-sm btn-default"><i class="fa fa-angle-right"></i></a>
 											</div>
@@ -85,9 +78,10 @@
 								<tbody>
 									<!-- BEGIN recipes -->
 									<tr class="unread">
-										<td><span><input type="checkbox"></span></td>
+										<td><span><input type="checkbox"></span> #{recipes.ID}</td>
 										<td><a style="display: block;" href="/recipes/view/{recipes.ID}">{recipes.TITLE}</a></td>
 										<td><i class="fa fa-paperclip"></i></td>
+										<td>{recipes.RELEVANCE}</td>
 										<td class="text-right">{recipes.TIMESTAMP}</td>
 									</tr>
 									<!-- END recipes -->
@@ -96,14 +90,17 @@
 									<tr>
 										<th colspan="5">
 											<div class="pull-right">
-												<span class="pagination-info" style="margin-right:5px">1-30 of 789</span>
-												<a class="btn btn-sm btn-default"><i class="fa fa-angle-left"></i></a>
-												<a class="btn btn-sm btn-default"><i class="fa fa-angle-right"></i></a>
+												<span class="pagination-info" style="margin-right:5px">Showing {SEARCH_COUNT_RES_CURRENT} results | {SEARCH_COUNT_RES_CURRENT_FROM}-{SEARCH_COUNT_RES_CURRENT_TO} of {SEARCH_COUNT_RES_TOTAL}</span>
+												<!-- IF SEARCH_PAGES_PREV_ID --><a class="btn btn-sm btn-default" href="/recipes/search?{GLOBAL_QUERY_STRING}&p={SEARCH_PAGES_PREV_ID}"><i class="fa fa-angle-left"></i></a><!-- ENDIF -->
+												<!-- IF SEARCH_PAGES_NEXT_ID --><a class="btn btn-sm btn-default" href="/recipes/search?{GLOBAL_QUERY_STRING}&p={SEARCH_PAGES_NEXT_ID}"><i class="fa fa-angle-right"></i></a><!-- ENDIF -->
 											</div>
 										</th>
 									</tr>
 								</tfoot>
 							</table>
+							<!-- ELSE -->
+							Search returned no results
+							<!-- ENDIF -->
 						</div>
 					</div>
 				</div>		

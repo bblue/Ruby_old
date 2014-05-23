@@ -64,7 +64,7 @@ if(CALCULATE_CPU_LOAD === true) {
 /** Create basic structures, which will be used for interaction with model layer */
 $db 		= new MysqlAdapter(array(MYSQL_SERVER, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB_TABLE));
 $session 	= new SessionHandler();
-$request	= new Request($_SERVER['REQUEST_URI']);
+$request	= new Request();
 
 /** Create factories */
 $entityFactory 		= new EntityFactory();

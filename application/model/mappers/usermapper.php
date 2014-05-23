@@ -37,21 +37,21 @@ final class UserMapper extends DatabaseDataMapper
     	// Check if ID has been set
     	if(isset($user->id)) {
     		$this->findById($user->id, $user);
-    	} else {
-	    	// Find by other search options
-	    	$aCriterias = ($user->Username) ? array('Username' => array(array('operator' => '=', 'value' => $user->Username))) : array();
-
-	    	$this->find($aCriterias, $user);
-
+    	} elseif(isset($user->Username)) {
+    		$this->addFilter('Username', $user->Username);
+    		$this->findSingleEntity($this->getFilters(), $user);
     	}
     	return $user;
     }
 
     protected function setEntitySpecificData(AbstractEntity $user)
     {
-		$user->recipes = new CollectionProxy(
-			$this->_dataMapperFactory->build('recipe'),
-			array('author_id' => array(array('operator' => '=', 'value' => $user->id)
-		)));
+    	$this->resetFilters();
+    	$this->addFilter('id', $user->id);
+
+    	$user->recipes = new CollectionProxy (
+    		$this->_dataMapperFactory->build('recipe'),
+    		$this->getFilters()
+    	);
     }
 }

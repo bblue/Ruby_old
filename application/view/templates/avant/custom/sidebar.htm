@@ -4,18 +4,19 @@
        <ul class="acc-menu" id="sidebar">
            <li id="search">
                <a href="javascript:;"><i class="fa fa-search opacity-control"></i></a>
-                <form>
-                   <input type="text" class="search-query" placeholder="Search...">
+                <form action="/recipes/search" method="get">
+                   <input type="text" name="search" class="search-query" placeholder="Search..." />
                    <button type="submit"><i class="fa fa-search"></i></button>
                </form>
            </li>
            <li class="divider"></li>
            <li><a href="/"><i class="fa fa-home"></i> <span>Dashboard</span></a></li>
-           <li><a href="javascript:;"><i class="fa fa-th"></i> <span>Recipes</span> </a>
+           <li><a href="javascript:;"><i class="fa fa-cutlery"></i> <span>Recipes</span> </a>
                <ul class="acc-menu">
                    <li><a href="/recipes/add"><span>Add New Recipe</span></a></li>
                    <li><a href="/recipes/managemyrecipes"><span>My Recipes</span></a></li>
-                   <li><a href="/recipes/view"><span>View Recipe</span></a></li>
+                   <li><a href="/recipes/search"><span>Search</span></a></li>
+                   <!-- IF RECIPE_ID --><li class="hidden"><a href="/recipes/view/{RECIPE_ID}"></a></li><!-- ENDIF -->
                </ul>
            </li>
            <li class="divider"></li>

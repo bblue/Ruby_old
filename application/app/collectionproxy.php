@@ -5,19 +5,17 @@ use App\Entity\Collection as EntityCollection;
 final class CollectionProxy implements LoadableInterface, \Countable, \IteratorAggregate
 {
 	protected $_mapper;
-	protected $_aCriterias;
-	protected $_aInjectedClauses;
+	protected $aFilters;
 
 	protected $_collection;
 
 	/**
 	 * Constructor
 	 */
-	public function __construct(AbstractDataMapper $mapper, $aCriterias, $aInjectedClauses = array())
+	public function __construct(AbstractDataMapper $mapper, $aFilters)
 	{
 		$this->_mapper = $mapper;
-		$this->_aCriterias = $aCriterias;
-		$this->_aInjectedClauses = $aInjectedClauses;
+		$this->aFilters = $aFilters;
 	}
 
 	/**
@@ -25,13 +23,8 @@ final class CollectionProxy implements LoadableInterface, \Countable, \IteratorA
 	 */
 	public function load()
 	{
-		if($this->_collection === null)
-		{
-			$this->_collection = $this->_mapper->find($this->_aCriterias, null, $this->_aInjectedClauses);
-
-			if (!$this->_collection instanceof EntityCollection) {
-				throw new \Exception('Unable to load the specified collection.');
-			}
+		if($this->_collection === null) 	{
+			$this->_collection = $this->_mapper->find($this->aFilters);
 		}
 		return $this->_collection;
 	}
@@ -57,14 +50,14 @@ final class CollectionProxy implements LoadableInterface, \Countable, \IteratorA
 	 * Used when expecting only to load a collection with a single entity via the 'find()' method of the injected mapper
 	 * when called like $entity1->entity2->entity2variable
 	 */
-	public function getEntity()
+	public function getEntity($id = null)
 	{
 		$collection = $this->load();
 
 		$count = $collection->count();
 
 		if($count === 1) {
-			return $collection->get(0);
+			return $collection->get($id);
 		}
 
 		if($count > 1) {

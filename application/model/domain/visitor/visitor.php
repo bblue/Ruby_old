@@ -68,19 +68,19 @@ final class Visitor extends AbstractEntity
 
     public function setUser($user)
     {
-    	if($user instanceof CollectionProxy || $user instanceof User) {
+    	if($user instanceof CollectionProxy) {
+    		$this->_values['user'] = $user->getEntity($this->getUser_id());
+    	} elseif($user instanceof User) {
     		$this->_values['user'] = $user;
     	}
     }
 
     public function getUser()
     {
-    	if(is_object($this->_values['user']))
-    	{
-    		return ($this->_values['user'] instanceof User) ? $this->_values['user'] : $this->_values['user']->getEntity();
-    	} else {
+    	if(!isset($this->_values['user']) || !$this->_values['user'] instanceof User) {
     		throw new \Exception('User is not set for userID=' . $this->user_id);
     	}
+    	return $this->_values['user'];
     }
 
     public function getDevice($recalc = false)
@@ -94,8 +94,7 @@ final class Visitor extends AbstractEntity
 
     protected function setDevice($device)
     {
-     	if($device)
-    	{
+     	if($device) {
     		$this->_values['device'] = $device;
     	} else {
     		$mobileDetect = $this->getMobileDetect();
@@ -149,20 +148,13 @@ final class Visitor extends AbstractEntity
 
     private function getMobileDetect()
     {
-     	if(!$this->http_user_agent)
-    	{
-    		throw new \Exception('User agent not set for visitor');
-    	}
-        if(!$this->http_vars)
-    	{
-    		throw new \Exception('HTTP vars not set for visitor');
-    	}
     	$mobileDetect = new Mobile_Detect();
-
-    	$mobileDetect->setUserAgent($this->http_user_agent);
-
-    	$mobileDetect->setHttpHeaders(unserialize($this->http_vars));
-
+     	if($this->http_user_agent) {
+    		$mobileDetect->setUserAgent($this->http_user_agent);
+    	}
+        if($this->http_vars) {
+    		$mobileDetect->setHttpHeaders(unserialize($this->http_vars));
+    	}
     	return $mobileDetect;
     }
 

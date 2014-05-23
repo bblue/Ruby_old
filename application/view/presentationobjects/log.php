@@ -12,8 +12,8 @@ final class Log extends AbstractPresentationObject
 		if(empty($aLogs)) {
 			return false;
 		}
-		
-		foreach($aLogs as $logEntry) { 
+
+		foreach($aLogs as $logEntry) {
 			if($logEntry instanceof LogEntry) {
 				if($logEntry->bShowLog) {
 					$this->template->assign_block_vars('logs', array(
@@ -24,6 +24,6 @@ final class Log extends AbstractPresentationObject
 			}
 		}
 		$this->template->set_filenames(array('log' => 'blocks/logEntry.htm'));
-		$this->template->assign_display('log', 'LOG', true);	
+		$this->template->assign_display('log', 'LOG', true);
 	}
 }

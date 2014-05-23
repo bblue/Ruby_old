@@ -39,10 +39,12 @@ final class VisitorMapper extends DatabaseDataMapper
 
     protected function setEntitySpecificData(AbstractEntity $visitor)
     {
-		$visitor->user = new CollectionProxy(
-			$this->_dataMapperFactory->build('user'),
-			null,
-			array('id' => array(array('operator' => '=', 'value' => $visitor->user_id)))
-		);
+    	$this->resetFilters();
+    	$this->addFilter('id', $visitor->user_id);
+
+    	$visitor->user = new CollectionProxy(
+    		$this->_dataMapperFactory->build('user'),
+    		$this->getFilters()
+    	);
     }
 }

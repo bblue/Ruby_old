@@ -1,39 +1,40 @@
 <?php
+namespace Lib;
 final class Validation {
 
 	// Define required variables
 	public $errors = array();
 	private $validation_rules = array();
-	public $sanitized = array();	
+	public $sanitized = array();
 	private $data = array();
 
     public function addSource(array $source) {
         $this->data = $source;
     }
-    
+
     public function resetValidationRules(){
     	$this->validation_rules = array();
     }
-    
+
     public function resetSource(){
     	$this->data = array();
     }
-    
+
    	private function resetErrors(){
    		$this->errors = array();
    	}
-    
+
    	private function resetSanitized(){
    		$this->sanitized = array();
    	}
-   	
+
     public function resetAll(){
     	$this->resetSource();
     	$this->resetValidationRules();
     	$this->resetErrors();
     	$this->resetSanitized();
     }
-    
+
 	public function validate(){
 		// We use the php built-in ArrayIterator to prepare the variables
 		foreach( new ArrayIterator($this->validation_rules) as $var=>$opt){
@@ -77,21 +78,21 @@ final class Validation {
 						$this->sanitizeString($var);
 					}
 					break;
-				
+
 				case 'username':
 					$this->validateUsername($var, $opt['min'], $opt['max'], $opt['required']);
 					if(!array_key_exists($var, $this->errors)){
 						$this->sanitizeString($var);
 					}
 					break;
-				
+
 				case 'password':
 					$this->validatePassword($var, $opt['min'], $opt['max'], $opt['required']);
 					if(!array_key_exists($var, $this->errors)){
 						$this->sanitizePassword($var);
 					}
 					break;
-				
+
 				case 'float':
 					$this->validateFloat($var, $opt['required']);
 					if(!array_key_exists($var, $this->errors)){
@@ -115,7 +116,7 @@ final class Validation {
 			}
 		}
 	}
-	
+
 	public function addValidationRules(array $aValidationRules)
 	{
 		foreach($aValidationRules as $varname => $aValidationRule)
@@ -123,7 +124,7 @@ final class Validation {
 			$this->validation_rules[$varname] = $aValidationRule;
 		}
 	}
-	
+
 	// This function is for chaining different rules
 	public function addValidationRule($varname, $type, $required=false, $min=0, $max=0, $trim=false){
 		$this->validation_rules[$varname] = array('type'=>$type, 'required'=>$required, 'min'=>$min, 'max'=>$max, 'trim'=>$trim);
@@ -168,7 +169,7 @@ final class Validation {
 			$this->errors[$var] = $var . "($this->data[$var]) is an invalid float";
 		}
 	}
-	
+
 	private function validateString($var, $min=0, $max=0, $required=false){
 		if($required==false && strlen($this->data[$var]) == 0){
 			return true;
@@ -210,7 +211,7 @@ final class Validation {
 			}
 		}
 	}
-	
+
 	private function validatePassword($var, $min=PASSWORD_MIN_LENGTH, $max=PASSWORD_MAX_LENGTH, $required=false){
 		if($required==false && strlen($this->data[$var]) == 0){
 			return true;
@@ -228,7 +229,7 @@ final class Validation {
 			}
 		}
 	}
-	
+
 	private function validateNumeric($var, $min=0, $max=0, $required=false){
 		if($required==false && strlen($this->data[$var]) == 0){
 			return true;
@@ -255,7 +256,7 @@ final class Validation {
 			$this->errors[$var] = $var . ' is not a valid email address';
 		}
 	}
-	
+
 	private function validateBool($var, $required=false){
 		if($required==false && strlen($this->data[$var]) == 0){
 			return true;
@@ -283,15 +284,15 @@ final class Validation {
 	private function sanitizeString($var){
 		$this->sanitized[$var] = (string) filter_var($this->data[$var], FILTER_SANITIZE_STRING);
 	}
-	
+
 	private function sanitizePassword($var){
-		$this->sanitized[$var] = md5(SALT . (string) filter_var($this->data[$var], FILTER_SANITIZE_MAGIC_QUOTES) . PEPPER);	
+		$this->sanitized[$var] = md5(SALT . (string) filter_var($this->data[$var], FILTER_SANITIZE_MAGIC_QUOTES) . PEPPER);
 	}
-	
+
 	private function sanitizeMagicQuotes($var){
 		$this->sanitized[$var] = (string) filter_var($this->data[$var], FILTER_SANITIZE_MAGIC_QUOTES);
 	}
-	
+
 	private function sanitizeFloat($var){
 		$this->sanitized[$var] = (float) filter_var($this->data[$var], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 	}

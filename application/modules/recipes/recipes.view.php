@@ -6,40 +6,78 @@ use App\AbstractView,
 
 use Model\Domain\Recipe\Recipe as RecipeEntity;
 use Model\Domain\Recipe\Collection as RecipeCollection;
+use App\Exceptions\UnexpectedValueException;
 
 final class RecipesView extends AbstractView
 {
-	public function executeManagemyrecipes($recipes)
+	public function executeManagemyrecipes($search)
 	{
-		// Ensure we can handle response
-		if(!$recipes instanceof RecipeEntity && !$recipes instanceof RecipeCollection) {
-			throw new \Exception('Controller response can not be handled by this view');
-		}
-
 		$sTemplateFile = 'managemyrecipes';
+
+		/** Load search data into template */
+		$this->presentationObjectFactory
+		->build('search', true)
+		->assignData($search);
 
 		/** Load recipe list into template variables */
 		$this->presentationObjectFactory
 		->build('recipes', true)
-		->assignData($recipes, $this->serviceFactory->build('recipe', true)->getCount());
+		->assignData($search->getResult());
 
 		/** Load required scripts */
 		$this->presentationObjectFactory
 		->build('scripttags', true)
 		->assignData($sTemplateFile);
 
+	    /** Load breadcrumbs */
+	    $this->presentationObjectFactory
+	    ->build('breadcrumbs', true)
+	    ->assignData(array(
+	        array('title'=> 'Recipes'),
+	    	array('url'	=> 'recipes/managemyrecipes/', 'title'=>'Manage')
+	    ));
+
+		$this->display('custom/header.htm');
+		$this->display('custom/sidebar.htm');
+		$this->display('custom/rightbar.htm');
+		$this->display('custom/recipes/' . $sTemplateFile . '.htm');
+		$this->display('custom/footer.htm');
+
+		return true;
+	}
+
+	public function executeImageUpload()
+	{
+		return true;
+	}
+
+	public function executeSearch($search)
+	{
+		$sTemplateFile = 'search';
+
+		/** Load recipe list into template variables */
+		$this->presentationObjectFactory
+		->build('recipes', true)
+		->assignData($search->getResult());
+
+		/** Load search data into template */
+		$this->presentationObjectFactory
+		->build('search', true)
+		->assignData($search);
+
 		/** Load breadcrumbs */
 		$this->presentationObjectFactory
 		->build('breadcrumbs', true)
 		->assignData(array(
-		    array(
-		        'title'	=> 'Recipes',
-		    ),
-		    array(
-		        'url'	=> 'recipes/managemyrecipes',
-		        'title'	=> 'Manage recipes',
-		    )
+			array('title'=> 'Recipes'),
+			array('url'	=> 'recipes/search/', 'title'=>'Search')
 		));
+
+		/** Load required scripts */
+		$this->presentationObjectFactory
+		->build('scripttags', true)
+		->assignData($sTemplateFile);
+
 		$this->display('custom/header.htm');
 		$this->display('custom/sidebar.htm');
 		$this->display('custom/rightbar.htm');
@@ -51,13 +89,17 @@ final class RecipesView extends AbstractView
 
 	public function executeView($recipe)
 	{
+		if($recipe === null) {
+			return $this->redirect('/recipes/managemyrecipes');
+		}
+
 		// Ensure we can handle response
 		if(!$recipe instanceof RecipeEntity) {
-			throw new \Exception('Controller response can not be handled by this view');
+			throw new UnexpectedValueException('Controller response can not be handled by this view', $recipe);
 		}
 
 		if(!isset($recipe->id)) {
-			die('no recipe selected');
+			return $this->load('Set404error');
 		}
 
 	    $sTemplateFile = 'recipes/view';
@@ -91,22 +133,21 @@ final class RecipesView extends AbstractView
 	public function executeAdd($recipe)
 	{
 		// Ensure we can handle response
-		if(!is_object($recipe) || !$recipe instanceof RecipeEntity) {
-			throw new \Exception('Controller response can not be handled by this view');
+		if(!$recipe instanceof RecipeEntity) {
+			throw new UnexpectedValueException('Controller response can not be handled by this view', $recipe);
 		}
 
 		if(isset($recipe->id)) {
-			// Show success page
-			echo 'Recipe added successfully';
-		}
-
-		// Check for errors in entity
-		if($recipe->hasError()) {
-			// Produce errors
-			echo 'There are errors in entity';
+			return $this->load('view');
 		}
 
 		$sTemplateFile = 'recipes/add';
+
+		/** Load entity error data into template variables */
+		$this->presentationObjectFactory
+			->build('entityErrors', true)
+			->setTemplatePrefix('RECIPE')
+			->assignData($recipe);
 
 		/** Load recipe data into template variables */
 		$this->presentationObjectFactory

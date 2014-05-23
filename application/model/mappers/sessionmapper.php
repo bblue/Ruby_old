@@ -32,6 +32,7 @@ final class SessionMapper extends AbstractDataMapper
 			return $entity;
 		}
 
+		/*
 		if($entity instanceof Recipe){
 			$aRecipeValues = is_array($this->_adapter->getVar('aRecipeValues')) ? $this->_adapter->getVar('aRecipeValues') : array();
 			foreach($aRecipeValues as $key => $value) {
@@ -39,7 +40,7 @@ final class SessionMapper extends AbstractDataMapper
 			}
 			return $entity;
 		}
-
+		*/
 		throw new \Exception('Entity (' . (is_object($entity) ? get_class($entity) : $entity) . ') cannot be mapped by this datamapper (' . __CLASS__ . ')');
 	}
 

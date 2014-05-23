@@ -9,7 +9,7 @@ abstract class ServiceAbstract
 	protected $entityFactory;
 	protected $log;
 	protected $_cache = array();
-	
+
 	public function __construct(Factory $dataMapperFactory, Factory $entityFactory, $logService = null)
 	{
 		$this->dataMapperFactory = $dataMapperFactory;

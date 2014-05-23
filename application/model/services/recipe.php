@@ -7,38 +7,75 @@ use model\Domain\User\User as Author;
 
 final class Recipe extends ServiceAbstract
 {
-	public $recipe; // Current recipe being modified
-	public $recipes;
-	private $author;
-	public $iNumRows;
+	private $recipe; // Current recipe being modified
+	private $recipes = array();
+	private $visitor;
 
-	public function find(array $aCriterias = array(), $order = '', $page = null, $iItemsToShow = 10)
+	public function manageRecipeImages($recipe = null)
 	{
-		$dataMapper = $this->dataMapperFactory->build('recipe');
+		$recipe = ($recipe) ? : $this->recipe;
+		$folder = (isset($recipe->id)) ? $recipe->id : 'temp/' . $recipe->author_id;
+		$options = array(
+			'upload_url' 		=> '/websites/'.WEBSITE.'/uploads/recipes/'.$folder . '/',
+			'upload_dir' 		=> '../public_html/websites/'.WEBSITE.'/uploads/recipes/'.$folder . '/',
+			'script_url' 		=> 'imageupload',
+			'accept_file_types' => '/\.(gif|jpe?g|png)$/i',
+			'max_file_size'		=> 10*1024*1024,
+			'user_dirs'			=> (isset($recipe->id)) ? false: true
+		);
+		require(ROOT_PATH . '/lib/jQueryUpload/UploadHandler.php');
+		$upload_handler = new \UploadHandler($options);
+	}
 
-		$count = $dataMapper->count($aCriterias);
-		$offset = ($page) ? $iItemsToShow * $page : null;
+	public function find($search)
+	{
+		$mapper = $this->dataMapperFactory->build('recipe');
+		$recipes = $mapper->find($search->getFilters());
 
-		$this->recipes = $dataMapper->find($aCriterias, null, array(), $order, $offset + $iItemsToShow, $offset);
+		$search->setResult($recipes);
+
+		return $this->recipes = $recipes;
+	}
+
+	public function search($search)
+	{
+		// Search the recipe list
+		$recipeMapper = $this->dataMapperFactory->build('recipe');
+		$recipes = $recipeMapper->match($search->getFulltextMatches('recipe'), $search->getFulltextSearch(), $search->getFilters('recipe'), $search->getOrder(), $search->getLimit(), $search->getOffset());
+
+		// Search the ingredient list
+		$mapper = $this->dataMapperFactory->build('ingredient');
+		$ingredients = $mapper->match($search->getFulltextMatches('ingredient'), $search->getFulltextSearch(), $search->getFilters('ingredient'));
+
+		foreach($ingredients as $ingredient) {
+			if(isset($recipes[$ingredient->r_id])) {
+				$recipes[$ingredient->r_id]->relevance += $ingredient->relevance;
+			} else {
+				if($recipe = $recipeMapper->findById($ingredient->r_id)){
+					$recipe->relevance = $ingredient->relevance;
+					$recipes->add($recipe->id, $recipe);
+				}
+			}
+		}
+
+		$search->setResult($recipes);
+
+		return $this->recipes = $recipes;;
+	}
+
+	public function getRecipe()
+	{
+		return $this->recipe;
+	}
+
+	public function getRecipes()
+	{
+		return $this->recipes;
 	}
 
 	public function count(array $aCriterias = array())
 	{
-		$this->iNumRows = $this->dataMapperFactory->build('recipe')->getCount($aCriterias);
-	}
-
-	public function getCount()
-	{
-		if(isset($this->iNumRows)) {
-			return $this->iNumRows;
-		} else {
-			throw new \Exception('Count has not been set');
-		}
-	}
-
-	public function setAuthor(Author $author)
-	{
-		$this->author = $author;
+		return $this->dataMapperFactory->build('recipe')->getCount($aCriterias);
 	}
 
 	public function checkTitleIsAvailable($sTitle)
@@ -53,7 +90,7 @@ final class Recipe extends ServiceAbstract
 		}
 
 		// Check entity contains all required input
-		if(!$this->hasRequiredData()) {
+		if(!$this->recipeHasRequiredData()) {
 			return $this->recipe;
 		}
 
@@ -71,27 +108,31 @@ final class Recipe extends ServiceAbstract
 			throw new \Exception('Recipe is already registered');
 		}
 
+		$this->recipe->submitTime = time();
+
 		// Check entity contains all required input
-		if(!$this->hasRequiredData()) {
-			return $this->recipe;
-		}
+		$this->recipeHasRequiredData();
 
 		// Check for entity errors
 		if($this->recipe->hasError()) {
 			return $this->recipe;
 		}
 
+		// confirm title is available
+
 		// Register in database
 		$this->dataMapperFactory
 			->build('recipe')
-			->update($this->recipe);
+			->insert($this->recipe);
 
 		return $this->recipe;
 	}
 
-	private function hasRequiredData()
+	private function recipeHasRequiredData()
 	{
-		$aRequiredKeys = array('title', 'author_id', '');
+		$aRequiredKeys = array('title', 'author_id', 'abstract', 'submitTime', 'status');
+
+		$bHasError = false;
 
 		foreach($aRequiredKeys as $key) {
 			if(!isset($this->recipe->$key)) {
@@ -99,27 +140,52 @@ final class Recipe extends ServiceAbstract
 				$bHasError= true;
 			}
 		}
-		return $bHasError ? false : true;
+		return $bHasError;
 	}
 
-	public function build($aParams = array())
+	public function setAuthor($author, $recipe = null) {
+		$recipe = ($recipe) ? : $this->recipe;
+
+		$recipe->author_id = $author->id;
+		$recipe->author = $author;
+	}
+
+	public function setVisitor($visitor)
+	{
+		$this->visitor = $visitor;
+	}
+
+	public function buildRecipe($aParams = array())
 	{
 		$this->recipe = $this->entityFactory->build('recipe');
 
-		if(!empty($aParams)) {
-			foreach($aParams as $key => $value) {
+		// Set recipe data
+		$aAllowedFields = $this->recipe->getAllowedFields();
+		foreach($aParams as $key => $value) {
+			if(in_array($key, $aAllowedFields)) {
 				$this->recipe->$key = $value;
 			}
-		} else {
-			// Check for stored recipe in session
-			$this->dataMapperFactory->build('session')->fetch($this->recipe);
 		}
 
-		if($this->author) {
-			$this->recipe->author_id = $this->author->id;
-			$this->recipe->author = $this->author;
+		// Set ingredient data
+		if(array_key_exists('ingr', $aParams) && is_array($aParams['ingr'])) {
+			$mapper = $this->dataMapperFactory->build('ingredient');
+			$ingredients = $mapper->buildCollection();
+			foreach($aParams['ingr'] as $aIngrData) {
+				$ingredient = $this->entityFactory->build('ingredient');
+				$aAllowedFields = $ingredient->getAllowedFields();
+				foreach($aIngrData as $key => $value) {
+					if(in_array($key, $aAllowedFields)) {
+						$ingredient->$key = $value;
+					}
+				}
+				$ingredients->add(null, $ingredient);
+
+			}
+			$this->recipe->ingredients = $ingredients;
 		}
 
 		return $this->recipe;
 	}
+
 }

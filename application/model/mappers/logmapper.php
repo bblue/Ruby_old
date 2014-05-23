@@ -1,6 +1,6 @@
 <?php
 namespace Model\Mappers;
-use 
+use
 	App\DatabaseDataMapper,
 	App\AbstractEntity,
 	App\CollectionProxy;
@@ -16,22 +16,24 @@ final class LogMapper extends DatabaseDataMapper
 		'type'						=> 'logs.type'
 	);
 	protected $_cascadeFields = array();
-    
+
     public function fetch(AbstractEntity $logEntry)
     {
     	// Check if ID has been set
-    	if($logEntry->id)
-    	{
+    	if($logEntry->id) {
     		return $this->findById($logEntry->id, $logEntry);
     	}
     	throw new Exception('LogEntry ID is not set');
     }
-    
+
     protected function setEntitySpecificData(AbstractEntity $logEntry)
     {
+    	$this->resetFilters();
+    	$this->addFilter('id', $logEntry->user_id);
+
 		$logEntry->user = 	new CollectionProxy(
 								$this->_dataMapperFactory->build('user'),
-								array('id' => array(array('operator' => '=', 'value' => $logEntry->user_id)))
+								$this->getFilters()
 							);
     }
 }

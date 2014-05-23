@@ -104,6 +104,32 @@ class MysqlAdapter implements DatabaseAdapterInterface
     }
 
     /**
+     * Perform a MATCH AGAINST statement
+     */
+	public function match($sMatch, $sAgainst, array $aTables, $where = '', $fields = '*', $order = '', $limit = null, $offset = null)
+	{
+		$sAgainst = $this->quoteValue($sAgainst);
+        $query = 'SELECT ' . $fields . ','
+        	   . '('
+        	   . '	( MATCH(' . $sMatch . ') AGAINST ("' . $sAgainst . '" IN BOOLEAN MODE) * 10 )'
+        	   . '	+'
+        	   . '	('
+        	   . '		MATCH(' . $sMatch . ') AGAINST (' . $sAgainst . ' IN BOOLEAN MODE)'
+        	   . '	* 1.5'
+			   . '	)'
+			   . ') AS relevance'
+        	   . ' FROM ' . implode(', ', $aTables)
+               . ' WHERE ( MATCH(' . $sMatch . ') AGAINST ("' . $sAgainst . '" IN BOOLEAN MODE) > 0'
+               . '		OR MATCH(' . $sMatch . ') AGAINST (' . $sAgainst . ' IN BOOLEAN MODE) > 0)'
+               . (($where) ? ' AND ' . $where : '')
+               . (($limit) ? ' LIMIT ' . $limit : '')
+               . (($offset && $limit) ? ' OFFSET ' . $offset : '')
+               . (($order) ? ' ORDER BY ' . $order : '');
+        $this->query($query);
+        return $this->countRows();
+	}
+
+    /**
      * Perform a DELETE statement
      */
     public function delete(array $aTables, $where = '')
@@ -122,9 +148,10 @@ class MysqlAdapter implements DatabaseAdapterInterface
         $this->connect();
         if ($value === null) {
             $value = 'NULL';
-        }
-        else if (!is_numeric($value)) {
+        } elseif (!is_numeric($value)) {
             $value = "'" . mysqli_real_escape_string($this->_link, $value) . "'";
+        } elseif (is_numeric($value)) {
+        	$value = intval($value);
         }
         return $value;
     }

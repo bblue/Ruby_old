@@ -10,71 +10,104 @@ final class RecipesController extends AbstractController
 		return $this->load('managemyrecipes');
 	}
 
-	public function executeManagemyrecipes()
+	public function executeSearch()
+	{
+		$recipeService = $this->serviceFactory->build('recipe', true);
+		$search = $this->serviceFactory->build('search', true);
+
+		$id =	$search->addFilter('recipe.status', 3);
+		$id =	$search->addFilter('recipe.status', 1, $id, '>=', 'OR');
+				$search->addFilter('recipe.author_id', $this->visitor->user_id, $id);
+
+		$search->addFulltextMatch('recipe.method');
+		$search->addFulltextMatch('recipe.title');
+		$search->addFulltextMatch('recipe.abstract');
+		$search->addFulltextMatch('ingredient.ingr_name');
+		$search->setFulltextSearch($this->request->_get('search'));
+
+		$aOrderByFields = array('id', 'title');
+		$search->setOrderBy(in_array($this->request->_get('order_by'), $aOrderByFields) ? $this->request->_get('order_by') : 'relevance');
+		$search->setRequestedPage($this->request->_get('p'));
+
+		$recipeService->search($search);
+
+		return $search;
+	}
+
+	public function executeImageUpload()
 	{
 		$recipeService = $this->serviceFactory->build('recipe', true);
 
-		// Check for search parameters
-		$aCriterias = array(
-		/**	'title'						=> $this->request->_get('title'), /** recipe title */
-		);
+		$recipeService->buildRecipe();
+		$recipeService->setAuthor($this->visitor->user);
+		$recipeService->manageRecipeImages();
+	}
 
-		// Only get recipes for this user
-		$aCriterias['author_id'][] = array(
-			'value'		=> $this->visitor->user_id,
-			'operator'	=> '='
-		);
+	public function executeManagemyrecipes()
+	{
+		$recipeService = $this->serviceFactory->build('recipe', true);
+		$search = $this->serviceFactory->build('search', true);
 
-		// Request RecipeService to fetch a collection
-		$recipeService->find($aCriterias, $this->request->_get('order'), $this->request->_get('show'), $this->request->_get('offset'));
+		// Set the search/filter parameters
+		$search->addFilter('author_id', $this->visitor->user_id);
+		$search->addFilter('status', 0, 0, '!=');
 
-		// Return the collection
-		return $recipeService->collection;
+		$aOrderByFields = array('id', 'title');
+		$search->setOrderBy(in_array($this->request->_get('order_by'), $aOrderByFields) ? $this->request->_get('order_by') : 'id');
+
+		$search->setRequestedPage($this->request->_get('p'));
+
+		$recipeService->find($search);
+
+		return $search;
 	}
 
 	public function executeView()
 	{
-		$recipeService = $this->serviceFactory->build('recipe');
-
 		if(!empty($this->request->aUrlParams[0]) && is_numeric($this->request->aUrlParams[0])) {
-			$aCriterias['id'][] = array(
-				'value'		=> intval($this->request->aUrlParams[0]),
-				'operator'	=> '='
-			);
-			$recipeService->find($aCriterias);
-		} else {
-			$recipeService->build();
+			$recipeService = $this->serviceFactory->build('recipe', true);
+			$search = $this->serviceFactory->build('search', true);
+
+			$search->addFilter('id', $id = intval($this->request->aUrlParams[0]));
+			$recipe = $recipeService->find($search)[$id];
+
+			return $recipe;
 		}
-		return $recipeService->recipe;
 	}
 
 	public function executeAdd()
 	{
 		$recipeService = $this->serviceFactory->build('recipe');
-		$recipeService->setAuthor($this->visitor->user);
+		$recipeService->setVisitor($this->visitor);
 
-		if(isset($this->request->aFormData)) {
-			$recipeService->build($this->request->aFormData);
+		if(isset($this->request->saveRecipe)) {
+			$recipeService->buildRecipe($this->request->_post());
+
+			if($recipeService->getRecipe()->author_id != $this->visitor->user_id) {
+				// Check for permission to edit author_id
+				$recipeService->setAuthor($this->visitor->user);
+			}
+
 			$recipeService->add();
+
 		} else {
-			$recipeService->build();
+			$recipeService->buildRecipe();
+			$recipeService->setAuthor($this->visitor->user);
 		}
 
-		return $recipeService->recipe;
+		return $recipeService->getRecipe();
 	}
 
 	public function executeEdit()
 	{
-		$recipeService = $this->serviceFactory->build('recipe');
+		$recipeService = $this->serviceFactory->buildRecipe('recipe');
 
 		if(isset($this->request->aFormData)) {
-			$recipeService->build($this->request->aFormData);
+			$recipeService->buildRecipe($this->request->aFormData);
 			$recipeService->edit();
-		} else {
-			$recipeService->build();
 		}
 
-		return $recipeService->recipe;
+		return $recipeService->getRecipe();
 	}
 
 	public function executeCheckTitleIsAvailable()

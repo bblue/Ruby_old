@@ -324,6 +324,9 @@ final class Template_compile
 				$loop_start = '($_' . $tag_args . '_count < ' . $match[2] . ' ? $_' . $tag_args . '_count : ' . $match[2] . ')';
 			}
 
+			// Hack by AL 5/5/2014 (added below line to fix notice error)
+			$match[3] = isset($match[3]) ? $match[3] : 0;
+
 			if (strlen($match[3]) < 1 || $match[3] == -1)
 			{
 				$loop_end = '$_' . $tag_args . '_count';
@@ -507,7 +510,10 @@ final class Template_compile
 				default:
 					if (preg_match('#^((?:[a-z0-9\-_]+\.)+)?(\$)?(?=[A-Z])([A-Z0-9\-_]+)#s', $token, $varrefs))
 					{
-						$token = (!empty($varrefs[1])) ? $this->generate_block_data_ref(substr($varrefs[1], 0, -1), true, $varrefs[2]) . '[\'' . $varrefs[3] . '\']' : (($varrefs[2]) ? '$this->_tpldata[\'DEFINE\'][\'.\'][\'' . $varrefs[3] . '\']' : '$this->_rootref[\'' . $varrefs[3] . '\']');
+						// HACK BY AL 16/5/2014: Added isset to varref to fix notice error
+						$token = (!empty($varrefs[1])) ? $this->generate_block_data_ref(substr($varrefs[1], 0, -1), true, $varrefs[2]) . '[\'' . $varrefs[3] . '\']' : (($varrefs[2]) ? '$this->_tpldata[\'DEFINE\'][\'.\'][\'' . $varrefs[3] . '\']' : '((!empty($this->_rootref[\'' . $varrefs[3] . '\'])) ? $this->_rootref[\'' . $varrefs[3] . '\'] : false)');
+
+						//$token = (!empty($varrefs[1])) ? $this->generate_block_data_ref(substr($varrefs[1], 0, -1), true, $varrefs[2]) . '[\'' . $varrefs[3] . '\']' : (($varrefs[2]) ? '$this->_tpldata[\'DEFINE\'][\'.\'][\'' . $varrefs[3] . '\']' : '$this->_rootref[\'' . $varrefs[3] . '\']');
 					}
 					else if (preg_match('#^\.((?:[a-z0-9\-_]+\.?)+)$#s', $token, $varrefs))
 					{
@@ -532,8 +538,11 @@ final class Template_compile
 
 							// Add the block reference for the last child.
 							$varref .= "['" . $blocks[0] . "']";
+
 						}
-						$token = "sizeof($varref)";
+						// Hack by AL 22/5 - added line, uncommented line. Fixing notice error in IF statements for blockvars
+						$token = "(isset($varref)) ? sizeof($varref) : false";
+						//$token = "sizeof($varref)";
 					}
 					else if (!empty($token))
 					{

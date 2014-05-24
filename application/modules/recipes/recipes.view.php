@@ -14,15 +14,15 @@ final class RecipesView extends AbstractView
 	{
 		$sTemplateFile = 'managemyrecipes';
 
-		/** Load search data into template */
-		$this->presentationObjectFactory
-		->build('search', true)
-		->assignData($search);
-
 		/** Load recipe list into template variables */
 		$this->presentationObjectFactory
 		->build('recipes', true)
 		->assignData($search->getResult());
+
+		/** Load search data into template */
+		$this->presentationObjectFactory
+		->build('search', true)
+		->assignData($search);
 
 		/** Load required scripts */
 		$this->presentationObjectFactory

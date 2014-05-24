@@ -20,7 +20,7 @@ final class Routing extends ServiceAbstract
 	const ERROR_404_URL		= 'error/404';
 	const ERROR_500_URL		= 'error/500';
 	const LOGIN_URL			= 'users/login';
-	const DEFAULT_URL		= 'index';
+	const DEFAULT_URL		= 'recipes/managemyrecipes';
 
 	const FORCED_LOGIN		= FORCED_LOGIN;
 
@@ -121,7 +121,7 @@ final class Routing extends ServiceAbstract
 			throw new \Exception('Route should not throw an error. Something is very wrong.');
 		}
 
-		$this->request->aUrlParams = $route->aUrlParams;
+		$this->request->set_urlParams($route->aUrlParams);
 
 		// Return route
 		return $route;
@@ -142,7 +142,7 @@ final class Routing extends ServiceAbstract
 		$route->sCommand = $route->extractCommandFromUrl($iTier);
 		$route->aUrlParams = $route->extractUrlParameters($iTier);
 
-		$this->request->aUrlParams = $route->aUrlParams;
+		//$this->request->set_urlParams($route->aUrlParams); //@todo: Tror ikke det er behov for denne her. Sjekk.
 
 		return $route;
 	}

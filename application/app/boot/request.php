@@ -5,7 +5,7 @@ use Lib\Validation;
 final class Request
 {
 	private $sUrl;
-	public $aUrlParams = array();
+	private $aUrlParams;
 	private $sCommand;
 
 	public function isAjaxRequest()
@@ -54,6 +54,19 @@ final class Request
 		if(empty($_POST[$key]) === false)
 		{
 			return $_POST[$key];
+		}
+		return null;
+	}
+
+	public function set_urlParams($data)
+	{
+		$this->aUrlParams = $data;
+	}
+
+	public function _url($key)
+	{
+		if(empty($this->aUrlParams[$key]) === false) {
+			return $this->aUrlParams[$key];
 		}
 		return null;
 	}

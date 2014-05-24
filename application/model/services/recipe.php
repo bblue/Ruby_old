@@ -40,20 +40,24 @@ final class Recipe extends ServiceAbstract
 	public function search($search)
 	{
 		// Search the recipe list
-		$recipeMapper = $this->dataMapperFactory->build('recipe');
-		$recipes = $recipeMapper->match($search->getFulltextMatches('recipe'), $search->getFulltextSearch(), $search->getFilters('recipe'), $search->getOrder(), $search->getLimit(), $search->getOffset());
+		if($aMatchFields = $search->getFulltextMatches('recipe')) {
+				$recipeMapper = $this->dataMapperFactory->build('recipe');
+				$recipes = $recipeMapper->match($aMatchFields, $search->getFulltextSearch(), $search->getFilters('recipe'), $search->getOrder(), $search->getLimit(), $search->getOffset());
+		}
 
 		// Search the ingredient list
-		$mapper = $this->dataMapperFactory->build('ingredient');
-		$ingredients = $mapper->match($search->getFulltextMatches('ingredient'), $search->getFulltextSearch(), $search->getFilters('ingredient'));
+		if($aMatchFields = $search->getFulltextMatches('ingredient')) {
+			$mapper = $this->dataMapperFactory->build('ingredient');
+			$ingredients = $mapper->match($aMatchFields, $search->getFulltextSearch(), $search->getFilters('ingredient'));
 
-		foreach($ingredients as $ingredient) {
-			if(isset($recipes[$ingredient->r_id])) {
-				$recipes[$ingredient->r_id]->relevance += $ingredient->relevance;
-			} else {
-				if($recipe = $recipeMapper->findById($ingredient->r_id)){
-					$recipe->relevance = $ingredient->relevance;
-					$recipes->add($recipe->id, $recipe);
+			foreach($ingredients as $ingredient) {
+				if(isset($recipes[$ingredient->r_id])) {
+					$recipes[$ingredient->r_id]->relevance += $ingredient->relevance;
+				} else {
+					if($recipe = $recipeMapper->findById($ingredient->r_id)){
+						$recipe->relevance = $ingredient->relevance;
+						$recipes->add($recipe->id, $recipe);
+					}
 				}
 			}
 		}

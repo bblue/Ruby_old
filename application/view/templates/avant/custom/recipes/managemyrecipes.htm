@@ -19,35 +19,44 @@
 		</div>
 		<div class="container">
 		{LOG}
-
 			<div class="row">
 				<div class="col-md-3">
 					<div class="panel">
 						<div class="list-group"> 
-							<a href="#" class="list-group-item"><span class="badge badge-primary">{RECIPES_COUNT_TOTAL}</span>All</a>
-							<a href="#" class="list-group-item"><span class="badge badge-success">5</span>Draft</a> 
-							<a href="#" class="list-group-item"><span class="badge badge-inverse">14</span>Deleted</a> 
-							<a href="#" class="list-group-item"><span class="badge badge-success">5</span>Favourites</a> 
+							<a href="/recipes/managemyrecipes/published" class="list-group-item <!-- IF GLOBAL_URL_PARAM_0 == 'published' || not GLOBAL_URL_PARAM_0 -->active<!-- ENDIF -->"><span class="badge badge-primary">??</span>Published</a>
+							<a href="/recipes/managemyrecipes/draft" class="list-group-item <!-- IF GLOBAL_URL_PARAM_0 == 'draft' -->active<!-- ENDIF -->"><span class="badge badge-success">??</span>Draft</a> 
 						</div>
 					</div>
 				</div>
-				<div class="col-md-9">
-
+				<div class="col-md-3">
+					<div class="panel">
+						<div class="list-group">
+							<a href="/recipes/managemyrecipes/private" class="list-group-item <!-- IF GLOBAL_URL_PARAM_0 == 'private' -->active<!-- ENDIF -->"><span class="badge badge-inverse">??</span>Private</a> 
+							<a href="/recipes/managemyrecipes/favorites" class="list-group-item <!-- IF GLOBAL_URL_PARAM_0 == 'favorites' -->active<!-- ENDIF -->"><span class="badge badge-success">??</span>Favorites</a> 
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
 					<div class="panel panel-gray">
 						<div class="panel-heading">
-							<h4>All recipes by {VISITOR_FIRSTNAME} {VISITOR_LASTNAME}</h4>
+							<h4>{GLOBAL_URL_PARAM_0} recipes by {VISITOR_FIRSTNAME} {VISITOR_LASTNAME}</h4>
 						</div>
 						<div class="panel-body">
 							<!-- IF .recipes -->
-							<form class="form-inline" action="#">
+							<form class="form-inline" action="/recipes/managemyrecipes<!-- IF GLOBAL_URL_PARAM_0 -->/{GLOBAL_URL_PARAM_0}<!-- ENDIF -->">
 			                    <div class="input-group">
-				                    <input type="text" placeholder="Search messages..." class="form-control">
+				                    <input type="text" name="search" placeholder="Search recipes..." value="{SEARCH_QUERY_STRING}" class="form-control" />
 				                    <div class="input-group-btn">
 				                    	<button type="button" class="btn btn-primary"><i class="fa fa-search"></i></button>
 				                    </div>
 			                    </div>
 		                    </form>
 		                    <hr>
+		                    <!-- IF SEARCH_QUERY_STRING --><h3>Displaying results for <em>{SEARCH_QUERY_STRING}</em></h3><!-- ENDIF -->
 							<table class="table table-striped table-advance table-hover mailbox">
 								<thead>
 									<tr>
@@ -69,8 +78,8 @@
 										<th colspan="4">
 											<div class="pull-right">
 												<span class="pagination-info" style="margin-right:5px">Showing {SEARCH_COUNT_RES_CURRENT} results | {SEARCH_COUNT_RES_CURRENT_FROM}-{SEARCH_COUNT_RES_CURRENT_TO} of {SEARCH_COUNT_RES_TOTAL}</span>
-												<a class="btn btn-sm btn-default"><i class="fa fa-angle-left"></i></a>
-												<a class="btn btn-sm btn-default"><i class="fa fa-angle-right"></i></a>
+												<!-- IF SEARCH_PAGES_PREV_ID --><a class="btn btn-sm btn-default"><i class="fa fa-angle-left"></i></a><!-- ENDIF -->
+												<!-- IF SEARCH_PAGES_NEXT_ID --><a class="btn btn-sm btn-default"><i class="fa fa-angle-right"></i></a><!-- ENDIF -->
 											</div>
 										</th>
 									</tr>
@@ -93,6 +102,7 @@
 												<span class="pagination-info" style="margin-right:5px">Showing {SEARCH_COUNT_RES_CURRENT} results | {SEARCH_COUNT_RES_CURRENT_FROM}-{SEARCH_COUNT_RES_CURRENT_TO} of {SEARCH_COUNT_RES_TOTAL}</span>
 												<!-- IF SEARCH_PAGES_PREV_ID --><a class="btn btn-sm btn-default" href="/recipes/search?{GLOBAL_QUERY_STRING}&p={SEARCH_PAGES_PREV_ID}"><i class="fa fa-angle-left"></i></a><!-- ENDIF -->
 												<!-- IF SEARCH_PAGES_NEXT_ID --><a class="btn btn-sm btn-default" href="/recipes/search?{GLOBAL_QUERY_STRING}&p={SEARCH_PAGES_NEXT_ID}"><i class="fa fa-angle-right"></i></a><!-- ENDIF -->
+												<div class="text-muted"><small><em>Search completed in {SEARCH_TIME} seconds</em></small></div>
 											</div>
 										</th>
 									</tr>
@@ -103,7 +113,7 @@
 							<!-- ENDIF -->
 						</div>
 					</div>
-				</div>		
+				</div>
 			</div>
 		</div> <!-- container -->
 	</div> <!--wrap -->

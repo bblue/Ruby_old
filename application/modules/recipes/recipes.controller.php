@@ -48,27 +48,58 @@ final class RecipesController extends AbstractController
 		$recipeService = $this->serviceFactory->build('recipe', true);
 		$search = $this->serviceFactory->build('search', true);
 
-		// Set the search/filter parameters
-		$search->addFilter('author_id', $this->visitor->user_id);
-		$search->addFilter('status', 0, 0, '!=');
+		// Show only the recipes of logged in user
+		$search->addFilter('recipe.author_id', $this->visitor->user_id);
 
+		// Filter the results as provided
+		switch($this->request->_url(0)) {
+			case 'draft':
+				$search->addFilter('recipe.status', 1);
+				break;
+			case 'private':
+				$search->addFilter('recipe.status', 2);
+				break;
+			case 'published': default:
+				$search->addFilter('recipe.status', 3);
+				break;
+			case 'favorites':
+
+				break;
+		}
+
+		// Order the results
 		$aOrderByFields = array('id', 'title');
 		$search->setOrderBy(in_array($this->request->_get('order_by'), $aOrderByFields) ? $this->request->_get('order_by') : 'id');
 
+		// Get requested page
 		$search->setRequestedPage($this->request->_get('p'));
 
-		$recipeService->find($search);
+		if($this->request->_get('search')) {
+			$search->addFulltextMatch('recipe.method');
+			$search->addFulltextMatch('recipe.title');
+			$search->addFulltextMatch('recipe.abstract');
+			$search->addFulltextMatch('ingredient.ingr_name');
+
+			$search->setFulltextSearch($this->request->_get('search'));
+
+			$recipeService->search($search);
+		} else {
+			$recipeService->find($search);
+		}
+
+
+
 
 		return $search;
 	}
 
 	public function executeView()
 	{
-		if(!empty($this->request->aUrlParams[0]) && is_numeric($this->request->aUrlParams[0])) {
+		if(!empty($this->request->_url(0)) && is_numeric($this->request->_url(0))) {
 			$recipeService = $this->serviceFactory->build('recipe', true);
 			$search = $this->serviceFactory->build('search', true);
 
-			$search->addFilter('id', $id = intval($this->request->aUrlParams[0]));
+			$search->addFilter('id', $id = intval($this->request->_url(0)));
 			$recipe = $recipeService->find($search)[$id];
 
 			return $recipe;

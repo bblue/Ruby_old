@@ -92,8 +92,11 @@ abstract class DatabaseDataMapper extends AbstractDataMapper implements DataMapp
 	}
 
 	/** Search for entities that mach the string */
-	public function match($aMatch, $sAgainst, $aFilters = array(), $order = '', $limit = null, $offset = null)
+	public function match($aMatch, $sAgainst = '*', $aFilters = array(), $order = '', $limit = null, $offset = null)
 	{
+		if(!$aMatch) {
+			throw new \Exception('Match method requires some match fields to be selected');
+		}
 		$collection = $this->buildCollection();
 
 		$aTableSource = array_merge($this->_acceptedFields, $this->_cascadeFields);

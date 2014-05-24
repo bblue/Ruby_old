@@ -60,7 +60,7 @@ final class Search extends ServiceAbstract
 
 	public function getFulltextMatches($key = null)
 	{
-		return $this->aFulltextMatches[$key];
+		return isset($this->aFulltextMatches[$key]) ? $this->aFulltextMatches[$key] : null;
 	}
 
 	public function getFulltextSearch()

@@ -45,11 +45,8 @@ final class RecipesController extends AbstractController
 
 	public function executeManagemyrecipes()
 	{
-		$recipeService = $this->serviceFactory->build('recipe', true);
+		// Get an instance of search service
 		$search = $this->serviceFactory->build('search', true);
-
-		// Show only the recipes of logged in user
-		$search->addFilter('recipe.author_id', $this->visitor->user_id);
 
 		// Filter the results as provided
 		switch($this->request->_url(0)) {
@@ -59,13 +56,18 @@ final class RecipesController extends AbstractController
 			case 'private':
 				$search->addFilter('recipe.status', 2);
 				break;
-			case 'published': default:
+			case 'published': case null:
 				$search->addFilter('recipe.status', 3);
 				break;
-			case 'favorites':
-
+			case 'all':
+				$search->addFilter('recipe.status', 0, 0, '!=');
+				break;
+			default:
+				$this->load('set404error');
 				break;
 		}
+		// Show only the recipes of logged in user
+		$search->addFilter('recipe.author_id', $this->visitor->user_id);
 
 		// Order the results
 		$aOrderByFields = array('id', 'title');
@@ -73,6 +75,9 @@ final class RecipesController extends AbstractController
 
 		// Get requested page
 		$search->setRequestedPage($this->request->_get('p'));
+
+		// Get an instance of recipe service
+		$recipeService = $this->serviceFactory->build('recipe', true);
 
 		if($this->request->_get('search')) {
 			$search->addFulltextMatch('recipe.method');
@@ -87,8 +92,9 @@ final class RecipesController extends AbstractController
 			$recipeService->find($search);
 		}
 
-
-
+		// Build a new search object
+		//$count = $this->serviceFactory->build('search');
+		//$count->addFilter('recipe.')
 
 		return $search;
 	}

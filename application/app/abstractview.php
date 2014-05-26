@@ -108,6 +108,7 @@ abstract class AbstractView
 		$this->template->assign_var('GLOBAL_QUERY_STRING', $_SERVER['QUERY_STRING']);
 		$this->template->assign_var('GLOBAL_URL_PARAM_0', $this->request->_url(0));
 		$this->template->assign_var('GLOBAL_URL_PARAM_1', $this->request->_url(1));
+		$this->template->assign_var('GLOBAL_RUBY_VERSION', (defined('RUBY_VERSION')) ? RUBY_VERSION : 'unknown');
 
 		// Check redirection var
 		$routing = $this->serviceFactory->build('routing', true);

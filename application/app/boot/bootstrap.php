@@ -24,6 +24,9 @@ define('ROOT_PATH', '..'. DIRECTORY_SEPARATOR . 'application');
 /** Load the configuration file  */
 require (ROOT_PATH . DIRECTORY_SEPARATOR . 'app'. DIRECTORY_SEPARATOR . 'boot'. DIRECTORY_SEPARATOR . 'config.php'); //@todo: Load this into a class
 
+/** Load version file */
+include (ROOT_PATH . DIRECTORY_SEPARATOR . 'app'. DIRECTORY_SEPARATOR . 'boot'. DIRECTORY_SEPARATOR . 'version.php');
+
 /** Configure error reporting */
 error_reporting(0);
 ini_set('display_errors', 'Off');

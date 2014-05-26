@@ -10,6 +10,20 @@ use App\Exceptions\UnexpectedValueException;
 
 final class RecipesView extends AbstractView
 {
+	public function executeDeleteRecipe($recipe)
+	{
+		if($recipe->status == 0) { // Success
+			$visitor = $this->serviceFactory->build('recognition', true)->getCurrentVisitor();
+			if($recipe->author_id === $visitor->user_id) {
+				return $this->redirect('/recipes/managemyrecipes');
+			} else {
+				return $this->redirect('/recipes');
+			}
+		} else {
+			$this->load('view');
+		}
+	}
+
 	public function executeManagemyrecipes($search)
 	{
 		$sTemplateFile = 'managemyrecipes';

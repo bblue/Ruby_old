@@ -90,7 +90,7 @@ final class Recipe extends ServiceAbstract
 
 	public function edit() {
 		if(!$this->recipe->id) {
-			throw new \Exception('Recipe does not exist');
+			throw new \Exception('Recipe does not exist'); //@todo: Denne burde heller sette en flash msg
 		}
 
 		// Check entity contains all required input
@@ -109,7 +109,7 @@ final class Recipe extends ServiceAbstract
 
 	public function add() {
 		if($this->recipe->id) {
-			throw new \Exception('Recipe is already registered');
+			throw new \Exception('Recipe is already registered'); //@todo: Denne burde heller sette en flash msg
 		}
 
 		$this->recipe->submitTime = time();
@@ -128,6 +128,42 @@ final class Recipe extends ServiceAbstract
 		$this->dataMapperFactory
 			->build('recipe')
 			->insert($this->recipe);
+
+		return $this->recipe;
+	}
+
+	public function findRecipeById($iRecipeId)
+	{
+		if(!is_numeric($iRecipeId) || (int)$iRecipeId < 1) {
+			throw new \Exception('Recipe id is not valid');
+		}
+
+		$mapper = $this->dataMapperFactory->build('recipe');
+		if(!$this->recipe = $mapper->findById((int)$iRecipeId)) {
+			throw new \Exception('Recipe does not exist'); //@todo: Denne burde heller sette en flash msg
+		}
+		return $this->recipe;
+	}
+
+	public function deleteRecipe()
+	{
+		$mapper = $this->dataMapperFactory->build('recipe');
+
+		// Unset the values we do not need to update
+		$author_id = $this->recipe->author_id;
+		foreach($this->recipe as $key => $value) {
+			switch($key) {
+				default: unset($this->recipe->$key); break;
+				case 'id': break;
+			}
+		}
+
+		$this->recipe->status = 0;
+
+		$mapper->update($this->recipe);
+
+		// Reset some key data
+		$this->recipe->author_id = $author_id;
 
 		return $this->recipe;
 	}

@@ -298,8 +298,11 @@
 					</div>
 				</div><!-- /.modal-body -->
 				<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-							<button type="button" class="btn btn-danger"><i class="fa fa-times-circle"></i> Delete</button>
+						<form action="/recipes/deleterecipe" method="post">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+								<input type="hidden" value="{RECIPE_ID}" name="r_id" />
+								<button type="submit" class="btn btn-danger"><i class="fa fa-times-circle"></i> Delete</button>
+							</form>
 				</div><!-- /.modal-footer -->
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->

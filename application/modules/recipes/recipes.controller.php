@@ -10,6 +10,23 @@ final class RecipesController extends AbstractController
 		return $this->load('managemyrecipes');
 	}
 
+	public function executeDeleteRecipe()
+	{
+		$service = $this->serviceFactory->build('recipe', true);
+
+		if($recipe = $service->findRecipeById($this->request->_post('r_id'))) {
+			//@todo: Check for access
+			if($recipe->author_id !== $this->visitor->user_id) {
+				/*
+				 if(!$this->rbac->check($sPath, $this->visitor->user_id)) {
+				// Set flash message-- you do not have permissions to delete this recipe
+				}
+				*/
+			}
+		}
+		return $service->deleteRecipe();
+	}
+
 	public function executeSearch()
 	{
 		$recipeService = $this->serviceFactory->build('recipe', true);

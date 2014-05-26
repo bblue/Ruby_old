@@ -30,7 +30,7 @@ final class Recipe extends ServiceAbstract
 	public function find($search)
 	{
 		$mapper = $this->dataMapperFactory->build('recipe');
-		$recipes = $mapper->find($search->getFilters());
+		$recipes = $mapper->find($search->getFilters('recipe'));
 
 		$search->setResult($recipes);
 
@@ -77,9 +77,9 @@ final class Recipe extends ServiceAbstract
 		return $this->recipes;
 	}
 
-	public function count(array $aCriterias = array())
+	public function count($aFilters)
 	{
-		return $this->dataMapperFactory->build('recipe')->getCount($aCriterias);
+		return $this->dataMapperFactory->build('recipe')->count($aFilters);
 	}
 
 	public function checkTitleIsAvailable($sTitle)

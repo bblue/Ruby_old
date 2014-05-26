@@ -72,6 +72,11 @@ abstract class AbstractController
 		return true;
 	}
 
+	protected function executeSet404error()
+	{
+		return true;
+	}
+
 	public function registerCurrentVisitor()
 	{
 		$recognition = $this->serviceFactory->build('recognition', true);

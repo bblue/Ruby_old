@@ -24,12 +24,6 @@ final class UsersView extends AbstractView
 
 		if($visitor->isLoggedIn()) {
 			$this->redirect(($url = $this->request->_post('target_url')) ? base64_decode(urldecode($url)) : '/');
-
-			$this->display('custom/header.htm');
-			$this->display('custom/sidebar.htm');
-			$this->display('custom/rightbar.htm');
-			$this->display('custom/' . $sTemplateFile . '.htm');
-			$this->display('custom/footer.htm');
 		} else {
 			$this->display('custom/'.$sTemplateFile.'.htm');
 		}

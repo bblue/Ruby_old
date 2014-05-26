@@ -150,13 +150,6 @@ abstract class DatabaseDataMapper extends AbstractDataMapper implements DataMapp
 			throw new \Exception('The specified entity ('. get_class($entity) .') is not allowed for this mapper ('. get_called_class() .')');
 		}
 
-		$aData = $this->filterOnlyAcceptedFields($entity->toArray());
-		unset($aData['id']);
-
-		if(empty($aData)) {
-			throw new \Exception('No fields to update. Data array is empty.');
-		}
-
 		if(empty($entity->id)) {
 			throw new \Exception('Can not update entity with no ID');
 		}
@@ -167,6 +160,12 @@ abstract class DatabaseDataMapper extends AbstractDataMapper implements DataMapp
 
 		$aTables	= $this->extractTables($aTableSource);
 		$aData		= $this->filterOnlyAcceptedFields($entity->toArray());
+					  unset($aData['id']);
+
+					  if(empty($aData)) {
+					  	throw new \Exception('No fields to update. Data array is empty.');
+					  }
+
 		$sWhere		= $this->buildCriteriaString($this->getFilters());
 
 		return $this->_adapter->update($aTables, $aData, $sWhere);

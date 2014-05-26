@@ -71,6 +71,7 @@ final class Search extends ServiceAbstract
 	public function getResult($key = 0)
 	{
 		if(isset($this->_aResultData['result'])) {
+			$start = microtime(true);
 			// Split result in pages
 			$iPage = $this->getRequestedPage() ? : 1;
 			if(!isset($this->_aResultData['result_pages'][$iPage - 1])) {
@@ -89,7 +90,7 @@ final class Search extends ServiceAbstract
 					$this->_aResultData['result']->add(null, $resultObject);
 				}
 			}
-			$this->_aResultData['search_time'] = microtime(true) - $this->_aResultData['search_time_start'];
+			$this->_aResultData['search_time'] += microtime(true) - $start;
 
 			return $this->_aResultData['result'];
 		}
@@ -121,6 +122,7 @@ final class Search extends ServiceAbstract
 	{
 		$this->_aResultData['result'] = $result;
 		$this->_aResultData['total_res_count'] = $result->count();
+		$this->_aResultData['search_time'] = microtime(true) - $this->_aResultData['search_time_start'];
 	}
 
 	######### functions by _get ###########
